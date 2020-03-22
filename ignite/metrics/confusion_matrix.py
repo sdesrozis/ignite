@@ -14,7 +14,8 @@ class ConfusionMatrix(Metric):
     """Calculates confusion matrix for multi-class data.
 
     - `update` must receive output of the form `(y_pred, y)` or `{'y_pred': y_pred, 'y': y}`.
-    - `y_pred` must contain logits and has the following shape (batch_size, num_categories, ...)
+    - `y_pred` must contain logits and has the following shape (batch_size, num_categories, ...) or
+               must contain class indices and has the following shape (batch_size, ...).
     - `y` should have the following shape (batch_size, ...) and contains ground-truth class indices
         with or without the background class. During the computation, argmax of `y_pred` is taken to determine
         predicted classes.
@@ -66,20 +67,10 @@ class ConfusionMatrix(Metric):
     def _check_shape(self, output: Sequence[torch.Tensor]) -> None:
         y_pred, y = output
 
-        if y_pred.ndimension() < 2:
+        if not (y.ndimension() == y_pred.ndimension() or y.ndimension() + 1 == y_pred.ndimension()):
             raise ValueError(
-                "y_pred must have shape (batch_size, num_categories, ...), " "but given {}".format(y_pred.shape)
-            )
-
-        if y_pred.shape[1] != self.num_classes:
-            raise ValueError(
-                "y_pred does not have correct number of categories: {} vs {}".format(y_pred.shape[1], self.num_classes)
-            )
-
-        if not (y.ndimension() + 1 == y_pred.ndimension()):
-            raise ValueError(
-                "y_pred must have shape (batch_size, num_categories, ...) and y must have "
-                "shape of (batch_size, ...), "
+                "y must have shape of (batch_size, ...) and y_pred must have "
+                "shape of (batch_size, num_categories, ...) or (batch_size, ...), "
                 "but given {} vs {}.".format(y.shape, y_pred.shape)
             )
 
@@ -99,8 +90,12 @@ class ConfusionMatrix(Metric):
 
         self._num_examples += y_pred.shape[0]
 
+        # apply argmax iff y and y_pred dims are not equal
+        if y.ndimension() + 1 == y_pred.ndimension():
+            y_pred = torch.argmax(y_pred, dim=1)
+
         # target is (batch_size, ...)
-        y_pred = torch.argmax(y_pred, dim=1).flatten()
+        y_pred = y_pred.flatten()
         y = y.flatten()
 
         target_mask = (y >= 0) & (y < self.num_classes)

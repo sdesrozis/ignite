@@ -51,6 +51,10 @@ def test_multiclass_input_N():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         num_classes = 10
         cm = ConfusionMatrix(num_classes=num_classes)
@@ -59,6 +63,10 @@ def test_multiclass_input_N():
         cm.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         # 2-classes
@@ -69,6 +77,10 @@ def test_multiclass_input_N():
         cm.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         # Batched Updates
@@ -89,6 +101,14 @@ def test_multiclass_input_N():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
+        cm.reset()
+        for i in range(n_iters):
+            idx = i * batch_size
+            y_pred_argmax = torch.argmax(y_pred[idx : idx + batch_size], dim=1)
+            cm.update((y_pred_argmax, y[idx : idx + batch_size]))
+
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+
     # check multiple random inputs as random exact occurencies are rare
     for _ in range(10):
         _test_N()
@@ -106,6 +126,10 @@ def test_multiclass_input_NL():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         num_classes = 10
         cm = ConfusionMatrix(num_classes=num_classes)
@@ -114,6 +138,10 @@ def test_multiclass_input_NL():
         cm.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         # Batched Updates
@@ -134,6 +162,14 @@ def test_multiclass_input_NL():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
+        cm.reset()
+        for i in range(n_iters):
+            idx = i * batch_size
+            y_pred_argmax = torch.argmax(y_pred[idx: idx + batch_size], dim=1)
+            cm.update((y_pred_argmax, y[idx: idx + batch_size]))
+
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+
     # check multiple random inputs as random exact occurencies are rare
     for _ in range(10):
         _test_NL()
@@ -151,6 +187,10 @@ def test_multiclass_input_NHW():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         num_classes = 5
         cm = ConfusionMatrix(num_classes=num_classes)
@@ -159,6 +199,10 @@ def test_multiclass_input_NHW():
         cm.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+        cm.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        cm.update((y_pred_argmax, y))
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
         # Batched Updates
@@ -178,6 +222,14 @@ def test_multiclass_input_NHW():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
+        cm.reset()
+        for i in range(n_iters):
+            idx = i * batch_size
+            y_pred_argmax = torch.argmax(y_pred[idx: idx + batch_size], dim=1)
+            cm.update((y_pred_argmax, y[idx: idx + batch_size]))
+
+        assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+
     # check multiple random inputs as random exact occurencies are rare
     for _ in range(10):
         _test_NHW()
@@ -192,6 +244,10 @@ def test_ignored_out_of_num_classes_indices():
     cm.update((y_pred, y))
     np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
     np_y = y.numpy().ravel()
+    assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
+    cm.reset()
+    y_pred_argmax = torch.argmax(y_pred, dim=1)
+    cm.update((y_pred_argmax, y))
     assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
 
