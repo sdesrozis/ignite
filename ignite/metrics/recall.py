@@ -88,15 +88,20 @@ class Recall(_BasePrecisionRecall):
             y_pred = y_pred.view(-1)
             y = y.view(-1)
         elif self._type == "multiclass":
-            num_classes = y_pred.size(1)
-            if y.max() + 1 > num_classes:
-                raise ValueError(
-                    "y_pred contains less classes than y. Number of predicted classes is {}"
-                    " and element in y has invalid class = {}.".format(num_classes, y.max().item() + 1)
-                )
-            y = to_onehot(y.view(-1), num_classes=num_classes)
-            indices = torch.argmax(y_pred, dim=1).view(-1)
-            y_pred = to_onehot(indices, num_classes=num_classes)
+            if self._num_classes is None:
+                num_classes = max(y.max(), y_pred.max()) + 1
+                y = to_onehot(y.view(-1), num_classes=num_classes)
+                y_pred = to_onehot(y_pred.view(-1), num_classes=num_classes)
+            else:
+                num_classes = y_pred.size(1)
+                if y.max() + 1 > num_classes:
+                    raise ValueError(
+                        "y_pred contains less classes than y. Number of predicted classes is {}"
+                        " and element in y has invalid class = {}.".format(num_classes, y.max().item() + 1)
+                    )
+                y = to_onehot(y.view(-1), num_classes=num_classes)
+                indices = torch.argmax(y_pred, dim=1).view(-1)
+                y_pred = to_onehot(indices, num_classes=num_classes)
         elif self._type == "multilabel":
             # if y, y_pred shape is (N, C, ...) -> (C, N x ...)
             num_classes = y_pred.size(1)

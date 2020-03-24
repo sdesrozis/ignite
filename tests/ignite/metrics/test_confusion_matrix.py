@@ -165,8 +165,8 @@ def test_multiclass_input_NL():
         cm.reset()
         for i in range(n_iters):
             idx = i * batch_size
-            y_pred_argmax = torch.argmax(y_pred[idx: idx + batch_size], dim=1)
-            cm.update((y_pred_argmax, y[idx: idx + batch_size]))
+            y_pred_argmax = torch.argmax(y_pred[idx : idx + batch_size], dim=1)
+            cm.update((y_pred_argmax, y[idx : idx + batch_size]))
 
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 
@@ -225,8 +225,8 @@ def test_multiclass_input_NHW():
         cm.reset()
         for i in range(n_iters):
             idx = i * batch_size
-            y_pred_argmax = torch.argmax(y_pred[idx: idx + batch_size], dim=1)
-            cm.update((y_pred_argmax, y[idx: idx + batch_size]))
+            y_pred_argmax = torch.argmax(y_pred[idx : idx + batch_size], dim=1)
+            cm.update((y_pred_argmax, y[idx : idx + batch_size]))
 
         assert np.all(confusion_matrix(np_y, np_y_pred, labels=list(range(num_classes))) == cm.compute().numpy())
 

@@ -194,6 +194,7 @@ def test_binary_as_multiclass_input():
         np_y = y.numpy().ravel()
         np_y_pred = y_pred.numpy().ravel()
         assert acc._type == "binary"
+        assert acc._num_classes == 1
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -204,6 +205,7 @@ def test_binary_as_multiclass_input():
         np_y = y.numpy().ravel()
         np_y_pred = y_pred.numpy().ravel()
         assert acc._type == "binary"
+        assert acc._num_classes == 1
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -257,6 +259,15 @@ def test_multiclass_input_N():
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert acc._type == "multiclass"
+        assert acc._num_classes == 4
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -271,6 +282,14 @@ def test_multiclass_input_N():
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
         acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
         y_pred = torch.rand(10, 18)
         y = torch.randint(0, 18, size=(10,)).long()
         acc.update((y_pred, y))
@@ -281,12 +300,28 @@ def test_multiclass_input_N():
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
         acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
         y_pred = torch.rand(4, 10)
         y = torch.randint(0, 10, size=(4,)).long()
         acc.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert acc._type == "multiclass"
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -319,6 +354,18 @@ def test_multiclass_input_N():
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+
+        for i in range(n_iters):
+            idx = i * batch_size
+            acc.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
+
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
     # check multiple random inputs as random exact occurencies are rare
     for _ in range(10):
         _test()
@@ -339,12 +386,28 @@ def test_multiclass_input_NL():
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
         acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
         y_pred = torch.rand(4, 10, 5)
         y = torch.randint(0, 10, size=(4, 5)).long()
         acc.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert acc._type == "multiclass"
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -363,6 +426,18 @@ def test_multiclass_input_NL():
         np_y = y.numpy().ravel()
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         assert acc._type == "multiclass"
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+
+        for i in range(n_iters):
+            idx = i * batch_size
+            acc.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
+
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -386,12 +461,28 @@ def test_multiclass_input_NHW():
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
         acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
         y_pred = torch.rand(4, 5, 10, 12, 8)
         y = torch.randint(0, 5, size=(4, 10, 12, 8)).long()
         acc.update((y_pred, y))
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         np_y = y.numpy().ravel()
         assert acc._type == "multiclass"
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        acc.update((y_pred_argmax, y))
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 
@@ -410,6 +501,18 @@ def test_multiclass_input_NHW():
         np_y = y.numpy().ravel()
         np_y_pred = y_pred.numpy().argmax(axis=1).ravel()
         assert acc._type == "multiclass"
+        assert isinstance(acc.compute(), float)
+        assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
+
+        acc.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+
+        for i in range(n_iters):
+            idx = i * batch_size
+            acc.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
+
+        assert acc._type == "multiclass"
+        assert acc._num_classes == None
         assert isinstance(acc.compute(), float)
         assert accuracy_score(np_y, np_y_pred) == pytest.approx(acc.compute())
 

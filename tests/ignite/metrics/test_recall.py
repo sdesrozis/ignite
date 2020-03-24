@@ -273,6 +273,15 @@ def test_multiclass_input_N():
             assert sk_compute == pytest.approx(re_compute)
 
         re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
         y_pred = torch.rand(10, 4)
         y = torch.randint(0, 4, size=(10,)).long()
         re.update((y_pred, y))
@@ -287,6 +296,15 @@ def test_multiclass_input_N():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
 
         # 2-classes
         re.reset()
@@ -304,6 +322,16 @@ def test_multiclass_input_N():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "binary"
+        assert re._num_classes == 1
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        sk_compute = recall_score(np_y, np_y_pred, average="binary")
+        assert sk_compute == pytest.approx(re_compute)
 
         # Batched Updates
         re.reset()
@@ -329,6 +357,19 @@ def test_multiclass_input_N():
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
 
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+
+        for i in range(n_iters):
+            idx = i * batch_size
+            re.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
+
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
+
     for _ in range(5):
         _test(average=True)
         _test(average=False)
@@ -352,7 +393,17 @@ def test_multiclass_input_NL():
         sk_average_parameter = "macro" if average else None
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
-            assert recall_score(np_y, np_y_pred, average=sk_average_parameter) == pytest.approx(re_compute)
+            sk_compute = recall_score(np_y, np_y_pred, average=sk_average_parameter)
+            assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
 
         re.reset()
         y_pred = torch.rand(15, 10, 8)
@@ -369,6 +420,15 @@ def test_multiclass_input_NL():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
 
         # Batched Updates
         re.reset()
@@ -393,6 +453,19 @@ def test_multiclass_input_NL():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+
+        for i in range(n_iters):
+            idx = i * batch_size
+            re.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
+
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
 
     for _ in range(5):
         _test(average=True)
@@ -421,6 +494,15 @@ def test_multiclass_input_NHW():
             assert sk_compute == pytest.approx(re_compute)
 
         re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
         y_pred = torch.rand(10, 7, 20, 12)
         y = torch.randint(0, 7, size=(10, 20, 12)).long()
         re.update((y_pred, y))
@@ -435,6 +517,15 @@ def test_multiclass_input_NHW():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+        re.update((y_pred_argmax, y))
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
 
         # Batched Updates
         re.reset()
@@ -459,6 +550,19 @@ def test_multiclass_input_NHW():
             warnings.simplefilter("ignore", category=UndefinedMetricWarning)
             sk_compute = recall_score(np_y, np_y_pred, labels=range(0, num_classes), average=sk_average_parameter)
             assert sk_compute == pytest.approx(re_compute)
+
+        re.reset()
+        y_pred_argmax = torch.argmax(y_pred, dim=1)
+
+        for i in range(n_iters):
+            idx = i * batch_size
+            re.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
+
+        assert re._type == "multiclass"
+        assert re._num_classes == None
+        assert isinstance(re.compute(), float if average else torch.Tensor)
+        re_compute = re.compute() if average else re.compute().numpy()
+        assert sk_compute == pytest.approx(re_compute)
 
     for _ in range(5):
         _test(average=True)

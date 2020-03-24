@@ -47,14 +47,9 @@ class _BaseClassification(Metric):
         if self._is_multilabel and not (y.shape == y_pred.shape and y.ndimension() > 1 and y.shape[1] != 1):
             raise ValueError("y and y_pred must have same shape of (batch_size, num_categories, ...).")
 
-    def _check_binary_multilabel_cases(self, output: Sequence[torch.Tensor]) -> None:
+    def _is_binary_multilabel_cases(self, output: Sequence[torch.Tensor]) -> bool:
         y_pred, y = output
-
-        if not torch.equal(y, y ** 2):
-            raise ValueError("For binary cases, y must be comprised of 0's and 1's.")
-
-        if not torch.equal(y_pred, y_pred ** 2):
-            raise ValueError("For binary cases, y_pred must be comprised of 0's and 1's.")
+        return torch.equal(y, y ** 2) and torch.equal(y_pred, y_pred ** 2)
 
     def _check_type(self, output: Sequence[torch.Tensor]) -> None:
         y_pred, y = output
@@ -63,18 +58,21 @@ class _BaseClassification(Metric):
             num_classes = y_pred.shape[1]
             if num_classes == 1:
                 update_type = "binary"
-                self._check_binary_multilabel_cases((y_pred, y))
+                if not self._is_binary_multilabel_cases((y_pred, y)):
+                    raise ValueError("For binary cases, y and y_pred must be comprised of 0's and 1's.")
             else:
                 update_type = "multiclass"
         elif y.ndimension() == y_pred.ndimension():
-            self._check_binary_multilabel_cases((y_pred, y))
-
-            if self._is_multilabel:
-                update_type = "multilabel"
-                num_classes = y_pred.shape[1]
+            if self._is_binary_multilabel_cases((y_pred, y)):
+                if self._is_multilabel:
+                    update_type = "multilabel"
+                    num_classes = y_pred.shape[1]
+                else:
+                    update_type = "binary"
+                    num_classes = 1
             else:
-                update_type = "binary"
-                num_classes = 1
+                update_type = "multiclass"
+                num_classes = None
         else:
             raise RuntimeError(
                 "Invalid shapes of y (shape={}) and y_pred (shape={}), check documentation."
@@ -152,8 +150,11 @@ class Accuracy(_BaseClassification):
         if self._type == "binary":
             correct = torch.eq(y_pred.view(-1).to(y), y.view(-1))
         elif self._type == "multiclass":
-            indices = torch.argmax(y_pred, dim=1)
-            correct = torch.eq(indices, y).view(-1)
+            if self._num_classes is None:
+                correct = torch.eq(y_pred.view(-1).to(y), y.view(-1))
+            else:
+                indices = torch.argmax(y_pred, dim=1)
+                correct = torch.eq(indices, y).view(-1)
         elif self._type == "multilabel":
             # if y, y_pred shape is (N, C, ...) -> (N x ..., C)
             num_classes = y_pred.size(1)
