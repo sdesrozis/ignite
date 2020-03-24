@@ -27,13 +27,15 @@ def test_no_update():
 def test_binary_wrong_inputs():
     pr = Precision()
 
-    with pytest.raises(ValueError):
-        # y has not only 0 or 1 values
-        pr.update((torch.randint(0, 2, size=(10,)).long(), torch.arange(0, 10).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # y has not only 0 or 1 values
+    #     pr.update((torch.randint(0, 2, size=(10,)).long(), torch.arange(0, 10).long()))
 
-    with pytest.raises(ValueError):
-        # y_pred values are not thresholded to 0, 1 values
-        pr.update((torch.rand(10,), torch.randint(0, 2, size=(10,)).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # y_pred values are not thresholded to 0, 1 values
+    #     pr.update((torch.rand(10,).long(), torch.randint(0, 2, size=(10,)).long()))
 
     with pytest.raises(ValueError):
         # incompatible shapes
@@ -362,6 +364,8 @@ def test_multiclass_input_N():
 
         for i in range(n_iters):
             idx = i * batch_size
+            print(i, y_pred_argmax[idx : idx + batch_size])
+            print(i, y[idx: idx + batch_size])
             pr.update((y_pred_argmax[idx : idx + batch_size], y[idx : idx + batch_size]))
 
         assert pr._type == "multiclass"
@@ -576,9 +580,10 @@ def test_multilabel_wrong_inputs():
         # incompatible shapes
         pr.update((torch.randint(0, 2, size=(10,)), torch.randint(0, 2, size=(10,)).long()))
 
-    with pytest.raises(ValueError):
-        # incompatible y_pred
-        pr.update((torch.rand(10, 5), torch.randint(0, 2, size=(10, 5)).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # incompatible y_pred
+    #     pr.update((torch.rand(10, 5).long(), torch.randint(0, 2, size=(10, 5)).long()))
 
     with pytest.raises(ValueError):
         # incompatible y

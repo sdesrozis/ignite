@@ -27,9 +27,10 @@ def test_no_update():
 def test_binary_wrong_inputs():
     re = Recall()
 
-    with pytest.raises(ValueError):
-        # y has not only 0 or 1 values
-        re.update((torch.randint(0, 2, size=(10,)), torch.arange(0, 10).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # y has not only 0 or 1 values
+    #     re.update((torch.randint(0, 2, size=(10,)), torch.arange(0, 10).long()))
 
     with pytest.raises(ValueError):
         # y_pred values are not thresholded to 0, 1 values
@@ -576,9 +577,10 @@ def test_multilabel_wrong_inputs():
         # incompatible shapes
         re.update((torch.randint(0, 2, size=(10,)), torch.randint(0, 2, size=(10,)).long()))
 
-    with pytest.raises(ValueError):
-        # incompatible y_pred
-        re.update((torch.rand(10, 5), torch.randint(0, 2, size=(10, 5)).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # incompatible y_pred
+    #     re.update((torch.rand(10, 5), torch.randint(0, 2, size=(10, 5)).long()))
 
     with pytest.raises(ValueError):
         # incompatible y

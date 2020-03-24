@@ -22,14 +22,17 @@ def test_no_update():
 def test_multiclass_wrong_inputs():
     cm = ConfusionMatrix(10)
 
+    # This is no longer an error
     # with pytest.raises(ValueError, match=r"y_pred must have shape \(batch_size, num_categories, ...\)"):
     #     cm.update((torch.rand(10), torch.randint(0, 2, size=(10,)).long()))
 
-    with pytest.raises(ValueError, match=r"y_pred does not have correct number of categories:"):
-        cm.update((torch.rand(10, 5, 4), torch.randint(0, 2, size=(10,)).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError, match=r"y_pred does not have correct number of categories:"):
+    #     cm.update((torch.rand(10, 5, 4), torch.randint(0, 2, size=(10,)).long()))
 
     with pytest.raises(
-        ValueError, match=r"y_pred must have shape \(batch_size, num_categories, ...\) " r"and y must have "
+        ValueError, match=r"y must have shape of \(batch_size, ...\) and y_pred must have shape of "
+                          r"\(batch_size, num_categories, ...\) or \(batch_size, ...\), but given "
     ):
         cm.update((torch.rand(4, 10, 12, 12), torch.randint(0, 10, size=(10,)).long()))
 

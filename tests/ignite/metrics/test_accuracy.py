@@ -31,13 +31,15 @@ def test__check_shape():
 def test_binary_wrong_inputs():
     acc = Accuracy()
 
-    with pytest.raises(ValueError):
-        # y has not only 0 or 1 values
-        acc.update((torch.randint(0, 2, size=(10,)).long(), torch.arange(0, 10).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # y has not only 0 or 1 values
+    #     acc.update((torch.randint(0, 2, size=(10,)).long(), torch.arange(0, 10).long()))
 
-    with pytest.raises(ValueError):
-        # y_pred values are not thresholded to 0, 1 values
-        acc.update((torch.rand(10,), torch.randint(0, 2, size=(10,)).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # y_pred values are not thresholded to 0, 1 values
+    #     acc.update((torch.rand(10,), torch.randint(0, 2, size=(10,)).long()))
 
     with pytest.raises(ValueError):
         # incompatible shapes
@@ -536,9 +538,10 @@ def test_multilabel_wrong_inputs():
         # incompatible shapes
         acc.update((torch.randint(0, 2, size=(10,)), torch.randint(0, 2, size=(10,)).long()))
 
-    with pytest.raises(ValueError):
-        # incompatible y_pred
-        acc.update((torch.rand(10, 5), torch.randint(0, 2, size=(10, 5)).long()))
+    # This is no longer an error
+    # with pytest.raises(ValueError):
+    #     # incompatible y_pred
+    #     acc.update((torch.rand(10, 5), torch.randint(0, 2, size=(10, 5)).long()))
 
     with pytest.raises(ValueError):
         # incompatible y
