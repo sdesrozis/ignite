@@ -4,6 +4,9 @@ FROM ${BASE_IMAGE}
 ARG PYTHON_VERSION=3.6
 ARG PYTORCH_VERSION=1.4
 
+ARG BRANCH=master
+ARG FORK=pytorch
+
 ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND="noninteractive"
 
@@ -29,9 +32,12 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
 
 ENV PATH /opt/conda/bin:$PATH
 
+RUN echo $FORK
+
 # install ignite from source
-RUN git clone https://github.com/pytorch/ignite && \
+RUN git clone https://github.com/$FORK/ignite && \
     cd ignite && \
+    git checkout $BRANCH && \
     pip install -r requirements-dev.txt && \
     python setup.py install
 

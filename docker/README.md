@@ -15,4 +15,6 @@ Arguments :
 --build-arg BASE_IMAGE=<image>        # default: nvidia/cuda:10.1-base
 --build-arg PYTHON_VERSION=<version>  # default: 3.6
 --build-arg PYTORCH_VERSION=<version> # default: 1.4
+--build-arg FORK=<fork>               # default: pytorch
+--build-arg BRANCH=<branch>           # default: master
 ```
