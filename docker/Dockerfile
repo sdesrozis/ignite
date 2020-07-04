@@ -16,6 +16,7 @@ RUN apt-get update && \
          cmake \
          git \
          curl \
+         vim \
          ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
