@@ -9,10 +9,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; ignite master documentation</title>
+  <title>Quick start &mdash; ignite master documentation</title>
   
 
   
+  
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
   
   
   
@@ -30,10 +32,11 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="examples.html" />
-    <link rel="prev" title="Concepts" href="concepts.html" /> 
+    <link rel="next" title="Concepts" href="concepts.html" />
+    <link rel="prev" title="Ignite Your Networks!" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -61,17 +64,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="concepts.html">Concepts</a>
+            <a href="#">Quickstart</a>
           </li>
 
           <li>
-            <a href="#">Quickstart</a>
+            <a href="concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +90,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -116,7 +126,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -146,8 +156,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 </ul>
@@ -156,6 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">ignite.utils</a></li>
 </ul>
@@ -164,6 +175,11 @@
 <li class="toctree-l1"><a class="reference internal" href="contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -228,7 +244,7 @@
       </li>
 
         
-      <li>Quickstart</li>
+      <li>Quick start</li>
     
     
       <li class="pytorch-breadcrumbs-aside">
@@ -260,10 +276,10 @@
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
-  <div class="section" id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to Ignite quickstart guide that just gives essentials of getting a project up and running.</p>
-<p>In several lines you can get your model training and validating:</p>
+  <div class="section" id="quick-start">
+<h1>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to <strong>PyTorch-Ignite</strong> quick start guide that just covers the essentials of getting a project up and walking through the code.</p>
+<p>In several lines of this given code, you can get your model trained and validated as shown below:</p>
 <div class="section" id="code">
 <h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Events</span><span class="p">,</span> <span class="n">create_supervised_trainer</span><span class="p">,</span> <span class="n">create_supervised_evaluator</span>
@@ -272,16 +288,17 @@
 <span class="n">model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
 <span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span> <span class="o">=</span> <span class="n">get_data_loaders</span><span class="p">(</span><span class="n">train_batch_size</span><span class="p">,</span> <span class="n">val_batch_size</span><span class="p">)</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
 
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
-<span class="n">evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
-                                        <span class="n">metrics</span><span class="o">=</span><span class="p">{</span>
-                                            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
-                                            <span class="s1">&#39;nll&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-                                            <span class="p">})</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">)</span>
 
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
+<span class="n">val_metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
+    <span class="s2">&quot;nll&quot;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">val_metrics</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="n">log_interval</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">log_training_loss</span><span class="p">(</span><span class="n">trainer</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch[</span><span class="si">{}</span><span class="s2">] Loss: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
 
@@ -290,88 +307,81 @@
     <span class="n">evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training Results - Epoch: </span><span class="si">{}</span><span class="s2">  Avg accuracy: </span><span class="si">{:.2f}</span><span class="s2"> Avg loss: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
-          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;nll&#39;</span><span class="p">]))</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;nll&quot;</span><span class="p">]))</span>
 
 <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">log_validation_results</span><span class="p">(</span><span class="n">trainer</span><span class="p">):</span>
     <span class="n">evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation Results - Epoch: </span><span class="si">{}</span><span class="s2">  Avg accuracy: </span><span class="si">{:.2f}</span><span class="s2"> Avg loss: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
-          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;nll&#39;</span><span class="p">]))</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;nll&quot;</span><span class="p">]))</span>
 
 <span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Complete code can be found in the file <a class="reference external" href="https://github.com/pytorch/ignite/blob/master/examples/mnist/mnist.py">examples/mnist/mnist.py</a>.</p>
+<p><strong>Note</strong>: Complete code can be found in the file <a class="reference external" href="https://github.com/pytorch/ignite/blob/master/examples/mnist/mnist.py">examples/mnist/mnist.py</a>.</p>
 </div>
 <div class="section" id="explanation">
 <h2>Explanation<a class="headerlink" href="#explanation" title="Permalink to this headline">¶</a></h2>
-<p>Now let’s break up the code and review it in details. In the first 4 lines we define our model, training and validation
+<p>Now let’s break up the code and review it in details. In the first 4 lines, we define our model, training and validation
 datasets (as <a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader">torch.utils.data.DataLoader</a>), optimizer and loss function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
 <span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span> <span class="o">=</span> <span class="n">get_data_loaders</span><span class="p">(</span><span class="n">train_batch_size</span><span class="p">,</span> <span class="n">val_batch_size</span><span class="p">)</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Next we define trainer and evaluator engines. The main component of Ignite is the <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>, an abstraction over your
-training loop. Getting started with the engine is easy, the constructor only requires one things:</p>
-<ul class="simple">
-<li><cite>update_function</cite>: a function that receives the engine and a batch and have a role to update your model.</li>
-</ul>
-<p>In the above example we are using helper methods <a class="reference internal" href="engine.html#ignite.engine.create_supervised_trainer" title="ignite.engine.create_supervised_trainer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_trainer()</span></code></a> and <a class="reference internal" href="engine.html#ignite.engine.create_supervised_evaluator" title="ignite.engine.create_supervised_evaluator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_evaluator()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
-<span class="n">evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
-                                        <span class="n">metrics</span><span class="o">=</span><span class="p">{</span>
-                                            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
-                                            <span class="s1">&#39;nll&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-                                            <span class="p">})</span>
-</pre></div>
-</div>
-<p>However, we could also define trainer and evaluator using <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>. If we take a look into the source code of
-<a class="reference internal" href="engine.html#ignite.engine.create_supervised_trainer" title="ignite.engine.create_supervised_trainer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_trainer()</span></code></a> and <a class="reference internal" href="engine.html#ignite.engine.create_supervised_evaluator" title="ignite.engine.create_supervised_evaluator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_evaluator()</span></code></a>, we can observe the following pattern:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_engine</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<p>Next we define trainer and evaluator engines. In this example, we are using helper methods as
+<a class="reference internal" href="engine.html#ignite.engine.create_supervised_trainer" title="ignite.engine.create_supervised_trainer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_trainer()</span></code></a> and <a class="reference internal" href="engine.html#ignite.engine.create_supervised_evaluator" title="ignite.engine.create_supervised_evaluator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_evaluator()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-        <span class="c1"># Update function logic</span>
-        <span class="k">pass</span>
-
-    <span class="k">return</span> <span class="n">Engine</span><span class="p">(</span><span class="n">_update</span><span class="p">)</span>
+<span class="n">val_metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
+    <span class="s2">&quot;nll&quot;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">val_metrics</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>And update functions of the trainer and evaluator are simply:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+<p>Objects <code class="docutils literal notranslate"><span class="pre">trainer</span></code> and <code class="docutils literal notranslate"><span class="pre">evaluator</span></code> are instances of <a class="reference internal" href="engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> - main component of Ignite.
+<a class="reference internal" href="engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> is an abstraction over your training/validation loop.</p>
+<p>In general, we can define <code class="docutils literal notranslate"><span class="pre">trainer</span></code> and <code class="docutils literal notranslate"><span class="pre">evaluator</span></code> using directly <a class="reference internal" href="engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> class and
+custom training/validation step logic:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">_prepare_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">_inference</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">_prepare_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">validation_step</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that the helper function <a class="reference internal" href="engine.html#ignite.engine.create_supervised_evaluator" title="ignite.engine.create_supervised_evaluator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_evaluator()</span></code></a> to create an evaluator accepts an
-argument <cite>metrics</cite>:</p>
+<p>Note that the helper function <a class="reference internal" href="engine.html#ignite.engine.create_supervised_evaluator" title="ignite.engine.create_supervised_evaluator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_evaluator()</span></code></a> is to create an evaluator which accepts an
+argument <code class="docutils literal notranslate"><span class="pre">metrics</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">=</span><span class="p">{</span>
     <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
     <span class="s1">&#39;nll&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>where we define two metrics: <em>accuracy</em> and <em>loss</em> to compute on validation dataset. More information on
+<p>Here we define two metrics: <em>accuracy</em> and <em>loss</em> to compute on validation dataset. More information on
 metrics can be found at <a class="reference internal" href="metrics.html"><span class="doc">ignite.metrics</span></a>.</p>
-<p>The most interesting part of the code snippet is adding event handlers. <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> allows to add handlers on
-various events that fired during the run. When an event is fired, attached handlers (functions) are executed. Thus, for
-logging purposes we added a function to be executed after every iteration:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
+<p>The most interesting part of the code snippet is adding event handlers. <a class="reference internal" href="engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> allows to add handlers on
+various events that triggers during the run. When an event is triggered, attached handlers (functions) are executed. Thus, for
+logging purposes we add a function to be executed at the end of every <code class="docutils literal notranslate"><span class="pre">log_interval</span></code>-th iteration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="n">log_interval</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">log_training_loss</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch[</span><span class="si">{}</span><span class="s2">] Loss: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
 </pre></div>
@@ -383,8 +393,8 @@ logging purposes we added a function to be executed after every iteration:</p>
 <span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="n">log_training_loss</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>When an epoch ends we want compute training and validation metrics <a class="footnote-reference" href="#f1" id="id1">[1]</a>. For that purpose we can run previously defined
-<cite>evaluator</cite> on <cite>train_loader</cite> and <cite>val_loader</cite>. Therefore we attach two additional handlers to the trainer on epoch
+<p>When an epoch ends, we want to compute training and validation metrics <a class="footnote-reference brackets" href="#f1" id="id1">1</a>. For that purpose, we can run previously defined
+<code class="docutils literal notranslate"><span class="pre">evaluator</span></code> on <code class="docutils literal notranslate"><span class="pre">train_loader</span></code> and <code class="docutils literal notranslate"><span class="pre">val_loader</span></code>. Therefore we attach two additional handlers to the trainer on epoch
 complete event:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">log_training_results</span><span class="p">(</span><span class="n">trainer</span><span class="p">):</span>
@@ -402,10 +412,10 @@ complete event:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Function <a class="reference internal" href="engine.html#ignite.engine.Engine.add_event_handler" title="ignite.engine.Engine.add_event_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_event_handler()</span></code></a> (as well as <a class="reference internal" href="engine.html#ignite.engine.Engine.on" title="ignite.engine.Engine.on"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on()</span></code></a> decorator) also accepts optional <cite>args</cite>, <cite>kwargs</cite> to be passed
-to the handler. For example:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="n">log_training_loss</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">)</span>
+<p class="admonition-title">Note</p>
+<p>Function <a class="reference internal" href="engine.html#ignite.engine.engine.Engine.add_event_handler" title="ignite.engine.engine.Engine.add_event_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_event_handler()</span></code></a> (as well as <a class="reference internal" href="engine.html#ignite.engine.engine.Engine.on" title="ignite.engine.engine.Engine.on"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on()</span></code></a> decorator)
+also accepts optional <cite>args</cite>, <cite>kwargs</cite> to be passed to the handler. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="n">log_training_loss</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -413,42 +423,37 @@ to the handler. For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
+<p><strong>Where to go next?</strong> To understand better the concepts of the library, please read <a class="reference internal" href="concepts.html"><span class="doc">Concepts</span></a>.</p>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="f1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><p class="first">In this example we follow a pattern that requires a second pass through the training set. This
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>In this example, we follow a pattern that requires a second pass through the training set. This
 could be expensive on large datasets (even taking a subset). Another more common pattern is to accumulate
-measures online over an epoch in the training loop. In this case metrics are aggregated on a moving model,
-and thus, we do not want to encourage this pattern. However, if user still would like to implement the
-last pattern, it can be easily done redefining trainer’s update function and attaching metrics as following:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">{},</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+measures online over an epoch in the training loop. In this case, metrics are aggregated on a moving model,
+and thus, we do not want to encourage this pattern. However, if a user still likes to implement the
+last pattern, it can be easily done by attaching metrics to the trainer as following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_output_transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+        <span class="s2">&quot;y_pred&quot;</span><span class="p">:</span> <span class="n">y_pred</span><span class="p">,</span>
+        <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">_prepare_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">output_transform</span><span class="o">=</span><span class="n">custom_output_transform</span>
+<span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_metrics_transform</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">output</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">_update</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">metric</span><span class="o">.</span><span class="n">_output_transform</span> <span class="o">=</span> <span class="n">_metrics_transform</span>
-        <span class="n">metric</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">engine</span>
+<span class="c1"># Attach metrics:</span>
+<span class="n">val_metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">(),</span>
+    <span class="s2">&quot;nll&quot;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">val_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">metric</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-</td></tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -460,10 +465,10 @@ last pattern, it can be easily done redefining trainer’s update function and a
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <img src="_static/images/chevron-right-orange.svg" class="next-page"></a>
+        <a href="concepts.html" class="btn btn-neutral float-right" title="Concepts" accesskey="n" rel="next">Next <img src="_static/images/chevron-right-orange.svg" class="next-page"></a>
       
       
-        <a href="concepts.html" class="btn btn-neutral" title="Concepts" accesskey="p" rel="prev"><img src="_static/images/chevron-right-orange.svg" class="previous-page"> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Ignite Your Networks!" accesskey="p" rel="prev"><img src="_static/images/chevron-right-orange.svg" class="previous-page"> Previous</a>
       
     </div>
   
@@ -476,7 +481,7 @@ last pattern, it can be easily done redefining trainer’s update function and a
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -495,7 +500,7 @@ last pattern, it can be easily done redefining trainer’s update function and a
           <div class="pytorch-right-menu" id="pytorch-right-menu">
             <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
               <ul>
-<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#">Quick start</a><ul>
 <li><a class="reference internal" href="#code">Code</a></li>
 <li><a class="reference internal" href="#explanation">Explanation</a></li>
 </ul>
@@ -512,11 +517,11 @@ last pattern, it can be easily done redefining trainer’s update function and a
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -563,14 +568,14 @@ last pattern, it can be easily done redefining trainer’s update function and a
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -653,7 +658,7 @@ last pattern, it can be easily done redefining trainer’s update function and a
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

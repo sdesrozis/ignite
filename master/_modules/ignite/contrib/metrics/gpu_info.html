@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../../../../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/contrib/metrics/gpu_info.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="../../../../_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../../about.html" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
 
@@ -59,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../../../../concepts.html">Concepts</a>
+            <a href="../../../../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../../../../quickstart.html">Quickstart</a>
+            <a href="../../../../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -83,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -114,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -144,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 </ul>
@@ -154,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils.html">ignite.utils</a></li>
 </ul>
@@ -162,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -259,16 +275,21 @@
   <h1>Source code for ignite.contrib.metrics.gpu_info</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">,</span> <span class="n">Events</span>
 <span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Metric</span>
-<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Events</span>
 
 
 <div class="viewcode-block" id="GpuInfo"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo">[docs]</a><span class="k">class</span> <span class="nc">GpuInfo</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Provides GPU information: a) used memory percentage, b) gpu utilization percentage values as Metric</span>
 <span class="sd">    on each iterations.</span>
+
+<span class="sd">    .. Note ::</span>
+
+<span class="sd">        In case if gpu utilization reports &quot;N/A&quot; on a given GPU, corresponding metric value is not set.</span>
 
 <span class="sd">    Examples:</span>
 
@@ -288,7 +309,7 @@
 <span class="sd">                             event_name=Events.ITERATION_COMPLETED)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">pynvml</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -306,20 +327,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nvsmi</span> <span class="o">=</span> <span class="n">nvidia_smi</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GpuInfo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="GpuInfo.reset"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GpuInfo.reset"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="GpuInfo.update"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+<div class="viewcode-block" id="GpuInfo.update"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="GpuInfo.compute"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvsmi</span><span class="o">.</span><span class="n">DeviceQuery</span><span class="p">(</span><span class="s2">&quot;memory.used, memory.total, utilization.gpu&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="GpuInfo.compute"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvsmi</span><span class="o">.</span><span class="n">DeviceQuery</span><span class="p">(</span>
+            <span class="s2">&quot;memory.used, memory.total, utilization.gpu&quot;</span>
+        <span class="p">)</span>  <span class="c1"># type: Dict[str, List[Dict[str, Any]]]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;gpu&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No GPU information available&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;gpu&quot;</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="GpuInfo.completed"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.completed">[docs]</a>    <span class="k">def</span> <span class="nf">completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No GPU information available&quot;</span><span class="p">)</span>
@@ -349,14 +372,20 @@
             <span class="n">util_report</span> <span class="o">=</span> <span class="n">data_by_rank</span><span class="p">[</span><span class="s2">&quot;utilization&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="s2">&quot;gpu_util&quot;</span> <span class="ow">in</span> <span class="n">util_report</span><span class="p">):</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="s2">&quot;GPU utilization information does not provide &#39;gpu_util&#39; information in &quot;</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">util_report</span><span class="p">)</span>
+                    <span class="s2">&quot;GPU utilization information does not provide &#39;gpu_util&#39; information in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">util_report</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">util_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">util_report</span><span class="p">[</span><span class="s2">&quot;gpu_util&quot;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="c1"># Do not set GPU utilization information</span>
+                <span class="k">pass</span></div>
 
-            <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">util_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">util_report</span><span class="p">[</span><span class="s2">&quot;gpu_util&quot;</span><span class="p">])</span>
-
-    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span> <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">):</span>
-        <span class="n">engine</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+    <span class="c1"># TODO: see issue https://github.com/pytorch/ignite/issues/1405</span>
+<div class="viewcode-block" id="GpuInfo.attach"><a class="viewcode-back" href="../../../../contrib/metrics.html#ignite.contrib.metrics.GpuInfo.attach">[docs]</a>    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div></div>
 </pre></div>
 
              </article>
@@ -373,7 +402,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -402,11 +431,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-         <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-         <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-         <script type="text/javascript" src="../../../../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../../../../_static/jquery.js"></script>
+         <script src="../../../../_static/underscore.js"></script>
+         <script src="../../../../_static/doctools.js"></script>
+         <script src="../../../../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -453,14 +482,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -543,7 +572,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

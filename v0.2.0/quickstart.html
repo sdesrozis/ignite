@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlquickstart.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="concepts.html">Concepts</a>
+            <a href="#">Quickstart</a>
           </li>
 
           <li>
-            <a href="#">Quickstart</a>
+            <a href="concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -316,7 +325,7 @@ datasets (as <a class="reference external" href="https://pytorch.org/docs/stable
 <p>Next we define trainer and evaluator engines. The main component of Ignite is the <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>, an abstraction over your
 training loop. Getting started with the engine is easy, the constructor only requires one things:</p>
 <ul class="simple">
-<li><cite>update_function</cite>: a function that receives the engine and a batch and have a role to update your model.</li>
+<li><p><cite>update_function</cite>: a function that receives the engine and a batch and have a role to update your model.</p></li>
 </ul>
 <p>In the above example we are using helper methods <a class="reference internal" href="engine.html#ignite.engine.create_supervised_trainer" title="ignite.engine.create_supervised_trainer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_trainer()</span></code></a> and <a class="reference internal" href="engine.html#ignite.engine.create_supervised_evaluator" title="ignite.engine.create_supervised_evaluator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_supervised_evaluator()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
@@ -382,7 +391,7 @@ logging purposes we added a function to be executed after every iteration:</p>
 <span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="n">log_training_loss</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>When an epoch ends we want compute training and validation metrics <a class="footnote-reference" href="#f1" id="id1">[1]</a>. For that purpose we can run previously defined
+<p>When an epoch ends we want compute training and validation metrics <a class="footnote-reference brackets" href="#f1" id="id1">1</a>. For that purpose we can run previously defined
 <cite>evaluator</cite> on <cite>train_loader</cite> and <cite>val_loader</cite>. Therefore we attach two additional handlers to the trainer on epoch
 complete event:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
@@ -401,10 +410,10 @@ complete event:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Function <a class="reference internal" href="engine.html#ignite.engine.Engine.add_event_handler" title="ignite.engine.Engine.add_event_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_event_handler()</span></code></a> (as well as <a class="reference internal" href="engine.html#ignite.engine.Engine.on" title="ignite.engine.Engine.on"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on()</span></code></a> decorator) also accepts optional <cite>args</cite>, <cite>kwargs</cite> to be passed
 to the handler. For example:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="n">log_training_loss</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="n">log_training_loss</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -413,15 +422,14 @@ to the handler. For example:</p>
 </pre></div>
 </div>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="f1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><p class="first">In this example we follow a pattern that requires a second pass through the training set. This
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>In this example we follow a pattern that requires a second pass through the training set. This
 could be expensive on large datasets (even taking a subset). Another more common pattern is to accumulate
 measures online over an epoch in the training loop. In this case metrics are aggregated on a moving model,
 and thus, we do not want to encourage this pattern. However, if user still would like to implement the
 last pattern, it can be easily done redefining trainer’s update function and attaching metrics as following:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">{},</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">{},</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
         <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
@@ -445,9 +453,8 @@ last pattern, it can be easily done redefining trainer’s update function and a
     <span class="k">return</span> <span class="n">engine</span>
 </pre></div>
 </div>
-</td></tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -475,7 +482,7 @@ last pattern, it can be easily done redefining trainer’s update function and a
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -511,11 +518,11 @@ last pattern, it can be easily done redefining trainer’s update function and a
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -562,14 +569,14 @@ last pattern, it can be easily done redefining trainer’s update function and a
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -652,7 +659,7 @@ last pattern, it can be easily done redefining trainer’s update function and a
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

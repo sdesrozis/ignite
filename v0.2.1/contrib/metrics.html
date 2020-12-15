@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlcontrib/metrics.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../concepts.html">Concepts</a>
+            <a href="../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../quickstart.html">Quickstart</a>
+            <a href="../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -263,22 +272,19 @@
   <div class="section" id="ignite-contrib-metrics">
 <h1>ignite.contrib.metrics<a class="headerlink" href="#ignite-contrib-metrics" title="Permalink to this headline">¶</a></h1>
 <p>Contribution module of metrics</p>
-<span class="target" id="module-ignite.contrib.metrics"></span><dl class="class">
+<span class="target" id="module-ignite.contrib.metrics"></span><dl class="py class">
 <dt id="ignite.contrib.metrics.AveragePrecision">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">AveragePrecision</code><span class="sig-paren">(</span><em>output_transform=&lt;function AveragePrecision.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/average_precision.html#AveragePrecision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.AveragePrecision" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">AveragePrecision</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function AveragePrecision.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/average_precision.html#AveragePrecision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.AveragePrecision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Average Precision accumulating predictions and the ground-truth during an epoch
 and applying <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score">sklearn.metrics.average_precision_score</a> .</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="../engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</td>
-</tr>
-</tbody>
-</table>
+you want to compute the metric with respect to one of the outputs.</p>
+</dd>
+</dl>
 <p>AveragePrecision expects y to be comprised of 0’s and 1’s. y_pred must either be probability estimates or
 confidence values. To apply an activation to y_pred, use output_transform as shown below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">activated_output_transform</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
@@ -291,9 +297,9 @@ confidence values. To apply an activation to y_pred, use output_transform as sho
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.GpuInfo">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">GpuInfo</code><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">GpuInfo</code><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>GPU information: a) used memory percentage, b) gpu utilization percentage values as Metric.</p>
 <p class="rubric">Examples</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default GPU measurements</span>
@@ -310,66 +316,59 @@ confidence values. To apply an activation to y_pred, use output_transform as sho
                  <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.GpuInfo.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.GpuInfo.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.GpuInfo.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/gpu_info.html#GpuInfo.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.GpuInfo.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.ROC_AUC">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">ROC_AUC</code><span class="sig-paren">(</span><em>output_transform=&lt;function ROC_AUC.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/roc_auc.html#ROC_AUC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.ROC_AUC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">ROC_AUC</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function ROC_AUC.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/roc_auc.html#ROC_AUC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.ROC_AUC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Area Under the Receiver Operating Characteristic Curve (ROC AUC)
 accumulating predictions and the ground-truth during an epoch and applying
 <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score">sklearn.metrics.roc_auc_score</a> .</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="../engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</td>
-</tr>
-</tbody>
-</table>
+you want to compute the metric with respect to one of the outputs.</p>
+</dd>
+</dl>
 <p>ROC_AUC expects y to be comprised of 0’s and 1’s. y_pred must either be probability estimates or confidence
 values. To apply an activation to y_pred, use output_transform as shown below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">activated_output_transform</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
@@ -389,231 +388,231 @@ metrics useful for regression tasks. Definitions of metrics are based on <a clas
 <p>Complete list of metrics:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.CanberraMetric" title="ignite.contrib.metrics.regression.CanberraMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">CanberraMetric</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.FractionalAbsoluteError" title="ignite.contrib.metrics.regression.FractionalAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">FractionalAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.FractionalBias" title="ignite.contrib.metrics.regression.FractionalBias"><code class="xref py py-class docutils literal notranslate"><span class="pre">FractionalBias</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.GeometricMeanAbsoluteError" title="ignite.contrib.metrics.regression.GeometricMeanAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricMeanAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError" title="ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricMeanRelativeAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.ManhattanDistance" title="ignite.contrib.metrics.regression.ManhattanDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManhattanDistance</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError" title="ignite.contrib.metrics.regression.MaximumAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaximumAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError" title="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanAbsoluteRelativeError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MeanError" title="ignite.contrib.metrics.regression.MeanError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MeanNormalizedBias" title="ignite.contrib.metrics.regression.MeanNormalizedBias"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanNormalizedBias</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MedianAbsoluteError" title="ignite.contrib.metrics.regression.MedianAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MedianAbsolutePercentageError" title="ignite.contrib.metrics.regression.MedianAbsolutePercentageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianAbsolutePercentageError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.MedianRelativeAbsoluteError" title="ignite.contrib.metrics.regression.MedianRelativeAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.R2Score" title="ignite.contrib.metrics.regression.R2Score"><code class="xref py py-class docutils literal notranslate"><span class="pre">R2Score</span></code></a></li>
-<li><a class="reference internal" href="#ignite.contrib.metrics.regression.WaveHedgesDistance" title="ignite.contrib.metrics.regression.WaveHedgesDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveHedgesDistance</span></code></a></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.CanberraMetric" title="ignite.contrib.metrics.regression.CanberraMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">CanberraMetric</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.FractionalAbsoluteError" title="ignite.contrib.metrics.regression.FractionalAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">FractionalAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.FractionalBias" title="ignite.contrib.metrics.regression.FractionalBias"><code class="xref py py-class docutils literal notranslate"><span class="pre">FractionalBias</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.GeometricMeanAbsoluteError" title="ignite.contrib.metrics.regression.GeometricMeanAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricMeanAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError" title="ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricMeanRelativeAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.ManhattanDistance" title="ignite.contrib.metrics.regression.ManhattanDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManhattanDistance</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError" title="ignite.contrib.metrics.regression.MaximumAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaximumAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError" title="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanAbsoluteRelativeError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MeanError" title="ignite.contrib.metrics.regression.MeanError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MeanNormalizedBias" title="ignite.contrib.metrics.regression.MeanNormalizedBias"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanNormalizedBias</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MedianAbsoluteError" title="ignite.contrib.metrics.regression.MedianAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MedianAbsolutePercentageError" title="ignite.contrib.metrics.regression.MedianAbsolutePercentageError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianAbsolutePercentageError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.MedianRelativeAbsoluteError" title="ignite.contrib.metrics.regression.MedianRelativeAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MedianRelativeAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.R2Score" title="ignite.contrib.metrics.regression.R2Score"><code class="xref py py-class docutils literal notranslate"><span class="pre">R2Score</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.contrib.metrics.regression.WaveHedgesDistance" title="ignite.contrib.metrics.regression.WaveHedgesDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveHedgesDistance</span></code></a></p></li>
 </ul>
 </div></blockquote>
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.CanberraMetric">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">CanberraMetric</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/canberra_metric.html#CanberraMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.CanberraMetric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">CanberraMetric</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/canberra_metric.html#CanberraMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.CanberraMetric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Canberra Metric.</p>
 <p><span class="math notranslate nohighlight">\(\text{CM} = \sum_{j=1}^n\frac{|A_j - P_j|}{A_j + P_j}\)</span></p>
 <p>where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.FractionalAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">FractionalAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_absolute_error.html#FractionalAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">FractionalAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_absolute_error.html#FractionalAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Fractional Absolute Error.</p>
 <p><span class="math notranslate nohighlight">\(\text{FAE} = \frac{1}{n}\sum_{j=1}^n\frac{2 |A_j - P_j|}{|A_j| + |P_j|}\)</span></p>
 <p>where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.FractionalBias">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">FractionalBias</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">FractionalBias</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Fractional Bias:</p>
 <p><span class="math notranslate nohighlight">\(\text{FB} = \frac{1}{n}\sum_{j=1}^n\frac{2 (A_j - P_j)}{A_j + P_j}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.GeometricMeanAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">GeometricMeanAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/geometric_mean_absolute_error.html#GeometricMeanAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.GeometricMeanAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">GeometricMeanAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/geometric_mean_absolute_error.html#GeometricMeanAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.GeometricMeanAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Geometric Mean Absolute Error.</p>
 <p><span class="math notranslate nohighlight">\(\text{GMAE} = \exp(\frac{1}{n}\sum_{j=1}^n\ln(|A_j - P_j|))\)</span></p>
 <p>where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">GeometricMeanRelativeAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/geometric_mean_relative_absolute_error.html#GeometricMeanRelativeAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">GeometricMeanRelativeAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/geometric_mean_relative_absolute_error.html#GeometricMeanRelativeAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Geometric Mean Relative Absolute Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{GMRAE} = \exp(\frac{1}{n}\sum_{j=1}^n \ln\frac{|A_j - P_j|}{|A_j - \bar{A}|})\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.ManhattanDistance">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">ManhattanDistance</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">ManhattanDistance</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Manhattan Distance:</p>
 <p><span class="math notranslate nohighlight">\(\text{MD} = \sum_{j=1}^n (A_j - P_j)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MaximumAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MaximumAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MaximumAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Maximum Absolute Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MaxAE} = \max_{j=1,n} \left( \lvert A_j-P_j \rvert \right)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MeanAbsoluteRelativeError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MeanAbsoluteRelativeError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Mean Absolute Relative Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MARE} = \frac{1}{n}\sum_{j=1}^n\frac{\left|A_j-P_j\right|}{\left|A_j\right|}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in the reference <a class="reference external" href="https://arxiv.org/ftp/arxiv/papers/1809/1809.03006.pdf">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MeanError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MeanError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MeanError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Mean Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{ME} = \frac{1}{n}\sum_{j=1}^n (A_j - P_j)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in the reference <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MeanNormalizedBias">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MeanNormalizedBias</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MeanNormalizedBias</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Mean Normalized Bias:</p>
 <p><span class="math notranslate nohighlight">\(\text{MNB} = \frac{1}{n}\sum_{j=1}^n\frac{A_j - P_j}{A_j}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in the reference <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MedianAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MedianAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function MedianAbsoluteError.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/median_absolute_error.html#MedianAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MedianAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MedianAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function MedianAbsoluteError.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/median_absolute_error.html#MedianAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MedianAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Median Absolute Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MdAE} = \text{MD}_{j=1,n} \left( |A_j - P_j| \right)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</p></li>
 </ul>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Current implementation stores all input data (output and target) in as tensors before computing a metric.
+<p class="admonition-title">Warning</p>
+<p>Current implementation stores all input data (output and target) in as tensors before computing a metric.
 This can potentially lead to a memory error if the input data is larger than available RAM.</p>
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MedianAbsolutePercentageError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MedianAbsolutePercentageError</code><span class="sig-paren">(</span><em>output_transform=&lt;function MedianAbsolutePercentageError.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/median_absolute_percentage_error.html#MedianAbsolutePercentageError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MedianAbsolutePercentageError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MedianAbsolutePercentageError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function MedianAbsolutePercentageError.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/median_absolute_percentage_error.html#MedianAbsolutePercentageError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MedianAbsolutePercentageError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Median Absolute Percentage Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MdAPE} = 100 \cdot \text{MD}_{j=1,n} \left( \frac{|A_j - P_j|}{|A_j|} \right)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</p></li>
 </ul>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Current implementation stores all input data (output and target) in as tensors before computing a metric.
+<p class="admonition-title">Warning</p>
+<p>Current implementation stores all input data (output and target) in as tensors before computing a metric.
 This can potentially lead to a memory error if the input data is larger than available RAM.</p>
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MedianRelativeAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MedianRelativeAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function MedianRelativeAbsoluteError.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/median_relative_absolute_error.html#MedianRelativeAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MedianRelativeAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MedianRelativeAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function MedianRelativeAbsoluteError.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/median_relative_absolute_error.html#MedianRelativeAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MedianRelativeAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Median Relative Absolute Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MdRAE} = \text{MD}_{j=1,n} \left( \frac{|A_j - P_j|}{|A_j - \bar{A}|} \right)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</p></li>
 </ul>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Current implementation stores all input data (output and target) in as tensors before computing a metric.
+<p class="admonition-title">Warning</p>
+<p>Current implementation stores all input data (output and target) in as tensors before computing a metric.
 This can potentially lead to a memory error if the input data is larger than available RAM.</p>
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.R2Score">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">R2Score</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/r2_score.html#R2Score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.R2Score" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">R2Score</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/r2_score.html#R2Score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.R2Score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the R-Squared, the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a>:</p>
 <p><span class="math notranslate nohighlight">\(R^2 = 1 - \frac{\sum_{j=1}^n(A_j - P_j)^2}{\sum_{j=1}^n(A_j - \bar{A})^2}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth, <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value and
 <span class="math notranslate nohighlight">\(\bar{A}\)</span> is the mean of the ground truth.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite> and of type <cite>float32</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.WaveHedgesDistance">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">WaveHedgesDistance</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/wave_hedges_distance.html#WaveHedgesDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.WaveHedgesDistance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">WaveHedgesDistance</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/wave_hedges_distance.html#WaveHedgesDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.WaveHedgesDistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Wave Hedges Distance.</p>
 <p><span class="math notranslate nohighlight">\(\text{WHD} = \sum_{j=1}^n\frac{|A_j - P_j|}{max(A_j, P_j)}\)</span>,
 where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape <cite>(N, )</cite> or <cite>(N, 1)</cite>.</p></li>
 </ul>
 </dd></dl>
 
@@ -644,7 +643,7 @@ where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground t
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -679,11 +678,11 @@ where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground t
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../_static/jquery.js"></script>
-         <script type="text/javascript" src="../_static/underscore.js"></script>
-         <script type="text/javascript" src="../_static/doctools.js"></script>
-         <script type="text/javascript" src="../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../_static/jquery.js"></script>
+         <script src="../_static/underscore.js"></script>
+         <script src="../_static/doctools.js"></script>
+         <script src="../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -730,14 +729,14 @@ where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground t
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -820,7 +819,7 @@ where, <span class="math notranslate nohighlight">\(A_j\)</span> is the ground t
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

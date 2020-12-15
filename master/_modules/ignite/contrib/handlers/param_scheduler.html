@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../../../../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/contrib/handlers/param_scheduler.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="../../../../_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../../about.html" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
 
@@ -59,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../../../../concepts.html">Concepts</a>
+            <a href="../../../../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../../../../quickstart.html">Quickstart</a>
+            <a href="../../../../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -83,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -114,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -144,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 </ul>
@@ -154,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils.html">ignite.utils</a></li>
 </ul>
@@ -162,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -257,19 +273,21 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <h1>Source code for ignite.contrib.handlers.param_scheduler</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
-
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numbers</span>
-
+<span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.optim.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">_LRScheduler</span>
+<span class="kn">from</span> <span class="nn">torch.optim.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
 
 
 <div class="viewcode-block" id="ParamScheduler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler">[docs]</a><span class="k">class</span> <span class="nc">ParamScheduler</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -277,7 +295,8 @@
 <span class="sd">    training.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        optimizer (`torch.optim.Optimizer`): optimizer</span>
+<span class="sd">        optimizer (torch.optim.Optimizer or object): torch optimizer or any object with attribute ``param_groups``</span>
+<span class="sd">            as a sequence.</span>
 <span class="sd">        param_name (str): name of optimizer&#39;s parameter to update.</span>
 <span class="sd">        save_history (bool, optional): whether to log the parameter values to</span>
 <span class="sd">            `engine.state.param_history`, (default=False).</span>
@@ -290,46 +309,74 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">param_group_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span>
+        <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">param_group_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">Optimizer</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument optimizer should be torch.optim.Optimizer&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">Optimizer</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="s2">&quot;param_groups&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Argument optimizer should be torch.optim.Optimizer or has attribute &#39;param_groups&#39; as list/tuple, &quot;</span>
+                <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">optimizer</span><span class="p">))</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">param_group_index</span> <span class="o">=</span> <span class="n">param_group_index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">param_name</span> <span class="o">=</span> <span class="n">param_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="n">save_history</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_history</span> <span class="o">=</span> <span class="n">save_history</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;event_index&quot;</span><span class="p">,</span> <span class="s2">&quot;param_name&quot;</span><span class="p">,</span> <span class="s2">&quot;save_history&quot;</span><span class="p">,</span> <span class="s2">&quot;param_group_index&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Engine</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_param</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">param_group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">:</span>
-            <span class="n">param_group</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;size of value is different than optimizer_param_groups </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">):</span>
+                <span class="n">param_group</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">):</span>
+                <span class="n">param_group</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_name</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_history</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="s2">&quot;param_history&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_history</span> <span class="ow">and</span> <span class="n">engine</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="s2">&quot;param_history&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">param_history</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="s2">&quot;param_history&quot;</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">param_history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">param_history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># type: ignore[attr-defined]</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">pg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">pg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">]</span>
-            <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">param_history</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-
+            <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">param_history</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">optimizer_param_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">optimizer_param_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_group_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">param_group_index</span><span class="p">],</span>
-        <span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">param_group_index</span><span class="p">]]</span>
 
-<div class="viewcode-block" id="ParamScheduler.state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_history</span>
+
+    <span class="nd">@save_history</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_history</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="ParamScheduler.state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary containing a whole state of ParamScheduler.</span>
 
 <span class="sd">        Returns:</span>
@@ -345,7 +392,7 @@
                 <span class="n">destination</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">destination</span></div>
 
-<div class="viewcode-block" id="ParamScheduler.load_state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ParamScheduler.load_state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Copies parameters from :attr:`state_dict` into this ParamScheduler.</span>
 
 <span class="sd">        Args:</span>
@@ -369,13 +416,16 @@
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ParamScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.get_param">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to get current optimizer&#39;s parameter value</span>
+    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Method to get current optimizer&#39;s parameter values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of params, or scalar param</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="ParamScheduler.simulate_values"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.simulate_values">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">,</span> <span class="o">**</span><span class="n">scheduler_kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">scheduler_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Method to simulate scheduled values during `num_events` events.</span>
 
 <span class="sd">        Args:</span>
@@ -411,7 +461,7 @@
         <span class="k">return</span> <span class="n">values</span></div>
 
 <div class="viewcode-block" id="ParamScheduler.plot_values"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.plot_values">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">plot_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">,</span> <span class="o">**</span><span class="n">scheduler_kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">scheduler_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Method to plot simulated scheduled values during `num_events` events.</span>
 
 <span class="sd">        This class requires `matplotlib package &lt;https://matplotlib.org/&gt;`_ to be installed:</span>
@@ -458,7 +508,8 @@
 <span class="sd">    cycle of some size.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        optimizer (`torch.optim.Optimizer`): optimizer</span>
+<span class="sd">        optimizer (torch.optim.Optimizer or object): torch optimizer or any object with attribute ``param_groups``</span>
+<span class="sd">            as a sequence.</span>
 <span class="sd">        param_name (str): name of optimizer&#39;s parameter to update.</span>
 <span class="sd">        start_value (float): value at start of cycle.</span>
 <span class="sd">        end_value (float): value at the middle of the cycle.</span>
@@ -480,16 +531,16 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">optimizer</span><span class="p">,</span>
-        <span class="n">param_name</span><span class="p">,</span>
-        <span class="n">start_value</span><span class="p">,</span>
-        <span class="n">end_value</span><span class="p">,</span>
-        <span class="n">cycle_size</span><span class="p">,</span>
-        <span class="n">cycle_mult</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">start_value_mult</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">end_value_mult</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">param_group_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span>
+        <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">start_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">end_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cycle_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">cycle_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">start_value_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">end_value_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">param_group_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CyclicalScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">,</span> <span class="n">param_group_index</span><span class="o">=</span><span class="n">param_group_index</span>
@@ -504,7 +555,7 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Argument cycle_size should be positive and larger than 1, &quot;</span> <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cycle_size</span><span class="p">)</span>
+                <span class="s2">&quot;Argument cycle_size should be positive and larger than 1, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cycle_size</span><span class="p">)</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_attrs</span> <span class="o">+=</span> <span class="p">[</span>
@@ -517,10 +568,10 @@
             <span class="s2">&quot;end_value_mult&quot;</span><span class="p">,</span>
         <span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Engine</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_mult</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_mult</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start_value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_value_mult</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">end_value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_value_mult</span>
@@ -533,7 +584,8 @@
 <span class="sd">    adjusts it back to &#39;start_value&#39; for a half-cycle.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        optimizer (`torch.optim.Optimizer`): optimizer</span>
+<span class="sd">        optimizer (torch.optim.Optimizer or object): torch optimizer or any object with attribute ``param_groups``</span>
+<span class="sd">            as a sequence.</span>
 <span class="sd">        param_name (str): name of optimizer&#39;s parameter to update.</span>
 <span class="sd">        start_value (float): value at start of cycle.</span>
 <span class="sd">        end_value (float): value at the middle of the cycle.</span>
@@ -566,7 +618,7 @@
 <span class="sd">        #</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LinearCyclicalScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LinearCyclicalScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LinearCyclicalScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LinearCyclicalScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="n">cycle_progress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_value</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_value</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cycle_progress</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span></div></div>
 
@@ -578,7 +630,8 @@
 <span class="sd">    wave (as suggested in [Smith17]_).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        optimizer (`torch.optim.Optimizer`): optimizer</span>
+<span class="sd">        optimizer (torch.optim.Optimizer or object): torch optimizer or any object with attribute ``param_groups``</span>
+<span class="sd">            as a sequence.</span>
 <span class="sd">        param_name (str): name of optimizer&#39;s parameter to update.</span>
 <span class="sd">        start_value (float): value at start of cycle.</span>
 <span class="sd">        end_value (float): value at the end of the cycle.</span>
@@ -616,8 +669,8 @@
 
 <span class="sd">        optimizer = SGD(</span>
 <span class="sd">            [</span>
-<span class="sd">                {&quot;params&quot;: model.base.parameters(), &#39;lr&#39;: 0.001),</span>
-<span class="sd">                {&quot;params&quot;: model.fc.parameters(), &#39;lr&#39;: 0.01),</span>
+<span class="sd">                {&quot;params&quot;: model.base.parameters(), &#39;lr&#39;: 0.001},</span>
+<span class="sd">                {&quot;params&quot;: model.fc.parameters(), &#39;lr&#39;: 0.01},</span>
 <span class="sd">            ]</span>
 <span class="sd">        )</span>
 
@@ -631,7 +684,7 @@
 <span class="sd">                 Applications of Computer Vision (WACV), 2017 IEEE Winter Conference on. IEEE, 2017</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CosineAnnealingScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.CosineAnnealingScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CosineAnnealingScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.CosineAnnealingScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Method to get current optimizer&#39;s parameter value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cycle_progress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_size</span>
@@ -671,16 +724,22 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schedulers</span><span class="p">,</span> <span class="n">durations</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schedulers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ParamScheduler</span><span class="p">],</span> <span class="n">durations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schedulers</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schedulers</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument schedulers should be a sequence, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schedulers</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Argument schedulers should be a sequence of more than one parameter schedulers, &quot;</span>
+                <span class="s2">&quot;Argument schedulers should be of more than one parameter schedulers, &quot;</span>
                 <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">durations</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument durations should be list/tuple of integers, &quot;</span> <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">durations</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument durations should be list/tuple, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">durations</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">durations</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument durations should be list/tuple of integers, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">durations</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">durations</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -689,7 +748,7 @@
             <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">scheduler</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schedulers</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ParamScheduler</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ParamScheduler</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ParamGroupScheduler</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                     <span class="s2">&quot;Value at index </span><span class="si">{}</span><span class="s2"> of schedulers should be a parameter scheduler, &quot;</span>
                     <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">scheduler</span><span class="p">))</span>
@@ -697,15 +756,36 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span> <span class="o">=</span> <span class="n">schedulers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">durations</span> <span class="o">=</span> <span class="n">durations</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ConcatScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">_get_fake_optimizer</span><span class="p">(),</span> <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span>
+
+        <span class="n">tmp_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">optimizer</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">]</span>
+        <span class="n">tmp_list_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp_optimizers</span><span class="p">]</span>
+        <span class="n">param_optimizers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">tmp_list_optimizers</span><span class="p">))</span>
+
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">param_optimizers</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;schedulers should be related to same optimizer&quot;</span><span class="p">)</span>
+
+        <span class="n">tmp_param_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">param_name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">]</span>
+        <span class="n">tmp_list_param_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp_param_names</span><span class="p">]</span>
+        <span class="n">param_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">tmp_list_param_names</span><span class="p">))</span>
+
+        <span class="n">param_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">param_names</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;schedulers should be related to same param_name&quot;</span><span class="p">)</span>
+
+        <span class="c1"># schedulers should have save_history sync with ParamGroupScheduler</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="n">save_history</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConcatScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">param_name</span><span class="o">=</span><span class="n">param_name</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_scheduler_index</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current_duration</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_scheduler</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_attrs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;_current_duration&quot;</span><span class="p">,</span> <span class="s2">&quot;durations&quot;</span><span class="p">,</span> <span class="s2">&quot;_scheduler_index&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="ConcatScheduler.state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ConcatScheduler.state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary containing a whole state of ConcatScheduler.</span>
 
 <span class="sd">        Returns:</span>
@@ -719,7 +799,7 @@
             <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;schedulers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">state_dict</span></div>
 
-<div class="viewcode-block" id="ConcatScheduler.load_state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ConcatScheduler.load_state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Copies parameters from :attr:`state_dict` into this ConcatScheduler.</span>
 
 <span class="sd">        Args:</span>
@@ -746,42 +826,46 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">ConcatScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_scheduler</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_setup_scheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_setup_scheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_scheduler_index</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_duration</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_scheduler_index</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduler_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">durations</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">param_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span><span class="o">.</span><span class="n">param_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span><span class="o">.</span><span class="n">optimizer</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Engine</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_duration</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_scheduler_index</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_setup_scheduler</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_duration</span> <span class="o">-=</span> <span class="mi">1</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">optimizer_param_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">optimizer_param_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="c1"># We need to setup optimizer_param_groups as property</span>
         <span class="c1"># to synchonize with the latest _current_scheduler and its internal optimizer_param_groups</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span><span class="o">.</span><span class="n">optimizer_param_groups</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span><span class="o">.</span><span class="n">save_history</span>
 
     <span class="nd">@save_history</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">:</span>
             <span class="n">s</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="ConcatScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ConcatScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheduler</span><span class="o">.</span><span class="n">get_param</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ConcatScheduler.simulate_values"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.simulate_values">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">,</span> <span class="n">schedulers</span><span class="p">,</span> <span class="n">durations</span><span class="p">,</span> <span class="n">param_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span>  <span class="c1"># type: ignore[override]</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">num_events</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">schedulers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ParamScheduler</span><span class="p">],</span>
+        <span class="n">durations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">param_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Method to simulate scheduled values during num_events events.</span>
 
 <span class="sd">        Args:</span>
@@ -795,20 +879,59 @@
 <span class="sd">            list of [event_index, value_0, value_1, ...], where values correspond to `param_names`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">param_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_names</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument param_names should be list or tuple of strings&quot;</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">param_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_names</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument param_names should be list or tuple, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">param_names</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Argument param_names should be list or tuple of strings, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param_names</span><span class="p">)</span>
+                <span class="p">)</span>
 
-        <span class="c1"># Need to copy all schedulers otherwise unsafe</span>
-        <span class="n">copy_schedulers</span> <span class="o">=</span> <span class="p">[</span><span class="n">_replicate_scheduler</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">]</span>
-        <span class="n">scheduler</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">copy_schedulers</span><span class="p">,</span> <span class="n">durations</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">param_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">param_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">scheduler</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_events</span><span class="p">):</span>
-            <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">scheduler</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">param_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">]</span>
-            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,]</span> <span class="o">+</span> <span class="n">values</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">output</span></div></div>
+        <span class="n">tmp_param_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">optimizer</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">]</span>
+        <span class="n">tmp_list_param_optimizers</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tmp_param_optimizers</span><span class="p">]</span>
+        <span class="n">param_optimizers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">tmp_list_param_optimizers</span><span class="p">))</span>
+
+        <span class="n">tmp_optimizer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">param_optimizers</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp_optimizer</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;schedulers should be related to same optimizer&quot;</span><span class="p">)</span>
+
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tmp_optimizer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># This scheduler uses `ParamScheduler` which</span>
+        <span class="c1"># should be replicated in order to simulate LR values and</span>
+        <span class="c1"># not perturb original scheduler.</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdirname</span><span class="p">:</span>
+            <span class="n">cache_filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;ignite_lr_scheduler_cache.pt&quot;</span>
+            <span class="n">objs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lr_scheduler_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">s</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)}</span>
+            <span class="c1"># all schedulers should be related to the same optimizer</span>
+            <span class="n">objs</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">cache_filepath</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+
+            <span class="c1"># do not save_history</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">scheduler</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>  <span class="c1"># type: ignore[call-arg]</span>
+                <span class="n">schedulers</span><span class="o">=</span><span class="n">schedulers</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">durations</span><span class="o">=</span><span class="n">durations</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">param_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">param_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">scheduler</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_events</span><span class="p">):</span>
+                <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">:</span>
+                    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">]</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="n">values</span> <span class="o">+</span> <span class="n">params</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+            <span class="n">objs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cache_filepath</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schedulers</span><span class="p">):</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">objs</span><span class="p">[</span><span class="s2">&quot;lr_scheduler_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">objs</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">output</span></div></div>
 
 
 <div class="viewcode-block" id="LRScheduler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler">[docs]</a><span class="k">class</span> <span class="nc">LRScheduler</span><span class="p">(</span><span class="n">ParamScheduler</span><span class="p">):</span>
@@ -835,7 +958,7 @@
 <span class="sd">        trainer.add_event_handler(Events.ITERATION_COMPLETED, scheduler)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="p">:</span> <span class="n">_LRScheduler</span><span class="p">,</span> <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">_LRScheduler</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
@@ -843,40 +966,34 @@
                 <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">))</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Optimizer passed to lr_scheduler should have a single param group, &quot;</span>
-                <span class="s2">&quot;but currently there are </span><span class="si">{}</span><span class="s2"> param groups&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">))</span>
-            <span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LRScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span>
+            <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span>
+            <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_state_attrs</span> <span class="o">+=</span> <span class="p">[</span>
-            <span class="s2">&quot;lr_scheduler&quot;</span><span class="p">,</span>
-        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_attrs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;lr_scheduler&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Engine</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># type: ignore[attr-defined]</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LRScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="LRScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LRScheduler.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Method to get current optimizer&#39;s parameter value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Emulate context manager for pytorch&gt;=1.4</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">_get_lr_called_within_step</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">lr_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">get_lr</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">_get_lr_called_within_step</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lr_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Optimizer passed to lr_scheduler should have a single param group, &quot;</span>
-                <span class="s2">&quot;but currently there are </span><span class="si">{}</span><span class="s2"> param groups&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lr_list</span><span class="p">))</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">lr_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">_get_lr_called_within_step</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="n">lr_list</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">get_lr</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">_get_lr_called_within_step</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lr_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">lr_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">lr_list</span></div>
 
 <div class="viewcode-block" id="LRScheduler.simulate_values"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler.simulate_values">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span>  <span class="c1"># type: ignore[override]</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="p">:</span> <span class="n">_LRScheduler</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Method to simulate scheduled values during num_events events.</span>
 
 <span class="sd">        Args:</span>
@@ -887,43 +1004,46 @@
 <span class="sd">            list of pairs: [event_index, value]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">_LRScheduler</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Argument lr_scheduler should be a subclass of torch.optim.lr_scheduler._LRScheduler, &quot;</span>
+                <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">))</span>
+            <span class="p">)</span>
+
         <span class="c1"># This scheduler uses `torch.optim.lr_scheduler._LRScheduler` which</span>
         <span class="c1"># should be replicated in order to simulate LR values and</span>
         <span class="c1"># not perturb original scheduler.</span>
-        <span class="n">copy_lr_scheduler</span> <span class="o">=</span> <span class="n">LRScheduler</span><span class="o">.</span><span class="n">_replicate_lr_scheduler</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">)</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">scheduler</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="o">=</span><span class="n">copy_lr_scheduler</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_events</span><span class="p">):</span>
-            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">scheduler</span><span class="o">.</span><span class="n">param_name</span><span class="p">]])</span>
-            <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdirname</span><span class="p">:</span>
+            <span class="n">cache_filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;ignite_lr_scheduler_cache.pt&quot;</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;lr_scheduler&quot;</span><span class="p">:</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+                <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>  <span class="c1"># type: ignore[attr-defined]</span>
+            <span class="p">}</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">cache_filepath</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">values</span></div>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">scheduler</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="o">=</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_events</span><span class="p">):</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">scheduler</span><span class="o">.</span><span class="n">param_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">]</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">params</span><span class="p">)</span>
+                <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_replicate_lr_scheduler</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">_LRScheduler</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;lr_scheduler should inherit of _LRScheduler&quot;</span><span class="p">)</span>
-        <span class="n">lr_scheduler_cls</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="vm">__class__</span>
-        <span class="n">optimizer_cls</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="vm">__class__</span>
-        <span class="n">dummy_optimizer</span> <span class="o">=</span> <span class="n">_get_fake_optimizer</span><span class="p">(</span><span class="n">optimizer_cls</span><span class="p">,</span> <span class="o">**</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">defaults</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">dummy_optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
-            <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;initial_lr&quot;</span><span class="p">,</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">])</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="n">_k</span> <span class="k">for</span> <span class="n">_k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s2">&quot;_&quot;</span> <span class="o">==</span> <span class="n">_k</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;base_lrs&quot;</span><span class="p">,</span> <span class="s2">&quot;last_epoch&quot;</span><span class="p">]:</span>
-            <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-        <span class="n">copy_lr_scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler_cls</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">dummy_optimizer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">copy_lr_scheduler</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">copy_lr_scheduler</span></div>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cache_filepath</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+            <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;lr_scheduler&quot;</span><span class="p">])</span>
+            <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">])</span>  <span class="c1"># type: ignore[attr-defined]</span>
+
+            <span class="k">return</span> <span class="n">values</span></div></div>
 
 
 <div class="viewcode-block" id="create_lr_scheduler_with_warmup"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.create_lr_scheduler_with_warmup">[docs]</a><span class="k">def</span> <span class="nf">create_lr_scheduler_with_warmup</span><span class="p">(</span>
-    <span class="n">lr_scheduler</span><span class="p">,</span>
-    <span class="n">warmup_start_value</span><span class="p">,</span>
-    <span class="n">warmup_end_value</span><span class="p">,</span>
-    <span class="n">warmup_duration</span><span class="p">,</span>
-    <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">output_simulated_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
+    <span class="n">lr_scheduler</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ParamScheduler</span><span class="p">,</span> <span class="n">_LRScheduler</span><span class="p">],</span>
+    <span class="n">warmup_start_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">warmup_duration</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">warmup_end_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">output_simulated_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConcatScheduler&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper method to create a learning rate scheduler with a linear warm-up.</span>
 
@@ -931,8 +1051,9 @@
 <span class="sd">        lr_scheduler (ParamScheduler or subclass of `torch.optim.lr_scheduler._LRScheduler`): learning rate scheduler</span>
 <span class="sd">            after the warm-up.</span>
 <span class="sd">        warmup_start_value (float): learning rate start value of the warm-up phase.</span>
-<span class="sd">        warmup_end_value (float): learning rate end value of the warm-up phase.</span>
 <span class="sd">        warmup_duration (int): warm-up phase duration, number of events.</span>
+<span class="sd">        warmup_end_value (float, optional): learning rate end value of the warm-up phase, (default=None). If None,</span>
+<span class="sd">             warmup_end_value is set to optimizer initial lr.</span>
 <span class="sd">        save_history (bool, optional): whether to log the parameter values to</span>
 <span class="sd">            `engine.state.param_history`, (default=False).</span>
 <span class="sd">        output_simulated_values (list, optional): optional output of simulated learning rate values.</span>
@@ -972,41 +1093,58 @@
             <span class="s2">&quot;ParamScheduler, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">))</span>
         <span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">warmup_duration</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">)</span> <span class="ow">and</span> <span class="n">warmup_duration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">warmup_duration</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument warmup_duration should be integer, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">warmup_duration</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument warmup_duration should be at least 2 events, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">warmup_duration</span><span class="p">))</span>
 
-    <span class="n">milestones_values</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">warmup_start_value</span><span class="p">),</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">warmup_end_value</span><span class="p">)]</span>
+    <span class="n">warmup_schedulers</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[ParamScheduler]</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">_LRScheduler</span><span class="p">):</span>
-        <span class="n">init_lrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_lrs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Number of parameter groups of input `lr_scheduler.optimizer` is less than one.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">param_group_index</span><span class="p">,</span> <span class="n">param_group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="n">init_lrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">warmup_end_value</span><span class="p">:</span>
-            <span class="n">milestones_values</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">warmup_duration</span><span class="p">,</span> <span class="n">init_lrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">warmup_end_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">param_group_warmup_end_value</span> <span class="o">=</span> <span class="n">param_group</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">param_group_warmup_end_value</span> <span class="o">=</span> <span class="n">warmup_end_value</span>
 
-        <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">LRScheduler</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">init_lr</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">get_param</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">init_lr</span> <span class="o">==</span> <span class="n">warmup_end_value</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">warmup_duration</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">warmup_end_value</span> <span class="o">-</span> <span class="n">warmup_start_value</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">milestones_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">warmup_end_value</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">milestones_values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">milestones_values</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">warmup_start_value</span><span class="p">),</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">param_group_warmup_end_value</span><span class="p">)]</span>
 
-    <span class="n">warmup_scheduler</span> <span class="o">=</span> <span class="n">PiecewiseLinear</span><span class="p">(</span>
-        <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
-        <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span>
-        <span class="n">milestones_values</span><span class="o">=</span><span class="n">milestones_values</span><span class="p">,</span>
-        <span class="n">param_group_index</span><span class="o">=</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">param_group_index</span><span class="p">,</span>
-    <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">_LRScheduler</span><span class="p">):</span>
+            <span class="n">init_lr</span> <span class="o">=</span> <span class="n">param_group</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">]</span>
 
-    <span class="n">schedulers</span> <span class="o">=</span> <span class="p">[</span><span class="n">warmup_scheduler</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="p">]</span>
-    <span class="n">durations</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">milestones_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">]</span>
+            <span class="k">if</span> <span class="n">init_lr</span> <span class="o">!=</span> <span class="n">param_group_warmup_end_value</span><span class="p">:</span>
+                <span class="n">milestones_values</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">warmup_duration</span><span class="p">,</span> <span class="n">init_lr</span><span class="p">))</span>
+
+            <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">LRScheduler</span><span class="p">(</span><span class="n">lr_scheduler</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">init_lr</span> <span class="o">=</span> <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">get_param</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">init_lr</span> <span class="o">==</span> <span class="n">param_group_warmup_end_value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">warmup_duration</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">param_group_warmup_end_value</span> <span class="o">-</span> <span class="n">warmup_start_value</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">milestones_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">warmup_duration</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">param_group_warmup_end_value</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">milestones_values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">warmup_schedulers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">PiecewiseLinear</span><span class="p">(</span>
+                <span class="n">lr_scheduler</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span>
+                <span class="n">milestones_values</span><span class="o">=</span><span class="n">milestones_values</span><span class="p">,</span>
+                <span class="n">param_group_index</span><span class="o">=</span><span class="n">param_group_index</span><span class="p">,</span>
+                <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">warmup_scheduler</span> <span class="o">=</span> <span class="n">ParamGroupScheduler</span><span class="p">(</span><span class="n">warmup_schedulers</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span>
+
+    <span class="n">schedulers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">warmup_scheduler</span><span class="p">,</span>
+        <span class="n">lr_scheduler</span><span class="p">,</span>
+    <span class="p">]</span>  <span class="c1"># type: List[Union[ParamScheduler, ParamGroupScheduler, _LRScheduler]]</span>
+    <span class="n">durations</span> <span class="o">=</span> <span class="p">[</span><span class="n">milestones_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">combined_scheduler</span> <span class="o">=</span> <span class="n">ConcatScheduler</span><span class="p">(</span><span class="n">schedulers</span><span class="p">,</span> <span class="n">durations</span><span class="o">=</span><span class="n">durations</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">output_simulated_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_simulated_values</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
@@ -1025,7 +1163,8 @@
 <span class="sd">    Piecewise linear parameter scheduler</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        optimizer (`torch.optim.Optimizer`): optimizer.</span>
+<span class="sd">        optimizer (torch.optim.Optimizer or object): torch optimizer or any object with attribute ``param_groups``</span>
+<span class="sd">            as a sequence.</span>
 <span class="sd">        param_name (str): name of optimizer&#39;s parameter to update.</span>
 <span class="sd">        milestones_values (list of tuples (int, float)): list of tuples (event index, parameter value)</span>
 <span class="sd">            represents milestones and parameter. Milestones should be increasing integers.</span>
@@ -1050,22 +1189,33 @@
 <span class="sd">        #</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">milestones_values</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">param_group_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span>
+        <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">milestones_values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">param_group_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PiecewiseLinear</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">save_history</span><span class="p">,</span> <span class="n">param_group_index</span><span class="o">=</span><span class="n">param_group_index</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Argument milestones_values should be a list or tuple, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Argument milestones_values should be a list or tuple with at least one value, &quot;</span>
-                <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">))</span>
+                <span class="s2">&quot;Argument milestones_values should be with at least one value, &quot;</span>
+                <span class="s2">&quot;but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">milestones_values</span><span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">milestones</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[float]</span>
+        <span class="n">milestones</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[int]</span>
         <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">milestones_values</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument milestones_values should be a list of pairs (milestone, param_value)&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Value of a milestone should be integer, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Value of a milestone should be integer, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">milestones</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">milestones</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;Milestones should be increasing integers, but given </span><span class="si">{}</span><span class="s2"> is smaller &quot;</span>
@@ -1079,16 +1229,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_attrs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">,</span> <span class="s2">&quot;milestones&quot;</span><span class="p">,</span> <span class="s2">&quot;_index&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_get_start_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_start_end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestones</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestones</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestones</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestones</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">milestones</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">],</span>
@@ -1100,7 +1245,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_start_end</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PiecewiseLinear.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.PiecewiseLinear.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PiecewiseLinear.get_param"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.PiecewiseLinear.get_param">[docs]</a>    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="n">start_index</span><span class="p">,</span> <span class="n">end_index</span><span class="p">,</span> <span class="n">start_value</span><span class="p">,</span> <span class="n">end_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_start_end</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">start_value</span> <span class="o">+</span> <span class="p">(</span><span class="n">end_value</span> <span class="o">-</span> <span class="n">start_value</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_index</span> <span class="o">-</span> <span class="n">start_index</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">end_index</span> <span class="o">-</span> <span class="n">start_index</span><span class="p">)</span></div></div>
 
@@ -1133,14 +1278,25 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schedulers</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span><span class="n">schedulers</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ParamScheduler</span><span class="p">)</span> <span class="k">for</span> <span class="n">scheduler</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument schedulers should be a list/tuple of parameter schedulers&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schedulers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ParamScheduler</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schedulers</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument schedulers should be a list/tuple, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schedulers</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument names should be a list/tuple of parameter scheduler&#39;s names&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ParamScheduler</span><span class="p">)</span> <span class="k">for</span> <span class="n">scheduler</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Argument schedulers should be a list/tuple of parameter schedulers, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">param_name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument names should be a list/tuple, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Argument names should be a list/tuple of parameter scheduler&#39;s names, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">schedulers</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> should be equal </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">schedulers</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)))</span>
@@ -1148,24 +1304,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span> <span class="o">=</span> <span class="n">schedulers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
-            <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># schedulers should have save_history sync with ParamGroupScheduler</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="n">save_history</span>
 
-<div class="viewcode-block" id="ParamGroupScheduler.state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">optimizer</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">param_name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Engine</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
+            <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">optimizer_param_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">pg</span> <span class="k">for</span> <span class="n">scheduler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span> <span class="k">for</span> <span class="n">pg</span> <span class="ow">in</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">optimizer_param_groups</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save_history</span>
+
+    <span class="nd">@save_history</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">save_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="ParamGroupScheduler.state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary containing a whole state of ParamGroupScheduler.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict:</span>
 <span class="sd">                a dictionary containing a whole state of ParamGroupScheduler</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">state_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>  <span class="c1"># type: Dict[str, List[Any]]</span>
         <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;schedulers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span><span class="p">):</span>
             <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;schedulers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">state_dict</span></div>
 
-<div class="viewcode-block" id="ParamGroupScheduler.load_state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ParamGroupScheduler.load_state_dict"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Copies parameters from :attr:`state_dict` into this ParamScheduler.</span>
 
 <span class="sd">        Args:</span>
@@ -1193,25 +1369,50 @@
                     <span class="s2">&quot;Name of scheduler from input state dict does not correspond to required one,&quot;</span>
                     <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> vs </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">req_n</span><span class="p">)</span>
                 <span class="p">)</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span></div></div>
+            <span class="n">s</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParamGroupScheduler.simulate_values"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler.simulate_values">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">simulate_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">num_events</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">schedulers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_LRScheduler</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Method to simulate scheduled values during num_events events.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_events (int): number of events during the simulation.</span>
+<span class="sd">            schedulers (subclass of `torch.optim.lr_scheduler._LRScheduler`): lr_scheduler object to wrap.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of pairs: [event_index, value]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># This scheduler uses `torch.optim.lr_scheduler._LRScheduler` which</span>
+        <span class="c1"># should be replicated in order to simulate LR values and</span>
+        <span class="c1"># not perturb original scheduler.</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdirname</span><span class="p">:</span>
+            <span class="n">cache_filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;ignite_lr_scheduler_cache.pt&quot;</span>
+            <span class="n">objs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lr_scheduler_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">s</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)}</span>
+            <span class="c1"># all schedulers should be related to the same optimizer</span>
+            <span class="n">objs</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">schedulers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>  <span class="c1"># type: ignore[attr-defined]</span>
+
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">cache_filepath</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">scheduler</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">schedulers</span><span class="o">=</span><span class="n">schedulers</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_events</span><span class="p">):</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">scheduler</span><span class="o">.</span><span class="n">get_param</span><span class="p">()</span> <span class="k">for</span> <span class="n">scheduler</span> <span class="ow">in</span> <span class="n">schedulers</span><span class="p">]</span>  <span class="c1"># type: ignore[attr-defined]</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">params</span><span class="p">)</span>
+                <span class="n">scheduler</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="n">objs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cache_filepath</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schedulers</span><span class="p">):</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">objs</span><span class="p">[</span><span class="s2">&quot;lr_scheduler_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">objs</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">])</span>  <span class="c1"># type: ignore[attr-defined]</span>
+
+            <span class="k">return</span> <span class="n">values</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_replicate_scheduler</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">LRScheduler</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">LRScheduler</span><span class="p">(</span><span class="n">LRScheduler</span><span class="o">.</span><span class="n">_replicate_lr_scheduler</span><span class="p">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="p">),</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ConcatScheduler</span><span class="p">):</span>
-        <span class="n">copy_schedulers</span> <span class="o">=</span> <span class="p">[</span><span class="n">_replicate_scheduler</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">schedulers</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">ConcatScheduler</span><span class="p">(</span><span class="n">copy_schedulers</span><span class="p">,</span> <span class="n">durations</span><span class="o">=</span><span class="n">scheduler</span><span class="o">.</span><span class="n">durations</span><span class="p">,</span> <span class="n">save_history</span><span class="o">=</span><span class="n">save_history</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">ParamScheduler</span><span class="p">):</span>
-        <span class="n">new_scheduler</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">scheduler</span><span class="p">)</span>
-        <span class="n">new_scheduler</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">_get_fake_optimizer</span><span class="p">()</span>
-        <span class="n">new_scheduler</span><span class="o">.</span><span class="n">save_history</span> <span class="o">=</span> <span class="n">save_history</span>
-        <span class="k">return</span> <span class="n">new_scheduler</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Unknown scheduler type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">scheduler</span><span class="p">)))</span>
-
-
-<span class="k">def</span> <span class="nf">_get_fake_optimizer</span><span class="p">(</span><span class="n">optimizer_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_fake_optimizer</span><span class="p">(</span>
+    <span class="n">optimizer_cls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">Optimizer</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Optimizer</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">]:</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">optimizer_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">optimizer_cls</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span>
@@ -1233,7 +1434,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -1262,11 +1463,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-         <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-         <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-         <script type="text/javascript" src="../../../../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../../../../_static/jquery.js"></script>
+         <script src="../../../../_static/underscore.js"></script>
+         <script src="../../../../_static/doctools.js"></script>
+         <script src="../../../../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -1313,14 +1514,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -1403,7 +1604,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

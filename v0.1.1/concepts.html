@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlconcepts.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="#">Concepts</a>
+            <a href="quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="quickstart.html">Quickstart</a>
+            <a href="#">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -293,9 +302,9 @@ For example, model trainer for a supervised task:</p>
 <p>To improve the <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.Engine</span></code></a>’s flexibility, an event system is introduced that facilitates interaction on each step of
 the run:</p>
 <ul class="simple">
-<li><em>engine is started/completed</em></li>
-<li><em>epoch is started/completed</em></li>
-<li><em>batch iteration is started/completed</em></li>
+<li><p><em>engine is started/completed</em></p></li>
+<li><p><em>epoch is started/completed</em></p></li>
+<li><p><em>batch iteration is started/completed</em></p></li>
 </ul>
 <p>Complete list of events can be found at <a class="reference internal" href="engine.html#ignite.engine.Events" title="ignite.engine.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.Events</span></code></a>.</p>
 <p>Thus, user can execute a custom code as an event handler. Let us consider in more detail what happens when
@@ -337,10 +346,10 @@ an event is “fired”, attached handlers are executed.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>User can also register custom events with <a class="reference internal" href="engine.html#ignite.engine.Engine.register_events" title="ignite.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ignite.engine.Engine.register_events()</span></code></a>, attach handlers and fire custom events
 calling <a class="reference internal" href="engine.html#ignite.engine.Engine.fire_event" title="ignite.engine.Engine.fire_event"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ignite.engine.Engine.fire_event()</span></code></a> in any handler or <cite>process_function</cite>.</p>
-<p class="last">See the source code of <a class="reference internal" href="contrib/engines.html#ignite.contrib.engines.create_supervised_tbptt_trainer" title="ignite.contrib.engines.create_supervised_tbptt_trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.contrib.engines.create_supervised_tbptt_trainer</span></code></a> for an example of usage of
+<p>See the source code of <a class="reference internal" href="contrib/engines.html#ignite.contrib.engines.create_supervised_tbptt_trainer" title="ignite.contrib.engines.create_supervised_tbptt_trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.contrib.engines.create_supervised_tbptt_trainer</span></code></a> for an example of usage of
 custom events.</p>
 </div>
 </div>
@@ -361,10 +370,10 @@ completed iterations and epochs:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>A good practice is to use <a class="reference internal" href="engine.html#ignite.engine.State" title="ignite.engine.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.State</span></code></a> also as a storage of user data created in update or handler functions.
 For example, we would like to save <cite>new_attribute</cite> in the <cite>state</cite>:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">user_handler_function</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">user_handler_function</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
     <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">new_attribute</span> <span class="o">=</span> <span class="mi">12345</span>
 </pre></div>
 </div>
@@ -396,7 +405,7 @@ For example, we would like to save <cite>new_attribute</cite> in the <cite>state
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -433,10 +442,10 @@ For example, we would like to save <cite>new_attribute</cite> in the <cite>state
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
      
 
   
@@ -483,14 +492,14 @@ For example, we would like to save <cite>new_attribute</cite> in the <cite>state
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -573,7 +582,7 @@ For example, we would like to save <cite>new_attribute</cite> in the <cite>state
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

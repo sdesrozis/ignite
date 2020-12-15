@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlcontrib/metrics.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../concepts.html">Concepts</a>
+            <a href="../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../quickstart.html">Quickstart</a>
+            <a href="../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -261,376 +270,344 @@
   <div class="section" id="ignite-contrib-metrics">
 <h1>ignite.contrib.metrics<a class="headerlink" href="#ignite-contrib-metrics" title="Permalink to this headline">¶</a></h1>
 <p>Contribution module of metrics</p>
-<span class="target" id="module-ignite.contrib.metrics"></span><dl class="class">
+<span class="target" id="module-ignite.contrib.metrics"></span><dl class="py class">
 <dt id="ignite.contrib.metrics.AveragePrecision">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">AveragePrecision</code><span class="sig-paren">(</span><em>activation=None</em>, <em>output_transform=&lt;function AveragePrecision.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/average_precision.html#AveragePrecision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.AveragePrecision" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">AveragePrecision</code><span class="sig-paren">(</span><em class="sig-param">activation=None</em>, <em class="sig-param">output_transform=&lt;function AveragePrecision.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/average_precision.html#AveragePrecision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.AveragePrecision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Average Precision accumulating predictions and the ground-truth during an epoch
 and applying <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score">sklearn.metrics.average_precision_score</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
-e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
+e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="../engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.ROC_AUC">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">ROC_AUC</code><span class="sig-paren">(</span><em>activation=None</em>, <em>output_transform=&lt;function ROC_AUC.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/roc_auc.html#ROC_AUC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.ROC_AUC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">ROC_AUC</code><span class="sig-paren">(</span><em class="sig-param">activation=None</em>, <em class="sig-param">output_transform=&lt;function ROC_AUC.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/roc_auc.html#ROC_AUC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.ROC_AUC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Area Under the Receiver Operating Characteristic Curve (ROC AUC)
 accumulating predictions and the ground-truth during an epoch and applying
 <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score">sklearn.metrics.roc_auc_score</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
-e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
+e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="../engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <div class="section" id="regression-metrics">
 <h2>Regression metrics<a class="headerlink" href="#regression-metrics" title="Permalink to this headline">¶</a></h2>
 <p>Module <cite>ignite.contrib.metrics.regression</cite> provides implementations of
 metrics useful for regression tasks. Definitions of metrics are based on <a class="reference external" href="https://arxiv.org/ftp/arxiv/papers/1809/1809.03006.pdf">Botchkarev 2018</a>, page 30 “Appendix 2. Metrics mathematical definitions”.</p>
-<span class="target" id="module-ignite.contrib.metrics.regression"></span><dl class="class">
+<span class="target" id="module-ignite.contrib.metrics.regression"></span><dl class="py class">
 <dt id="ignite.contrib.metrics.regression.FractionalBias">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">FractionalBias</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">FractionalBias</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Fractional Bias:</p>
 <p><span class="math notranslate nohighlight">\(\text{FB} = \frac{1}{n}\sum_{j=1}^n\frac{2 * (A_j - P_j)}{A_j + P_j}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.FractionalBias.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.FractionalBias.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.FractionalBias.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/fractional_bias.html#FractionalBias.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.FractionalBias.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.ManhattanDistance">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">ManhattanDistance</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">ManhattanDistance</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Manhattan Distance:</p>
 <p><span class="math notranslate nohighlight">\(\text{MD} = \sum_{j=1}^n (A_j - P_j)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.ManhattanDistance.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.ManhattanDistance.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.ManhattanDistance.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/manhattan_distance.html#ManhattanDistance.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.ManhattanDistance.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MaximumAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MaximumAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MaximumAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Maximum Absolute Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MaxAE} = \max_{j=1,n} \left( \lvert A_j-P_j \rvert \right)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MaximumAbsoluteError.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MaximumAbsoluteError.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MaximumAbsoluteError.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/maximum_absolute_error.html#MaximumAbsoluteError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MaximumAbsoluteError.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MeanAbsoluteRelativeError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MeanAbsoluteRelativeError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Mean Absolute Relative Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{MARE} = \frac{1}{n}\sum_{j=1}^n\frac{\left|A_j-P_j\right|}{\left|A_j\right|}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in the reference <a class="reference external" href="https://arxiv.org/ftp/arxiv/papers/1809/1809.03006.pdf">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite></li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite></p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_absolute_relative_error.html#MeanAbsoluteRelativeError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanAbsoluteRelativeError.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MeanError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MeanError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MeanError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Mean Error:</p>
 <p><span class="math notranslate nohighlight">\(\text{ME} = \frac{1}{n}\sum_{j=1}^n (A_j - P_j)\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in the reference <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanError.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanError.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanError.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_error.html#MeanError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanError.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.regression.MeanNormalizedBias">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.regression.</code><code class="descname">MeanNormalizedBias</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.regression.</code><code class="sig-name descname">MeanNormalizedBias</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Mean Normalized Bias:</p>
 <p><span class="math notranslate nohighlight">\(\text{MNB} = \frac{1}{n}\sum_{j=1}^n\frac{A_j - P_j}{A_j}\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(A_j\)</span> is the ground truth and <span class="math notranslate nohighlight">\(P_j\)</span> is the predicted value.</p>
 <p>More details can be found in the reference <a class="reference external" href="https://arxiv.org/abs/1809.03006">Botchkarev 2018</a>.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be of same shape.</p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanNormalizedBias.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanNormalizedBias.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.regression.MeanNormalizedBias.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/regression/mean_normalized_bias.html#MeanNormalizedBias.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.regression.MeanNormalizedBias.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -662,7 +639,7 @@ metrics useful for regression tasks. Definitions of metrics are based on <a clas
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -697,11 +674,11 @@ metrics useful for regression tasks. Definitions of metrics are based on <a clas
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../_static/jquery.js"></script>
-         <script type="text/javascript" src="../_static/underscore.js"></script>
-         <script type="text/javascript" src="../_static/doctools.js"></script>
-         <script type="text/javascript" src="../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../_static/jquery.js"></script>
+         <script src="../_static/underscore.js"></script>
+         <script src="../_static/doctools.js"></script>
+         <script src="../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -748,14 +725,14 @@ metrics useful for regression tasks. Definitions of metrics are based on <a clas
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -838,7 +815,7 @@ metrics useful for regression tasks. Definitions of metrics are based on <a clas
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

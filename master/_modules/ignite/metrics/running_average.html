@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../../../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/metrics/running_average.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="../../../_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 
@@ -59,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../../../concepts.html">Concepts</a>
+            <a href="../../../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../../../quickstart.html">Quickstart</a>
+            <a href="../../../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -83,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -114,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -144,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 </ul>
@@ -154,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils.html">ignite.utils</a></li>
 </ul>
@@ -162,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -257,13 +273,13 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <h1>Source code for ignite.metrics.running_average</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Events</span><span class="p">,</span> <span class="n">Engine</span>
-<span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Metric</span>
-<span class="kn">from</span> <span class="nn">ignite.metrics.metric</span> <span class="kn">import</span> <span class="n">reinit__is_reduced</span><span class="p">,</span> <span class="n">sync_all_reduce</span>
+<span class="kn">import</span> <span class="nn">ignite.distributed</span> <span class="k">as</span> <span class="nn">idist</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+<span class="kn">from</span> <span class="nn">ignite.metrics.metric</span> <span class="kn">import</span> <span class="n">EpochWise</span><span class="p">,</span> <span class="n">Metric</span><span class="p">,</span> <span class="n">MetricUsage</span><span class="p">,</span> <span class="n">reinit__is_reduced</span><span class="p">,</span> <span class="n">sync_all_reduce</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;RunningAverage&quot;</span><span class="p">]</span>
 
@@ -279,11 +295,11 @@
 <span class="sd">            corresponds the output of process function. Otherwise it should be None.</span>
 <span class="sd">        epoch_bound (boolean, optional): whether the running average should be reset after each epoch (defaults</span>
 <span class="sd">            to True).</span>
-<span class="sd">        device (str of torch.device, optional): device specification in case of distributed computation usage.</span>
-<span class="sd">            This is necessary when running average is computed on the output of process function.</span>
-<span class="sd">            In most of the cases, it can be defined as &quot;cuda:local_rank&quot; or &quot;cuda&quot;</span>
-<span class="sd">            if already set `torch.cuda.set_device(local_rank)`. By default, if a distributed process group is</span>
-<span class="sd">            initialized and available, device is set to `cuda`.</span>
+<span class="sd">        device (str or torch.device, optional): specifies which device updates are accumulated on. Should be</span>
+<span class="sd">            None when ``src`` is an instance of :class:`~ignite.metrics.Metric`, as the running average will</span>
+<span class="sd">            use the ``src``&#39;s device. Otherwise, defaults to CPU. Only applicable when the computed value</span>
+<span class="sd">            from the metric is a tensor.</span>
+
 
 <span class="sd">    Examples:</span>
 
@@ -303,7 +319,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_required_output_keys</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">required_output_keys</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -325,7 +341,8 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument device should be None if src is a Metric.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">src</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_src_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_metric_value</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">iteration_completed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_iteration_completed</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;iteration_completed&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_iteration_completed</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">_device</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">output_transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -333,15 +350,17 @@
                     <span class="s2">&quot;to the output of process function.&quot;</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_src_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_output_value</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_update</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_update</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epoch_bound</span> <span class="o">=</span> <span class="n">epoch_bound</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">RunningAverage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">output_transform</span><span class="o">=</span><span class="n">output_transform</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RunningAverage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">output_transform</span><span class="o">=</span><span class="n">output_transform</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
 
     <span class="nd">@reinit__is_reduced</span>
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[Union[float, torch.Tensor]]</span>
 
     <span class="nd">@reinit__is_reduced</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -356,7 +375,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
-    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_usage</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MetricUsage</span><span class="p">]</span> <span class="o">=</span> <span class="n">EpochWise</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch_bound</span><span class="p">:</span>
             <span class="c1"># restart average every epoch</span>
             <span class="n">engine</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_STARTED</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="p">)</span>
@@ -369,16 +388,20 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 
     <span class="nd">@sync_all_reduce</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_get_output_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Metric</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span>
+    <span class="k">def</span> <span class="nf">_get_output_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="c1"># we need to compute average instead of sum produced by @sync_all_reduce(&quot;src&quot;)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">)</span> <span class="o">/</span> <span class="n">idist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">output</span>
 
     <span class="k">def</span> <span class="nf">_metric_iteration_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">started</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">iteration_completed</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 
     <span class="nd">@reinit__is_reduced</span>
-    <span class="k">def</span> <span class="nf">_output_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">output</span></div>
+    <span class="k">def</span> <span class="nf">_output_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">output</span>  <span class="c1"># type: ignore[assignment]</span></div>
 </pre></div>
 
              </article>
@@ -395,7 +418,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -424,11 +447,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../../../_static/jquery.js"></script>
-         <script type="text/javascript" src="../../../_static/underscore.js"></script>
-         <script type="text/javascript" src="../../../_static/doctools.js"></script>
-         <script type="text/javascript" src="../../../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../../../_static/jquery.js"></script>
+         <script src="../../../_static/underscore.js"></script>
+         <script src="../../../_static/doctools.js"></script>
+         <script src="../../../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -475,14 +498,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -565,7 +588,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

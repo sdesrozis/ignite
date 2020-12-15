@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlconcepts.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="#">Concepts</a>
+            <a href="quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="quickstart.html">Quickstart</a>
+            <a href="#">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -299,10 +308,10 @@ For example, model trainer for a supervised task:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>By default, epoch length is defined by <cite>len(data)</cite>. However, user can also manually define the epoch length as a
 number of iterations to loop. In this way the input data can be an iterator.</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">epoch_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">epoch_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -312,9 +321,9 @@ number of iterations to loop. In this way the input data can be an iterator.</p>
 <p>To improve the <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s flexibility, an event system is introduced that facilitates interaction on each step of
 the run:</p>
 <ul class="simple">
-<li><em>engine is started/completed</em></li>
-<li><em>epoch is started/completed</em></li>
-<li><em>batch iteration is started/completed</em></li>
+<li><p><em>engine is started/completed</em></p></li>
+<li><p><em>epoch is started/completed</em></p></li>
+<li><p><em>batch iteration is started/completed</em></p></li>
 </ul>
 <p>Complete list of events can be found at <a class="reference internal" href="engine.html#ignite.engine.Events" title="ignite.engine.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a>.</p>
 <p>Thus, user can execute a custom code as an event handler. Let us consider in more detail what happens when
@@ -410,10 +419,10 @@ event filtering function:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>User can also register custom events with <a class="reference internal" href="engine.html#ignite.engine.Engine.register_events" title="ignite.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>, attach handlers and fire custom events
 calling <a class="reference internal" href="engine.html#ignite.engine.Engine.fire_event" title="ignite.engine.Engine.fire_event"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fire_event()</span></code></a> in any handler or <cite>process_function</cite>.</p>
-<p class="last">See the source code of <a class="reference internal" href="contrib/engines.html#ignite.contrib.engines.create_supervised_tbptt_trainer" title="ignite.contrib.engines.create_supervised_tbptt_trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">create_supervised_tbptt_trainer</span></code></a> for an example of usage of
+<p>See the source code of <a class="reference internal" href="contrib/engines.html#ignite.contrib.engines.create_supervised_tbptt_trainer" title="ignite.contrib.engines.create_supervised_tbptt_trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">create_supervised_tbptt_trainer</span></code></a> for an example of usage of
 custom events.</p>
 </div>
 <div class="section" id="timeline-and-events">
@@ -429,12 +438,12 @@ epoch:</p>
 iteration and other helpful information. Each <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> contains a <a class="reference internal" href="engine.html#ignite.engine.State" title="ignite.engine.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>,
 which includes the following:</p>
 <ul class="simple">
-<li><strong>engine.state.seed</strong>: Seed to set at each data “epoch”.</li>
-<li><strong>engine.state.epoch</strong>: Number of epochs the engine has completed. Initializated as 0 and the first epoch is 1.</li>
-<li><strong>engine.state.iteration</strong>: Number of iterations the engine has completed. Initialized as 0 and the first iteration is 1.</li>
-<li><strong>engine.state.max_epochs</strong>: Number of epochs to run for. Initializated as 1.</li>
-<li><strong>engine.state.output</strong>: The output of the <cite>process_function</cite> defined for the <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>. See below.</li>
-<li>etc</li>
+<li><p><strong>engine.state.seed</strong>: Seed to set at each data “epoch”.</p></li>
+<li><p><strong>engine.state.epoch</strong>: Number of epochs the engine has completed. Initializated as 0 and the first epoch is 1.</p></li>
+<li><p><strong>engine.state.iteration</strong>: Number of iterations the engine has completed. Initialized as 0 and the first iteration is 1.</p></li>
+<li><p><strong>engine.state.max_epochs</strong>: Number of epochs to run for. Initializated as 1.</p></li>
+<li><p><strong>engine.state.output</strong>: The output of the <cite>process_function</cite> defined for the <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>. See below.</p></li>
+<li><p>etc</p></li>
 </ul>
 <p>Other attributes can be found in the docs of <a class="reference internal" href="engine.html#ignite.engine.State" title="ignite.engine.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>.</p>
 <p>In the code below, <cite>engine.state.output</cite> will store the batch loss. This output is used to print the loss at
@@ -510,10 +519,10 @@ batch, this is how the user can use <cite>output_transform</cite> to get y_pred 
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>A good practice is to use <a class="reference internal" href="engine.html#ignite.engine.State" title="ignite.engine.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a> also as a storage of user data created in update or handler functions.
 For example, we would like to save <cite>new_attribute</cite> in the <cite>state</cite>:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">user_handler_function</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">user_handler_function</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
     <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">new_attribute</span> <span class="o">=</span> <span class="mi">12345</span>
 </pre></div>
 </div>
@@ -566,15 +575,15 @@ In case when input data is <cite>torch.utils.data.DataLoader</cite>, previous ba
 corresponds to the batch after the checkpoint iteration. Internally, while resuming, previous datapoint indices are just
 skipped without fetching the data.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">However, while resuming from iteration, random data augmentations are not synchronized in the middle of the epoch and
+<p class="admonition-title">Warning</p>
+<p>However, while resuming from iteration, random data augmentations are not synchronized in the middle of the epoch and
 thus batches remaining until the end of en epoch can effectively be different of those from the initial run.</p>
 </div>
 <p>Complete examples that simulates a crash on a defined iteration and resumes the training from a checkpoint can be found
 here:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/pytorch/ignite/tree/master/examples/mnist#training-save--resume">save/resume MNIST</a></li>
-<li><a class="reference external" href="https://github.com/pytorch/ignite/tree/engine_refactor/examples/contrib/cifar10#check-resume-training">save/resume Distributed CIFAR10</a></li>
+<li><p><a class="reference external" href="https://github.com/pytorch/ignite/tree/master/examples/mnist#training-save--resume">save/resume MNIST</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pytorch/ignite/tree/engine_refactor/examples/contrib/cifar10#check-resume-training">save/resume Distributed CIFAR10</a></p></li>
 </ul>
 </div>
 </div>
@@ -603,7 +612,7 @@ here:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -644,11 +653,11 @@ here:</p>
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -695,14 +704,14 @@ here:</p>
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -785,7 +794,7 @@ here:</p>
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

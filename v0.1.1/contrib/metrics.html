@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlcontrib/metrics.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../concepts.html">Concepts</a>
+            <a href="../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../quickstart.html">Quickstart</a>
+            <a href="../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -261,101 +270,89 @@
   <div class="section" id="ignite-contrib-metrics">
 <h1>ignite.contrib.metrics<a class="headerlink" href="#ignite-contrib-metrics" title="Permalink to this headline">¶</a></h1>
 <p>Contribution module of metrics</p>
-<span class="target" id="module-ignite.contrib.metrics"></span><dl class="class">
+<span class="target" id="module-ignite.contrib.metrics"></span><dl class="py class">
 <dt id="ignite.contrib.metrics.AveragePrecision">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">AveragePrecision</code><span class="sig-paren">(</span><em>activation=None</em>, <em>output_transform=&lt;function AveragePrecision.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/average_precision.html#AveragePrecision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.AveragePrecision" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">AveragePrecision</code><span class="sig-paren">(</span><em class="sig-param">activation=None</em>, <em class="sig-param">output_transform=&lt;function AveragePrecision.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/average_precision.html#AveragePrecision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.AveragePrecision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Average Precision accumulating predictions and the ground-truth during an epoch
 and applying <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score">sklearn.metrics.average_precision_score</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
-e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
+e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="../engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.MaximumAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">MaximumAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">MaximumAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the maximum absolute error.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite>.</p></li>
 </ul>
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.MaximumAbsoluteError.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError.compute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.MaximumAbsoluteError.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.contrib.metrics.MaximumAbsoluteError.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/mae.html#MaximumAbsoluteError.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.MaximumAbsoluteError.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.contrib.metrics.ROC_AUC">
-<em class="property">class </em><code class="descclassname">ignite.contrib.metrics.</code><code class="descname">ROC_AUC</code><span class="sig-paren">(</span><em>activation=None</em>, <em>output_transform=&lt;function ROC_AUC.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/roc_auc.html#ROC_AUC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.ROC_AUC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.metrics.</code><code class="sig-name descname">ROC_AUC</code><span class="sig-paren">(</span><em class="sig-param">activation=None</em>, <em class="sig-param">output_transform=&lt;function ROC_AUC.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/metrics/roc_auc.html#ROC_AUC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.metrics.ROC_AUC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes Area Under the Receiver Operating Characteristic Curve (ROC AUC)
 accumulating predictions and the ground-truth during an epoch and applying
 <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score">sklearn.metrics.roc_auc_score</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
-e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>activation</strong> (<em>Callable</em><em>, </em><em>optional</em>) – optional function to apply on prediction tensors,
+e.g. <cite>activation=torch.sigmoid</cite> to transform logits.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="../engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.engine.Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -384,7 +381,7 @@ you want to compute the metric with respect to one of the outputs.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -416,10 +413,10 @@ you want to compute the metric with respect to one of the outputs.</li>
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../_static/jquery.js"></script>
-         <script type="text/javascript" src="../_static/underscore.js"></script>
-         <script type="text/javascript" src="../_static/doctools.js"></script>
-         <script type="text/javascript" src="../_static/language_data.js"></script>
+         <script src="../_static/jquery.js"></script>
+         <script src="../_static/underscore.js"></script>
+         <script src="../_static/doctools.js"></script>
+         <script src="../_static/language_data.js"></script>
      
 
   
@@ -466,14 +463,14 @@ you want to compute the metric with respect to one of the outputs.</li>
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -556,7 +553,7 @@ you want to compute the metric with respect to one of the outputs.</li>
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

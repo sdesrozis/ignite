@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/index.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="../_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
 
@@ -59,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../concepts.html">Concepts</a>
+            <a href="../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../quickstart.html">Quickstart</a>
+            <a href="../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -83,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -114,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -144,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 </ul>
@@ -154,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utils.html">ignite.utils</a></li>
 </ul>
@@ -162,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -255,9 +271,10 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <h1>All modules for which code is available</h1>
-<ul><li><a href="ignite/contrib/engines/tbptt.html">ignite.contrib.engines.tbptt</a></li>
+<ul><li><a href="ignite/contrib/engines/common.html">ignite.contrib.engines.common</a></li>
+<li><a href="ignite/contrib/engines/tbptt.html">ignite.contrib.engines.tbptt</a></li>
 <li><a href="ignite/contrib/handlers/base_logger.html">ignite.contrib.handlers.base_logger</a></li>
-<li><a href="ignite/contrib/handlers/custom_events.html">ignite.contrib.handlers.custom_events</a></li>
+<li><a href="ignite/contrib/handlers/lr_finder.html">ignite.contrib.handlers.lr_finder</a></li>
 <li><a href="ignite/contrib/handlers/mlflow_logger.html">ignite.contrib.handlers.mlflow_logger</a></li>
 <li><a href="ignite/contrib/handlers/neptune_logger.html">ignite.contrib.handlers.neptune_logger</a></li>
 <li><a href="ignite/contrib/handlers/param_scheduler.html">ignite.contrib.handlers.param_scheduler</a></li>
@@ -265,9 +282,12 @@
 <li><a href="ignite/contrib/handlers/tensorboard_logger.html">ignite.contrib.handlers.tensorboard_logger</a></li>
 <li><a href="ignite/contrib/handlers/time_profilers.html">ignite.contrib.handlers.time_profilers</a></li>
 <li><a href="ignite/contrib/handlers/tqdm_logger.html">ignite.contrib.handlers.tqdm_logger</a></li>
+<li><a href="ignite/contrib/handlers/trains_logger.html">ignite.contrib.handlers.trains_logger</a></li>
 <li><a href="ignite/contrib/handlers/visdom_logger.html">ignite.contrib.handlers.visdom_logger</a></li>
+<li><a href="ignite/contrib/handlers/wandb_logger.html">ignite.contrib.handlers.wandb_logger</a></li>
 <li><a href="ignite/contrib/metrics/average_precision.html">ignite.contrib.metrics.average_precision</a></li>
 <li><a href="ignite/contrib/metrics/gpu_info.html">ignite.contrib.metrics.gpu_info</a></li>
+<li><a href="ignite/contrib/metrics/precision_recall_curve.html">ignite.contrib.metrics.precision_recall_curve</a></li>
 <li><a href="ignite/contrib/metrics/regression/canberra_metric.html">ignite.contrib.metrics.regression.canberra_metric</a></li>
 <li><a href="ignite/contrib/metrics/regression/fractional_absolute_error.html">ignite.contrib.metrics.regression.fractional_absolute_error</a></li>
 <li><a href="ignite/contrib/metrics/regression/fractional_bias.html">ignite.contrib.metrics.regression.fractional_bias</a></li>
@@ -284,8 +304,12 @@
 <li><a href="ignite/contrib/metrics/regression/r2_score.html">ignite.contrib.metrics.regression.r2_score</a></li>
 <li><a href="ignite/contrib/metrics/regression/wave_hedges_distance.html">ignite.contrib.metrics.regression.wave_hedges_distance</a></li>
 <li><a href="ignite/contrib/metrics/roc_auc.html">ignite.contrib.metrics.roc_auc</a></li>
+<li><a href="ignite/distributed/auto.html">ignite.distributed.auto</a></li>
+<li><a href="ignite/distributed/launcher.html">ignite.distributed.launcher</a></li>
+<li><a href="ignite/distributed/utils.html">ignite.distributed.utils</a></li>
 <li><a href="ignite/engine.html">ignite.engine</a></li>
-<ul><li><a href="ignite/engine/engine.html">ignite.engine.engine</a></li>
+<ul><li><a href="ignite/engine/deterministic.html">ignite.engine.deterministic</a></li>
+<li><a href="ignite/engine/engine.html">ignite.engine.engine</a></li>
 <li><a href="ignite/engine/events.html">ignite.engine.events</a></li>
 </ul><li><a href="ignite/exceptions.html">ignite.exceptions</a></li>
 <li><a href="ignite/handlers.html">ignite.handlers</a></li>
@@ -308,6 +332,7 @@
 <li><a href="ignite/metrics/recall.html">ignite.metrics.recall</a></li>
 <li><a href="ignite/metrics/root_mean_squared_error.html">ignite.metrics.root_mean_squared_error</a></li>
 <li><a href="ignite/metrics/running_average.html">ignite.metrics.running_average</a></li>
+<li><a href="ignite/metrics/ssim.html">ignite.metrics.ssim</a></li>
 <li><a href="ignite/metrics/top_k_categorical_accuracy.html">ignite.metrics.top_k_categorical_accuracy</a></li>
 <li><a href="ignite/utils.html">ignite.utils</a></li>
 </ul>
@@ -326,7 +351,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -355,11 +380,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../_static/jquery.js"></script>
-         <script type="text/javascript" src="../_static/underscore.js"></script>
-         <script type="text/javascript" src="../_static/doctools.js"></script>
-         <script type="text/javascript" src="../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../_static/jquery.js"></script>
+         <script src="../_static/underscore.js"></script>
+         <script src="../_static/doctools.js"></script>
+         <script src="../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -406,14 +431,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -496,7 +521,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

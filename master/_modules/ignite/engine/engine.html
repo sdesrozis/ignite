@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../../../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/engine/engine.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="../../../_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 
@@ -59,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../../../concepts.html">Concepts</a>
+            <a href="../../../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../../../quickstart.html">Quickstart</a>
+            <a href="../../../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -83,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -114,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -144,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 </ul>
@@ -154,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils.html">ignite.utils</a></li>
 </ul>
@@ -162,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -259,26 +275,28 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <h1>Source code for ignite.engine.engine</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
-<span class="kn">import</span> <span class="nn">weakref</span>
-<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
 
-<span class="kn">from</span> <span class="nn">ignite.engine.events</span> <span class="kn">import</span> <span class="n">Events</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">CallableEventWithFilter</span><span class="p">,</span> <span class="n">RemovableEventHandle</span>
-<span class="kn">from</span> <span class="nn">ignite.engine.utils</span> <span class="kn">import</span> <span class="n">ReproducibleBatchSampler</span><span class="p">,</span> <span class="n">_update_dataloader</span><span class="p">,</span> <span class="n">_check_signature</span>
 <span class="kn">from</span> <span class="nn">ignite._utils</span> <span class="kn">import</span> <span class="n">_to_hours_mins_secs</span>
+<span class="kn">from</span> <span class="nn">ignite.base</span> <span class="kn">import</span> <span class="n">Serializable</span>
+<span class="kn">from</span> <span class="nn">ignite.engine.events</span> <span class="kn">import</span> <span class="n">CallableEventWithFilter</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">,</span> <span class="n">Events</span><span class="p">,</span> <span class="n">EventsList</span><span class="p">,</span> <span class="n">RemovableEventHandle</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">ignite.engine.utils</span> <span class="kn">import</span> <span class="n">_check_signature</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Engine&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Runs a given `process_function` over each batch of a dataset, emitting events as it goes.</span>
+<div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">(</span><span class="n">Serializable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Runs a given ``process_function`` over each batch of a dataset, emitting events as it goes.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        process_function (callable): A function receiving a handle to the engine and the current batch</span>
@@ -286,7 +304,8 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        state (State): object that is used to pass internal and user-defined state between event handlers.</span>
-<span class="sd">            It is created and reset on every :meth:`~ignite.engine.Engine.run`.</span>
+<span class="sd">            It is created with the engine and its attributes (e.g. ``state.iteration``, ``state.epoch`` etc) are reset</span>
+<span class="sd">            on every :meth:`~ignite.engine.engine.Engine.run`.</span>
 <span class="sd">        last_event_name (Events): last event name triggered by the engine.</span>
 
 <span class="sd">    Examples:</span>
@@ -367,9 +386,9 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            # Restore from an epoch</span>
-<span class="sd">            state_dict = {&quot;seed&quot;: 0, &quot;epoch&quot;: 3, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
+<span class="sd">            state_dict = {&quot;epoch&quot;: 3, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
 <span class="sd">            # or an iteration</span>
-<span class="sd">            # state_dict = {&quot;seed&quot;: 0, &quot;iteration&quot;: 500, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
+<span class="sd">            # state_dict = {&quot;iteration&quot;: 500, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
 
 <span class="sd">            trainer = Engine(...)</span>
 <span class="sd">            trainer.load_state_dict(state_dict)</span>
@@ -377,56 +396,82 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_state_dict_all_req_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;seed&quot;</span><span class="p">,</span> <span class="s2">&quot;epoch_length&quot;</span><span class="p">,</span> <span class="s2">&quot;max_epochs&quot;</span><span class="p">)</span>
+    <span class="n">_state_dict_all_req_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;epoch_length&quot;</span><span class="p">,</span> <span class="s2">&quot;max_epochs&quot;</span><span class="p">)</span>
     <span class="n">_state_dict_one_of_opt_keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="s2">&quot;epoch&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># type: Dict[Any, List]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span> <span class="o">=</span> <span class="n">process_function</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last_event_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_event_name</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[Events]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_events</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_user_keys</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[str]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_events</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[EventEnum]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[Iterator[Any]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[int]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">register_events</span><span class="p">(</span><span class="o">*</span><span class="n">Events</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Engine must be given a processing function in order to run.&quot;</span><span class="p">)</span>
 
-        <span class="n">_check_signature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_function</span><span class="p">,</span> <span class="s2">&quot;process_function&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">_check_signature</span><span class="p">(</span><span class="n">process_function</span><span class="p">,</span> <span class="s2">&quot;process_function&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Engine.register_events"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.register_events">[docs]</a>    <span class="k">def</span> <span class="nf">register_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">event_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">event_to_attr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Engine.register_events"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.register_events">[docs]</a>    <span class="k">def</span> <span class="nf">register_events</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">event_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">EventEnum</span><span class="p">]],</span> <span class="n">event_to_attr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Add events that can be fired.</span>
 
-<span class="sd">        Registering an event will let the user fire these events at any point.</span>
-<span class="sd">        This opens the door to make the :meth:`~ignite.engine.Engine.run` loop even more</span>
+<span class="sd">        Registering an event will let the user trigger these events at any point.</span>
+<span class="sd">        This opens the door to make the :meth:`~ignite.engine.engine.Engine.run` loop even more</span>
 <span class="sd">        configurable.</span>
 
-<span class="sd">        By default, the events from :class:`~ignite.engine.Events` are registered.</span>
+<span class="sd">        By default, the events from :class:`~ignite.engine.events.Events` are registered.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            *event_names: An object (ideally a string or int) to define the</span>
-<span class="sd">                name of the event being supported.</span>
+<span class="sd">            *event_names (iterable): Defines the name of the event being supported. New events can be a str</span>
+<span class="sd">                or an object derived from :class:`~ignite.engine.events.EventEnum`. See example below.</span>
 <span class="sd">            event_to_attr (dict, optional): A dictionary to map an event to a state attribute.</span>
 
 <span class="sd">        Example usage:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.engine import Engine, EvenEnum</span>
+<span class="sd">            from ignite.engine import Engine, Events, EventEnum</span>
 
 <span class="sd">            class CustomEvents(EventEnum):</span>
 <span class="sd">                FOO_EVENT = &quot;foo_event&quot;</span>
 <span class="sd">                BAR_EVENT = &quot;bar_event&quot;</span>
 
-<span class="sd">            engine = Engine(process_function)</span>
-<span class="sd">            engine.register_events(*CustomEvents)</span>
+<span class="sd">            def process_function(e, batch):</span>
+<span class="sd">                # ...</span>
+<span class="sd">                trainer.fire_event(&quot;bwd_event&quot;)</span>
+<span class="sd">                loss.backward()</span>
+<span class="sd">                # ...</span>
+<span class="sd">                trainer.fire_event(&quot;opt_event&quot;)</span>
+<span class="sd">                optimizer.step()</span>
 
+<span class="sd">            trainer = Engine(process_function)</span>
+<span class="sd">            trainer.register_events(*CustomEvents)</span>
+<span class="sd">            trainer.register_events(&quot;bwd_event&quot;, &quot;opt_event&quot;)</span>
+
+<span class="sd">            @trainer.on(Events.EPOCH_COMPLETED)</span>
+<span class="sd">            def trigger_custom_event():</span>
+<span class="sd">                if required(...):</span>
+<span class="sd">                    trainer.fire_event(CustomEvents.FOO_EVENT)</span>
+<span class="sd">                else:</span>
+<span class="sd">                    trainer.fire_event(CustomEvents.BAR_EVENT)</span>
+
+<span class="sd">            @trainer.on(CustomEvents.FOO_EVENT)</span>
+<span class="sd">            def do_foo_op():</span>
+<span class="sd">                # ...</span>
+
+<span class="sd">            @trainer.on(CustomEvents.BAR_EVENT)</span>
+<span class="sd">            def do_bar_op():</span>
+<span class="sd">                # ...</span>
 
 <span class="sd">        Example with State Attribute:</span>
 
@@ -450,43 +495,51 @@
 <span class="sd">            # engine.state contains an attribute time_iteration, which can be accessed using engine.state.time_iteration</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">event_to_attr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event_to_attr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Expected event_to_attr to be dictionary. Got </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">event_to_attr</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expected event_to_attr to be dictionary. Got </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">event_to_attr</span><span class="p">)))</span>
 
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_names</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">event_names</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Value at </span><span class="si">{}</span><span class="s2"> of event_names should be a str or EventEnum, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">event_to_attr</span> <span class="ow">and</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_to_attr</span><span class="p">:</span>
-                <span class="n">State</span><span class="o">.</span><span class="n">event_to_attr</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_to_attr</span><span class="p">[</span><span class="n">e</span><span class="p">]</span></div>
+                <span class="n">State</span><span class="o">.</span><span class="n">event_to_attr</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_to_attr</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+        <span class="c1"># we need to update state attributes associated with new custom events</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">_update_attrs</span><span class="p">()</span></div>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_handler_wrapper</span><span class="p">(</span><span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event_filter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-            <span class="n">event</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">event_filter</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_handler_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">event_filter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="c1"># signature of the following wrapper will be inspected during registering to check if engine is necessary</span>
+        <span class="c1"># we have to build a wrapper with relevant signature : solution is functools.wraps</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">event_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># setup input handler as parent to make has_event_handler work</span>
-        <span class="n">wrapper</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="s2">&quot;_parent&quot;</span><span class="p">,</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">handler</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">wrapper</span>
 
-<div class="viewcode-block" id="Engine.add_event_handler"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.add_event_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_event_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Engine.add_event_handler"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.add_event_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_event_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RemovableEventHandle</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Add an event handler to be executed when the specified event is fired.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            event_name: An event to attach the handler to. Valid events are from :class:`~ignite.engine.Events`</span>
-<span class="sd">                or any `event_name` added by :meth:`~ignite.engine.Engine.register_events`.</span>
-<span class="sd">            handler (callable): the callable event handler that should be invoked</span>
-<span class="sd">            *args: optional args to be passed to `handler`.</span>
-<span class="sd">            **kwargs: optional keyword args to be passed to `handler`.</span>
+<span class="sd">            event_name: An event or a list of events to attach the handler. Valid events are</span>
+<span class="sd">                from :class:`~ignite.engine.events.Events` or any ``event_name`` added by</span>
+<span class="sd">                :meth:`~ignite.engine.engine.Engine.register_events`.</span>
+<span class="sd">            handler (callable): the callable event handler that should be invoked. No restrictions on its signature.</span>
+<span class="sd">                The first argument can be optionally `engine`, the :class:`~ignite.engine.engine.Engine` object,</span>
+<span class="sd">                handler is bound to.</span>
+<span class="sd">            *args: optional args to be passed to ``handler``.</span>
+<span class="sd">            **kwargs: optional keyword args to be passed to ``handler``.</span>
 
 <span class="sd">        Note:</span>
-<span class="sd">            The handler function&#39;s first argument will be `self`, the :class:`~ignite.engine.Engine` object it</span>
-<span class="sd">            was bound to.</span>
-
 <span class="sd">            Note that other arguments can be passed to the handler in addition to the `*args` and  `**kwargs`</span>
-<span class="sd">            passed here, for example during :attr:`~ignite.engine.Events.EXCEPTION_RAISED`.</span>
+<span class="sd">            passed here, for example during :attr:`~ignite.engine.events.Events.EXCEPTION_RAISED`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            :class:`~ignite.engine.RemovableEventHandler`, which can be used to remove the handler.</span>
+<span class="sd">            :class:`~ignite.engine.RemovableEventHandle`, which can be used to remove the handler.</span>
 
 <span class="sd">        Example usage:</span>
 
@@ -499,37 +552,56 @@
 
 <span class="sd">            engine.add_event_handler(Events.EPOCH_COMPLETED, print_epoch)</span>
 
+<span class="sd">            events_list = Events.EPOCH_COMPLETED | Events.COMPLETED</span>
+
+<span class="sd">            def execute_something():</span>
+<span class="sd">                # do some thing not related to engine</span>
+<span class="sd">                pass</span>
+
+<span class="sd">            engine.add_event_handler(events_list, execute_something)</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            Since v0.3.0, Events become more flexible and allow to pass an event filter to the Engine.</span>
-<span class="sd">            See :class:`~ignite.engine.Events` for more details.</span>
+<span class="sd">            See :class:`~ignite.engine.events.Events` for more details.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span>
-                       <span class="n">CallableEventWithFilter</span><span class="p">)</span> <span class="ow">and</span> <span class="n">event_name</span><span class="o">.</span><span class="n">filter</span> <span class="o">!=</span> <span class="n">CallableEventWithFilter</span><span class="o">.</span><span class="n">default_event_filter</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">EventsList</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_name</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">RemovableEventHandle</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">CallableEventWithFilter</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">event_name</span><span class="o">.</span><span class="n">filter</span> <span class="o">!=</span> <span class="n">CallableEventWithFilter</span><span class="o">.</span><span class="n">default_event_filter</span>
+        <span class="p">):</span>
             <span class="n">event_filter</span> <span class="o">=</span> <span class="n">event_name</span><span class="o">.</span><span class="n">filter</span>
-            <span class="n">handler</span> <span class="o">=</span> <span class="n">Engine</span><span class="o">.</span><span class="n">_handler_wrapper</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_filter</span><span class="p">)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler_wrapper</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_filter</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">event_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_events</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;attempt to add event handler to an invalid event </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">event_name</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Event </span><span class="si">{}</span><span class="s2"> is not a valid event for this Engine.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event_name</span><span class="p">))</span>
 
         <span class="n">event_args</span> <span class="o">=</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">(),)</span> <span class="k">if</span> <span class="n">event_name</span> <span class="o">==</span> <span class="n">Events</span><span class="o">.</span><span class="n">EXCEPTION_RAISED</span> <span class="k">else</span> <span class="p">()</span>
-        <span class="n">_check_signature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="s2">&quot;handler&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">event_args</span> <span class="o">+</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">handler</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_check_signature</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="s2">&quot;handler&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">event_args</span> <span class="o">+</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">handler</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="p">,)</span> <span class="o">+</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">_check_signature</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="s2">&quot;handler&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">event_args</span> <span class="o">+</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">handler</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;added handler for event </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">event_name</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">RemovableEventHandle</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_assert_non_filtered_event</span><span class="p">(</span><span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span>
-                       <span class="n">CallableEventWithFilter</span><span class="p">)</span> <span class="ow">and</span> <span class="n">event_name</span><span class="o">.</span><span class="n">filter</span> <span class="o">!=</span> <span class="n">CallableEventWithFilter</span><span class="o">.</span><span class="n">default_event_filter</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument event_name should not be a filtered event, &quot;</span>
-                            <span class="s2">&quot;please use event without any event filtering&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_assert_non_filtered_event</span><span class="p">(</span><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">CallableEventWithFilter</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">event_name</span><span class="o">.</span><span class="n">filter</span> <span class="o">!=</span> <span class="n">CallableEventWithFilter</span><span class="o">.</span><span class="n">default_event_filter</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Argument event_name should not be a filtered event, &quot;</span> <span class="s2">&quot;please use event without any event filtering&quot;</span>
+            <span class="p">)</span>
 
-<div class="viewcode-block" id="Engine.has_event_handler"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.has_event_handler">[docs]</a>    <span class="k">def</span> <span class="nf">has_event_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Engine.has_event_handler"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.has_event_handler">[docs]</a>    <span class="k">def</span> <span class="nf">has_event_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Check if the specified event has the specified handler.</span>
 
 <span class="sd">        Args:</span>
@@ -538,11 +610,9 @@
 <span class="sd">                to ``None`` to search all events.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">event_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_non_filtered_event</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
-
             <span class="k">if</span> <span class="n">event_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="n">events</span> <span class="o">=</span> <span class="p">[</span><span class="n">event_name</span><span class="p">]</span>
+            <span class="n">events</span> <span class="o">=</span> <span class="p">[</span><span class="n">event_name</span><span class="p">]</span>  <span class="c1"># type: Union[List[Any], Dict[Any, List]]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
@@ -554,10 +624,10 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_compare_handlers</span><span class="p">(</span><span class="n">user_handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">registered_handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">registered_handler</span><span class="p">,</span> <span class="s2">&quot;_parent&quot;</span><span class="p">):</span>
-            <span class="n">registered_handler</span> <span class="o">=</span> <span class="n">registered_handler</span><span class="o">.</span><span class="n">_parent</span><span class="p">()</span>
+            <span class="n">registered_handler</span> <span class="o">=</span> <span class="n">registered_handler</span><span class="o">.</span><span class="n">_parent</span><span class="p">()</span>  <span class="c1"># type: ignore[attr-defined]</span>
         <span class="k">return</span> <span class="n">registered_handler</span> <span class="o">==</span> <span class="n">user_handler</span>
 
-<div class="viewcode-block" id="Engine.remove_event_handler"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.remove_event_handler">[docs]</a>    <span class="k">def</span> <span class="nf">remove_event_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="Engine.remove_event_handler"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.remove_event_handler">[docs]</a>    <span class="k">def</span> <span class="nf">remove_event_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Remove event handler `handler` from registered handlers of the engine</span>
 
 <span class="sd">        Args:</span>
@@ -565,7 +635,6 @@
 <span class="sd">            event_name: The event the handler attached to.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_non_filtered_event</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">event_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input event name &#39;</span><span class="si">{}</span><span class="s2">&#39; does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event_name</span><span class="p">))</span>
 
@@ -578,15 +647,29 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input handler &#39;</span><span class="si">{}</span><span class="s2">&#39; is not found among registered event handlers&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_event_handlers</span></div>
 
-<div class="viewcode-block" id="Engine.on"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.on">[docs]</a>    <span class="k">def</span> <span class="nf">on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Engine.on"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.on">[docs]</a>    <span class="k">def</span> <span class="nf">on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Decorator shortcut for add_event_handler.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            event_name: An event to attach the handler to. Valid events are from :class:`~ignite.engine.Events` or</span>
-<span class="sd">                any `event_name` added by :meth:`~ignite.engine.Engine.register_events`.</span>
+<span class="sd">            event_name: An event to attach the handler to. Valid events are from :class:`~ignite.engine.events.Events`</span>
+<span class="sd">                or any ``event_name`` added by :meth:`~ignite.engine.engine.Engine.register_events`.</span>
 <span class="sd">            *args: optional args to be passed to `handler`.</span>
 <span class="sd">            **kwargs: optional keyword args to be passed to `handler`.</span>
 
+<span class="sd">        Example usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            engine = Engine(process_function)</span>
+
+<span class="sd">            @engine.on(Events.EPOCH_COMPLETED)</span>
+<span class="sd">            def print_epoch():</span>
+<span class="sd">                print(&quot;Epoch: {}&quot;.format(engine.state.epoch))</span>
+
+<span class="sd">            @engine.on(Events.EPOCH_COMPLETED | Events.COMPLETED)</span>
+<span class="sd">            def execute_something():</span>
+<span class="sd">                # do some thing not related to engine</span>
+<span class="sd">                pass</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
@@ -595,18 +678,18 @@
 
         <span class="k">return</span> <span class="n">decorator</span></div>
 
-    <span class="k">def</span> <span class="nf">_fire_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">event_args</span><span class="p">,</span> <span class="o">**</span><span class="n">event_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_fire_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="n">event_args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">event_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Execute all the handlers associated with given event.</span>
 
 <span class="sd">        This method executes all handlers associated with the event</span>
 <span class="sd">        `event_name`. Optional positional and keyword arguments can be used to</span>
 <span class="sd">        pass arguments to **all** handlers added with this event. These</span>
-<span class="sd">        arguments updates arguments passed using :meth:`~ignite.engine.Engine.add_event_handler`.</span>
+<span class="sd">        arguments updates arguments passed using :meth:`~ignite.engine.engine.Engine.add_event_handler`.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            event_name: event for which the handlers should be executed. Valid</span>
-<span class="sd">                events are from :class:`~ignite.engine.Events` or any `event_name` added by</span>
-<span class="sd">                :meth:`~ignite.engine.Engine.register_events`.</span>
+<span class="sd">                events are from :class:`~ignite.engine.events.Events` or any `event_name` added by</span>
+<span class="sd">                :meth:`~ignite.engine.engine.Engine.register_events`.</span>
 <span class="sd">            *event_args: optional args to be passed to all handlers.</span>
 <span class="sd">            **event_kwargs: optional keyword args to be passed to all handlers.</span>
 
@@ -616,17 +699,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">last_event_name</span> <span class="o">=</span> <span class="n">event_name</span>
             <span class="k">for</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">[</span><span class="n">event_name</span><span class="p">]:</span>
                 <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">event_kwargs</span><span class="p">)</span>
-                <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">event_args</span> <span class="o">+</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">first</span><span class="p">,</span> <span class="n">others</span> <span class="o">=</span> <span class="p">((</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],),</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="p">(</span><span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="p">)</span> <span class="k">else</span> <span class="p">((),</span> <span class="n">args</span><span class="p">)</span>
+                <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">first</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">event_args</span> <span class="o">+</span> <span class="n">others</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Engine.fire_event"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.fire_event">[docs]</a>    <span class="k">def</span> <span class="nf">fire_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Engine.fire_event"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.fire_event">[docs]</a>    <span class="k">def</span> <span class="nf">fire_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Execute all the handlers associated with given event.</span>
 
 <span class="sd">        This method executes all handlers associated with the event</span>
-<span class="sd">        `event_name`. This is the method used in :meth:`~ignite.engine.Engine.run` to call the</span>
-<span class="sd">        core events found in :class:`~ignite.engine.Events`.</span>
+<span class="sd">        `event_name`. This is the method used in :meth:`~ignite.engine.engine.Engine.run` to call the</span>
+<span class="sd">        core events found in :class:`~ignite.engine.events.Events`.</span>
 
 <span class="sd">        Custom events can be fired if they have been registered before with</span>
-<span class="sd">        :meth:`~ignite.engine.Engine.register_events`. The engine `state` attribute should be used</span>
+<span class="sd">        :meth:`~ignite.engine.engine.Engine.register_events`. The engine `state` attribute should be used</span>
 <span class="sd">        to exchange &quot;dynamic&quot; data among `process_function` and handlers.</span>
 
 <span class="sd">        This method is called automatically for core events. If no custom</span>
@@ -635,19 +719,19 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            event_name: event for which the handlers should be executed. Valid</span>
-<span class="sd">                events are from :class:`~ignite.engine.Events` or any `event_name` added by</span>
-<span class="sd">                :meth:`~ignite.engine.Engine.register_events`.</span>
+<span class="sd">                events are from :class:`~ignite.engine.events.Events` or any `event_name` added by</span>
+<span class="sd">                :meth:`~ignite.engine.engine.Engine.register_events`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Engine.terminate"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Engine.terminate"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Sends terminate signal to the engine, so that it terminates completely the run after the current iteration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Terminate signaled. Engine will stop after current iteration is finished.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Engine.terminate_epoch"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.terminate_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Engine.terminate_epoch"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.terminate_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Sends terminate signal to the engine, so that it terminates the current epoch after the current iteration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
@@ -656,159 +740,158 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">_run_once_on_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-        <span class="c1"># We need to setup iter_counter &gt; 0 if we resume from an iteration</span>
-        <span class="n">iter_counter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="n">should_exit</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">GET_BATCH_STARTED</span><span class="p">)</span>
-                    <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">GET_BATCH_COMPLETED</span><span class="p">)</span>
-                    <span class="n">iter_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">should_exit</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">iter_counter</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">=</span> <span class="n">iter_counter</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="c1"># this can happen when data is finite iterator and epoch_length is equal to its size</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span>
-
-                    <span class="c1"># Should exit while loop if we can not iterate</span>
-                    <span class="k">if</span> <span class="n">should_exit</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_done</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
-                            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                                <span class="s2">&quot;Data iterator can not provide data anymore but required total number of &quot;</span>
-                                <span class="s2">&quot;iterations to run is not reached. &quot;</span>
-                                <span class="s2">&quot;Current iteration: </span><span class="si">{}</span><span class="s2"> vs Total iterations to run : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>
-                                <span class="p">)</span>
-                            <span class="p">)</span>
-                        <span class="k">break</span>
-
-                    <span class="c1"># set seed on restart of data iterator</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">setup_seed</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span>
-
-                    <span class="n">should_exit</span> <span class="o">=</span> <span class="kc">True</span>
-
-                    <span class="k">continue</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">batch</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
-
-                <span class="c1"># TODO: remove refs on batch to avoid high mem consumption ? -&gt; need verification</span>
-                <span class="c1"># self.state.batch = batch = None</span>
-
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span> <span class="o">=</span> <span class="kc">False</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">//</span> <span class="n">iter_counter</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span>
-                    <span class="k">break</span>
-
-                <span class="k">if</span> <span class="n">iter_counter</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span><span class="p">:</span>
-                    <span class="k">break</span>
-
-        <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Current run is terminating due to exception: </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-        <span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-        <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span> <span class="o">=</span> <span class="n">_to_hours_mins_secs</span><span class="p">(</span><span class="n">time_taken</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span>
-
-    <span class="k">def</span> <span class="nf">_handle_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_handle_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">Events</span><span class="o">.</span><span class="n">EXCEPTION_RAISED</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_handlers</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EXCEPTION_RAISED</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
 
-<div class="viewcode-block" id="Engine.state_dict"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderedDict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary containing engine&#39;s state: &quot;seed&quot;, &quot;epoch_length&quot;, &quot;max_epochs&quot; and &quot;iteration&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state_dict_user_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_user_keys</span>
+
+<div class="viewcode-block" id="Engine.state_dict"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderedDict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary containing engine&#39;s state: &quot;epoch_length&quot;, &quot;max_epochs&quot; and &quot;iteration&quot; and</span>
+<span class="sd">        other state values defined by `engine.state_dict_user_keys`</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            engine = Engine(...)</span>
+<span class="sd">            engine.state_dict_user_keys.append(&quot;alpha&quot;)</span>
+<span class="sd">            engine.state_dict_user_keys.append(&quot;beta&quot;)</span>
+<span class="sd">            ...</span>
+
+<span class="sd">            @engine.on(Events.STARTED)</span>
+<span class="sd">            def init_user_value(_):</span>
+<span class="sd">                 engine.state.alpha = 0.1</span>
+<span class="sd">                 engine.state.beta = 1.0</span>
+
+<span class="sd">            @engine.on(Events.COMPLETED)</span>
+<span class="sd">            def save_engine(_):</span>
+<span class="sd">                state_dict = engine.state_dict()</span>
+<span class="sd">                assert &quot;alpha&quot; in state_dict and &quot;beta&quot; in state_dict</span>
+<span class="sd">                torch.save(state_dict, &quot;/tmp/engine.pt&quot;)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            dict:</span>
+<span class="sd">            OrderedDict:</span>
 <span class="sd">                a dictionary containing engine&#39;s state</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_all_req_keys</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_one_of_opt_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_all_req_keys</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_one_of_opt_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>  <span class="c1"># type: Tuple[str, ...]</span>
+        <span class="n">keys</span> <span class="o">+=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_user_keys</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Engine.load_state_dict"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Engine.load_state_dict"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Setups engine from `state_dict`.</span>
 
-<span class="sd">        State dictionary should contain keys: `iteration` or `epoch` and `max_epochs`, `epoch_length` and</span>
-<span class="sd">        `seed`. Iteration and epoch values are 0-based: the first iteration or epoch is zero.</span>
+<span class="sd">        State dictionary should contain keys: `iteration` or `epoch`, `max_epochs` and `epoch_length`.</span>
+<span class="sd">        If `engine.state_dict_user_keys` contains keys, they should be also present in the state dictionary.</span>
+<span class="sd">        Iteration and epoch values are 0-based: the first iteration or epoch is zero.</span>
+
+<span class="sd">        This method does not remove any custom attributes added by user.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            state_dict (Mapping): a dict with parameters</span>
 
-
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            # Restore from an epoch</span>
-<span class="sd">            state_dict = {&quot;seed&quot;: 0, &quot;epoch&quot;: 3, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
-<span class="sd">            # or an iteration</span>
-<span class="sd">            # state_dict = {&quot;seed&quot;: 0, &quot;iteration&quot;: 500, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
+<span class="sd">            # Restore from the 4rd epoch</span>
+<span class="sd">            state_dict = {&quot;epoch&quot;: 3, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
+<span class="sd">            # or 500th iteration</span>
+<span class="sd">            # state_dict = {&quot;iteration&quot;: 499, &quot;max_epochs&quot;: 100, &quot;epoch_length&quot;: len(data_loader)}</span>
 
 <span class="sd">            trainer = Engine(...)</span>
 <span class="sd">            trainer.load_state_dict(state_dict)</span>
 <span class="sd">            trainer.run(data)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state_dict</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument state_dict should be a dictionary, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Engine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_all_req_keys</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_user_keys</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">state_dict</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Required state attribute &#39;</span><span class="si">{}</span><span class="s2">&#39; is absent in provided state_dict &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">state_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                    <span class="s2">&quot;Required user state attribute &#39;</span><span class="si">{}</span><span class="s2">&#39; is absent in provided state_dict &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">k</span><span class="p">,</span> <span class="n">state_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
-
-        <span class="n">opts</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="ow">in</span> <span class="n">state_dict</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_one_of_opt_keys</span><span class="p">]</span>
-        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">opts</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">opts</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;state_dict should contain only one of &#39;</span><span class="si">{}</span><span class="s2">&#39; keys&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_one_of_opt_keys</span><span class="p">))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span>
-            <span class="n">seed</span><span class="o">=</span><span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;seed&quot;</span><span class="p">],</span>
-            <span class="n">max_epochs</span><span class="o">=</span><span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;max_epochs&quot;</span><span class="p">],</span>
-            <span class="n">epoch_length</span><span class="o">=</span><span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;epoch_length&quot;</span><span class="p">],</span>
-            <span class="n">metrics</span><span class="o">=</span><span class="p">{},</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;max_epochs&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;epoch_length&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_dict_user_keys</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="s2">&quot;iteration&quot;</span> <span class="ow">in</span> <span class="n">state_dict</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span>
         <span class="k">elif</span> <span class="s2">&quot;epoch&quot;</span> <span class="ow">in</span> <span class="n">state_dict</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;epoch&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;If epoch is provided in the state dict, epoch_length should not be None. &quot;</span>
+                    <span class="s2">&quot;Input state_dict: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_is_done</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">==</span> <span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>
+        <span class="n">is_done_iters</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">max_iters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">&gt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">max_iters</span>
+        <span class="n">is_done_count</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">&gt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>  <span class="c1"># type: ignore[operator]</span>
+        <span class="p">)</span>
+        <span class="n">is_done_epochs</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">&gt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>
+        <span class="k">return</span> <span class="n">is_done_iters</span> <span class="ow">or</span> <span class="n">is_done_count</span> <span class="ow">or</span> <span class="n">is_done_epochs</span>
 
-<div class="viewcode-block" id="Engine.run"><a class="viewcode-back" href="../../../engine.html#ignite.engine.Engine.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="Engine.set_data"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.set_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Method to set data. After calling the method the next batch passed to `processing_function` is</span>
+<span class="sd">        from newly provided data. Please, note that epoch length is not modified.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (Iterable): Collection of batches allowing repeated iteration (e.g., list or `DataLoader`).</span>
+
+<span class="sd">        Example usage:</span>
+<span class="sd">            User can switch data provider during the training:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                data1 = ...</span>
+<span class="sd">                data2 = ...</span>
+
+<span class="sd">                switch_iteration = 5000</span>
+
+<span class="sd">                def train_step(e, batch):</span>
+<span class="sd">                    # when iteration &lt;= switch_iteration</span>
+<span class="sd">                    # batch is from data1</span>
+<span class="sd">                    # when iteration &gt; switch_iteration</span>
+<span class="sd">                    # batch is from data2</span>
+<span class="sd">                    ...</span>
+
+<span class="sd">                trainer = Engine(train_step)</span>
+
+<span class="sd">                @trainer.on(Events.ITERATION_COMPLETED(once=switch_iteration))</span>
+<span class="sd">                def switch_dataloader():</span>
+<span class="sd">                    trainer.set_data(data2)</span>
+
+<span class="sd">                trainer.run(data1, max_epochs=100)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Engine.run"><a class="viewcode-back" href="../../../engine.html#ignite.engine.engine.Engine.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
         <span class="n">max_epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_iters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">epoch_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Runs the `process_function` over the passed data.</span>
 
 <span class="sd">        Engine has a state and the following logic is applied in this function:</span>
 
-<span class="sd">        - At the first call, new state is defined by `max_epochs`, `epoch_length`, `seed` if provided.</span>
+<span class="sd">        - At the first call, new state is defined by `max_epochs`, `max_iters`, `epoch_length`, if provided.</span>
+<span class="sd">            A timer for total and per-epoch time is initialized when Events.STARTED is handled.</span>
 <span class="sd">        - If state is already defined such that there are iterations to run until `max_epochs` and no input arguments</span>
 <span class="sd">            provided, state is kept and used in the function.</span>
 <span class="sd">        - If state is defined and engine is &quot;done&quot; (no iterations to run until `max_epochs`), a new state is defined.</span>
@@ -818,19 +901,21 @@
 <span class="sd">            data (Iterable): Collection of batches allowing repeated iteration (e.g., list or `DataLoader`).</span>
 <span class="sd">            max_epochs (int, optional): Max epochs to run for (default: None).</span>
 <span class="sd">                If a new state should be created (first run or run again from ended engine), it&#39;s default value is 1.</span>
-<span class="sd">                This argument should be `None` if run is resuming from a state.</span>
+<span class="sd">                If run is resuming from a state, provided `max_epochs` will be taken into account and should be larger</span>
+<span class="sd">                than `engine.state.max_epochs`.</span>
 <span class="sd">            epoch_length (int, optional): Number of iterations to count as one epoch. By default, it can be set as</span>
-<span class="sd">                `len(data)`. If `data` is an iterator and `epoch_length` is not set, an error is raised.</span>
-<span class="sd">                This argument should be `None` if run is resuming from a state.</span>
-<span class="sd">            seed (int, optional): Seed to use for dataflow consistency, by default it</span>
-<span class="sd">                will respect the global random state. This argument should be `None` if run is resuming from a state.</span>
+<span class="sd">                `len(data)`. If `data` is an iterator and `epoch_length` is not set, then it will be automatically</span>
+<span class="sd">                determined as the iteration on which data iterator raises `StopIteration`.</span>
+<span class="sd">                This argument should not change if run is resuming from a state.</span>
+<span class="sd">            max_iters (int, optional): Number of iterations to run for.</span>
+<span class="sd">                `max_iters` and `max_epochs` are mutually exclusive; only one of the two arguments should be provided.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            State: output state.</span>
 
 <span class="sd">        Note:</span>
-<span class="sd">            User can dynamically preprocess input batch at :attr:`~ignite.engine.Events.ITERATION_STARTED` and store</span>
-<span class="sd">            output batch in `engine.state.batch`. Latter is passed as usually to `process_function` as argument:</span>
+<span class="sd">            User can dynamically preprocess input batch at :attr:`~ignite.engine.events.Events.ITERATION_STARTED` and</span>
+<span class="sd">            store output batch in `engine.state.batch`. Latter is passed as usually to `process_function` as argument:</span>
 
 <span class="sd">            .. code-block:: python</span>
 
@@ -840,36 +925,67 @@
 <span class="sd">                def switch_batch(engine):</span>
 <span class="sd">                    engine.state.batch = preprocess_batch(engine.state.batch)</span>
 
-<span class="sd">        Note:</span>
-<span class="sd">            In order to perform a reproducible run, if input `data` is `torch.utils.data.DataLoader`, its batch sampler</span>
-<span class="sd">            is replaced by a batch sampler (:class:`~ignite.engine.engine.ReproducibleBatchSampler`) such that random</span>
-<span class="sd">            sampling indices are reproducible by prefetching them before data iteration.</span>
+<span class="sd">            Restart the training from the beginning. User can reset `max_epochs = None`:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                # ...</span>
+<span class="sd">                trainer.run(train_loader, max_epochs=5)</span>
+
+<span class="sd">                # Reset model weights etc. and restart the training</span>
+<span class="sd">                trainer.state.max_epochs = None</span>
+<span class="sd">                trainer.run(train_loader, max_epochs=2)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument data should be iterable&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_done</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Check and apply overridden parameters</span>
+            <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">max_epochs</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Argument max_epochs should be larger than the start epoch &quot;</span>
+                        <span class="s2">&quot;defined in the state: </span><span class="si">{}</span><span class="s2"> vs </span><span class="si">{}</span><span class="s2">. Please, set engine.state.max_epochs = None &quot;</span>
+                        <span class="s2">&quot;before calling engine.run() in order to restart the training from the beginning.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">max_epochs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="o">=</span> <span class="n">max_epochs</span>
+            <span class="k">if</span> <span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">epoch_length</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Argument epoch_length should be same as in the state, given </span><span class="si">{}</span><span class="s2"> vs </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">epoch_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_done</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
             <span class="c1"># Create new state</span>
-            <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">max_epochs</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">seed</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">epoch_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
-                    <span class="n">epoch_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">epoch_length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input data has zero size. Please provide non-empty data&quot;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument `epoch_length` should be defined if `data` is an iterator&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">epoch_length</span><span class="o">=</span><span class="n">epoch_length</span><span class="p">)</span>
+                <span class="n">epoch_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_length</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">epoch_length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input data has zero size. Please provide non-empty data&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">max_iters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">max_epochs</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Arguments max_iters and max_epochs are mutually exclusive.&quot;</span>
+                        <span class="s2">&quot;Please provide only max_epochs or max_iters.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">max_epochs</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">max_iters</span> <span class="o">/</span> <span class="n">epoch_length</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="o">=</span> <span class="n">max_epochs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">=</span> <span class="n">epoch_length</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Engine run starting with max_epochs=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_epochs</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Keep actual state and override it if input args provided</span>
-            <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="o">=</span> <span class="n">max_epochs</span>
-            <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
-            <span class="k">if</span> <span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">=</span> <span class="n">epoch_length</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="s2">&quot;Engine run resuming from iteration </span><span class="si">{}</span><span class="s2">, epoch </span><span class="si">{}</span><span class="s2"> until </span><span class="si">{}</span><span class="s2"> epochs&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>
@@ -879,120 +995,164 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">data</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_run</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_setup_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_init_timers</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
+    <span class="k">def</span> <span class="nf">_get_data_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="c1"># _InfiniteConstantSampler can raise a TypeError on DataLoader length of a IterableDataset</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="c1"># setup seed here, as iter(data) can start prefetching</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup_seed</span><span class="p">()</span>
-
-        <span class="c1"># if input data is torch dataloader we replace batch sampler by a batch sampler</span>
-        <span class="c1"># such that its random sampling indices are reproducible by prefetching them before data iteration</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">):</span>
-            <span class="n">_dataloader_kind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">_dataset_kind</span>
-            <span class="k">if</span> <span class="n">_dataloader_kind</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">_DatasetKind</span><span class="o">.</span><span class="n">Map</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">sampler</span><span class="p">,</span> <span class="s2">&quot;epoch&quot;</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span><span class="p">:</span>
-                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                            <span class="s2">&quot;When defined engine&#39;s epoch length is different of input dataloader length, &quot;</span>
-                            <span class="s2">&quot;distributed sampler indices can not be setup in a reproducible manner&quot;</span>
-                        <span class="p">)</span>
-
-                <span class="n">batch_sampler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="o">.</span><span class="n">batch_sampler</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">batch_sampler</span><span class="p">,</span> <span class="n">ReproducibleBatchSampler</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">_update_dataloader</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">ReproducibleBatchSampler</span><span class="p">(</span><span class="n">batch_sampler</span><span class="p">)</span>
-                    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_setup_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;Internal error, self.state.dataloader is None. Please, file an issue if you encounter this error.&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">iteration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_iteration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span>
 
         <span class="c1"># Below we define initial counter value for _run_once_on_dataset to measure a single epoch</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">iteration</span> <span class="o">%=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_from_iteration</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">],</span> <span class="n">iteration</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># following is unsafe for IterableDatasets</span>
-                <span class="n">iteration</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">batch_sampler</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="c1"># batch sampler is ReproducibleBatchSampler</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">batch_sampler</span><span class="o">.</span><span class="n">start_iteration</span> <span class="o">=</span> <span class="n">iteration</span>
-            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-                <span class="c1"># Probably we can do nothing with DataLoader built upon IterableDatasets</span>
-                <span class="k">pass</span>
-            <span class="n">data_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
-                <span class="n">iteration</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="n">data_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">while</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="n">iteration</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="nb">next</span><span class="p">(</span><span class="n">data_iter</span><span class="p">)</span>
-                    <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-                    <span class="n">data_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">data_iter</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span> <span class="o">+</span> <span class="n">epoch</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span> <span class="o">+</span> <span class="n">epoch</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span> <span class="o">+</span> <span class="n">epoch</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">setup_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># seed value should be related to input data iterator length -&gt; iteration at data iterator restart</span>
-        <span class="c1"># - seed can not be epoch because during a single epoch we can have multiple `_dataloader_len`</span>
-        <span class="c1"># - seed can not be iteration because when resuming from iteration we need to set the seed from the start of the</span>
-        <span class="c1">#   dataloader and then rewind to required iteration</span>
-        <span class="n">le</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">//</span> <span class="n">le</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">_internal_run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_timers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">STARTED</span><span class="p">)</span>
-            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span><span class="p">:</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_done</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_STARTED</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_setup_engine</span><span class="p">()</span>
 
-                <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_once_on_dataset</span><span class="p">()</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Epoch[</span><span class="si">%s</span><span class="s2">] Complete. Time taken: </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span><span class="p">)</span>
+                <span class="n">time_taken</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_once_on_dataset</span><span class="p">()</span>
+                <span class="c1"># time is available for handlers but must be update after fire</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_taken</span>
+                <span class="n">handlers_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">TERMINATE</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
+                <span class="n">time_taken</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">handlers_start_time</span>
+                <span class="c1"># update time wrt handlers</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_taken</span>
+                <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span> <span class="o">=</span> <span class="n">_to_hours_mins_secs</span><span class="p">(</span><span class="n">time_taken</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;Epoch[</span><span class="si">%s</span><span class="s2">] Complete. Time taken: </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span><span class="p">)</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span><span class="p">:</span>
                     <span class="k">break</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
             <span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="c1"># time is available for handlers but must be update after fire</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_taken</span>
+            <span class="n">handlers_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
+            <span class="n">time_taken</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">handlers_start_time</span>
+            <span class="c1"># update time wrt handlers</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_taken</span>
             <span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span> <span class="o">=</span> <span class="n">_to_hours_mins_secs</span><span class="p">(</span><span class="n">time_taken</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Engine run complete. Time taken </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Engine run complete. Time taken: </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">mins</span><span class="p">,</span> <span class="n">secs</span><span class="p">))</span>
 
         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Engine run is terminating due to exception: </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_len</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+
+    <span class="k">def</span> <span class="nf">_run_once_on_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># We need to setup iter_counter &gt; 0 if we resume from an iteration</span>
+        <span class="n">iter_counter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_iter</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">should_exit</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Internal error, self._dataloader_iter is None. Please, file an issue if you encounter this error.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Internal error, self.state.dataloader is None. Please, file an issue if you encounter this error.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Avoid Events.GET_BATCH_STARTED triggered twice when data iter is restarted</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_event_name</span> <span class="o">!=</span> <span class="n">Events</span><span class="o">.</span><span class="n">DATALOADER_STOP_ITERATION</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">GET_BATCH_STARTED</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataloader_iter</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">GET_BATCH_COMPLETED</span><span class="p">)</span>
+                    <span class="n">iter_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">should_exit</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="c1"># Define self.state.epoch_length if it is not yet set</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># Define epoch length and stop the epoch</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">=</span> <span class="n">iter_counter</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_iters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+                    <span class="c1"># Should exit while loop if we can not iterate</span>
+                    <span class="k">if</span> <span class="n">should_exit</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_done</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
+                            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                                <span class="s2">&quot;Data iterator can not provide data anymore but required total number of &quot;</span>
+                                <span class="s2">&quot;iterations to run is not reached. &quot;</span>
+                                <span class="s2">&quot;Current iteration: </span><span class="si">{}</span><span class="s2"> vs Total iterations to run : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span>  <span class="c1"># type: ignore[operator]</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="k">break</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">DATALOADER_STOP_ITERATION</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span>
+
+                    <span class="n">should_exit</span> <span class="o">=</span> <span class="kc">True</span>
+
+                    <span class="k">continue</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">)</span>
+
+                <span class="c1"># TODO: remove refs on batch to avoid high mem consumption ? -&gt; need verification</span>
+                <span class="c1"># self.state.batch = None</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fire_event</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">TERMINATE_SINGLE_EPOCH</span><span class="p">,</span> <span class="n">iter_counter</span><span class="o">=</span><span class="n">iter_counter</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate_single_epoch</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">iter_counter</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_iters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_iters</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">should_terminate</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Current run is terminating due to exception: </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span></div>
 </pre></div>
 
              </article>
@@ -1009,7 +1169,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -1038,11 +1198,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../../../_static/jquery.js"></script>
-         <script type="text/javascript" src="../../../_static/underscore.js"></script>
-         <script type="text/javascript" src="../../../_static/doctools.js"></script>
-         <script type="text/javascript" src="../../../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../../../_static/jquery.js"></script>
+         <script src="../../../_static/underscore.js"></script>
+         <script src="../../../_static/doctools.js"></script>
+         <script src="../../../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -1089,14 +1249,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -1179,7 +1339,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

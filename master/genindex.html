@@ -1,7 +1,6 @@
 
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -14,6 +13,8 @@
   
 
   
+  
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
   
   
   
@@ -31,6 +32,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
 
@@ -60,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="concepts.html">Concepts</a>
+            <a href="quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="quickstart.html">Quickstart</a>
+            <a href="concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -84,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -115,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -145,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 </ul>
@@ -155,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">ignite.utils</a></li>
 </ul>
@@ -163,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -261,7 +276,8 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
@@ -270,6 +286,7 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -283,12 +300,22 @@
  | <a href="#W"><strong>W</strong></a>
  
 </div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="handlers.html#ignite.handlers.checkpoint.BaseSaveHandler.__call__">__call__() (ignite.handlers.checkpoint.BaseSaveHandler method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="metrics.html#ignite.metrics.Accuracy">Accuracy (class in ignite.metrics)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.add_event_handler">add_event_handler() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.add_event_handler">[1]</a>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.add_early_stopping_by_val_score">add_early_stopping_by_val_score() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="engine.html#ignite.engine.engine.Engine.add_event_handler">add_event_handler() (ignite.engine.engine.Engine method)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.GradsScalarHandler.add_scalar">add_scalar() (ignite.contrib.handlers.visdom_logger.GradsScalarHandler method)</a>
 
@@ -300,15 +327,19 @@
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.WeightsScalarHandler.add_scalar">(ignite.contrib.handlers.visdom_logger.WeightsScalarHandler method)</a>
 </li>
       </ul></li>
+      <li><a href="distributed.html#ignite.distributed.utils.all_gather">all_gather() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.all_reduce">all_reduce() (in module ignite.distributed.utils)</a>
+</li>
       <li><a href="utils.html#ignite.utils.apply_to_tensor">apply_to_tensor() (in module ignite.utils)</a>
 </li>
       <li><a href="utils.html#ignite.utils.apply_to_type">apply_to_type() (in module ignite.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach">attach() (ignite.contrib.handlers.mlflow_logger.MLflowLogger method)</a>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.lr_finder.FastaiLRFinder.attach">attach() (ignite.contrib.handlers.lr_finder.FastaiLRFinder method)</a>
 
       <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach">(ignite.contrib.handlers.mlflow_logger.MLflowLogger method)</a>
+</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach">(ignite.contrib.handlers.neptune_logger.NeptuneLogger method)</a>
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach">(ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger method)</a>
@@ -317,11 +348,63 @@
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.tqdm_logger.ProgressBar.attach">(ignite.contrib.handlers.tqdm_logger.ProgressBar method)</a>
 </li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.attach">(ignite.contrib.handlers.trains_logger.TrainsLogger method)</a>
+</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach">(ignite.contrib.handlers.visdom_logger.VisdomLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.WandBLogger.attach">(ignite.contrib.handlers.wandb_logger.WandBLogger method)</a>
+</li>
+        <li><a href="contrib/metrics.html#ignite.contrib.metrics.GpuInfo.attach">(ignite.contrib.metrics.GpuInfo method)</a>
 </li>
         <li><a href="handlers.html#ignite.handlers.Timer.attach">(ignite.handlers.Timer method)</a>
 </li>
+        <li><a href="metrics.html#ignite.metrics.Metric.attach">(ignite.metrics.Metric method)</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach_opt_params_handler">attach_opt_params_handler() (ignite.contrib.handlers.mlflow_logger.MLflowLogger method)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach_opt_params_handler">(ignite.contrib.handlers.neptune_logger.NeptuneLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach_opt_params_handler">(ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach_opt_params_handler">(ignite.contrib.handlers.tensorboard_logger.TensorboardLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.tqdm_logger.ProgressBar.attach_opt_params_handler">(ignite.contrib.handlers.tqdm_logger.ProgressBar method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.attach_opt_params_handler">(ignite.contrib.handlers.trains_logger.TrainsLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach_opt_params_handler">(ignite.contrib.handlers.visdom_logger.VisdomLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.WandBLogger.attach_opt_params_handler">(ignite.contrib.handlers.wandb_logger.WandBLogger method)</a>
+</li>
+      </ul></li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach_output_handler">attach_output_handler() (ignite.contrib.handlers.mlflow_logger.MLflowLogger method)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach_output_handler">(ignite.contrib.handlers.neptune_logger.NeptuneLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach_output_handler">(ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach_output_handler">(ignite.contrib.handlers.tensorboard_logger.TensorboardLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.attach_output_handler">(ignite.contrib.handlers.trains_logger.TrainsLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach_output_handler">(ignite.contrib.handlers.visdom_logger.VisdomLogger method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.WandBLogger.attach_output_handler">(ignite.contrib.handlers.wandb_logger.WandBLogger method)</a>
+</li>
+      </ul></li>
+      <li><a href="distributed.html#ignite.distributed.auto.auto_dataloader">auto_dataloader() (in module ignite.distributed.auto)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.auto.auto_model">auto_model() (in module ignite.distributed.auto)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.auto.auto_optim">auto_optim() (in module ignite.distributed.auto)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.available_backends">available_backends() (in module ignite.distributed.utils)</a>
+</li>
       <li><a href="metrics.html#ignite.metrics.Average">Average (class in ignite.metrics)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.AveragePrecision">AveragePrecision (class in ignite.contrib.metrics)</a>
@@ -332,7 +415,23 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="distributed.html#ignite.distributed.utils.backend">backend() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.barrier">barrier() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="handlers.html#ignite.handlers.checkpoint.BaseSaveHandler">BaseSaveHandler (class in ignite.handlers.checkpoint)</a>
+</li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler">BasicTimeProfiler (class in ignite.contrib.handlers.time_profilers)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="metrics.html#ignite.metrics.BatchFiltered">BatchFiltered (class in ignite.metrics)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.BatchWise">BatchWise (class in ignite.metrics)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.broadcast">broadcast() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.bypass_mode">bypass_mode() (ignite.contrib.handlers.trains_logger.TrainsLogger class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -340,14 +439,18 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.CallableEventWithFilter">CallableEventWithFilter (class in ignite.engine)</a>
+      <li><a href="engine.html#ignite.engine.events.CallableEventWithFilter">CallableEventWithFilter (class in ignite.engine.events)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.CanberraMetric">CanberraMetric (class in ignite.contrib.metrics.regression)</a>
 </li>
       <li><a href="handlers.html#ignite.handlers.Checkpoint">Checkpoint (class in ignite.handlers)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events.COMPLETED">COMPLETED (ignite.engine.Events attribute)</a>
+      <li><a href="contrib/metrics.html#ignite.contrib.metrics.GpuInfo.completed">completed() (ignite.contrib.metrics.GpuInfo method)</a>
+
+      <ul>
+        <li><a href="metrics.html#ignite.metrics.Metric.completed">(ignite.metrics.Metric method)</a>
 </li>
+      </ul></li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.GpuInfo.compute">compute() (ignite.contrib.metrics.GpuInfo method)</a>
 
       <ul>
@@ -356,10 +459,10 @@
       </ul></li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler">ConcatScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
 </li>
-      <li><a href="metrics.html#ignite.metrics.ConfusionMatrix">ConfusionMatrix (class in ignite.metrics)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="metrics.html#ignite.metrics.ConfusionMatrix">ConfusionMatrix (class in ignite.metrics)</a>
+</li>
       <li><a href="utils.html#ignite.utils.convert_tensor">convert_tensor() (in module ignite.utils)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.CosineAnnealingScheduler">CosineAnnealingScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
@@ -368,11 +471,9 @@
 </li>
       <li><a href="engine.html#ignite.engine.create_supervised_evaluator">create_supervised_evaluator() (in module ignite.engine)</a>
 </li>
-      <li><a href="contrib/engines.html#ignite.contrib.engines.create_supervised_tbptt_trainer">create_supervised_tbptt_trainer() (in module ignite.contrib.engines)</a>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.tbptt.create_supervised_tbptt_trainer">create_supervised_tbptt_trainer() (in module ignite.contrib.engines.tbptt)</a>
 </li>
       <li><a href="engine.html#ignite.engine.create_supervised_trainer">create_supervised_trainer() (in module ignite.engine)</a>
-</li>
-      <li><a href="contrib/handlers.html#ignite.contrib.handlers.custom_events.CustomPeriodicEvent">CustomPeriodicEvent (class in ignite.contrib.handlers.custom_events)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.CyclicalScheduler">CyclicalScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
 </li>
@@ -382,11 +483,19 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="metrics.html#ignite.metrics.DiceCoefficient">DiceCoefficient() (in module ignite.metrics)</a>
+      <li><a href="metrics.html#ignite.metrics.Metric.detach">detach() (ignite.metrics.Metric method)</a>
+</li>
+      <li><a href="engine.html#ignite.engine.deterministic.DeterministicEngine">DeterministicEngine (class in ignite.engine.deterministic)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.device">device() (in module ignite.distributed.utils)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="metrics.html#ignite.metrics.DiceCoefficient">DiceCoefficient() (in module ignite.metrics)</a>
+</li>
       <li><a href="handlers.html#ignite.handlers.DiskSaver">DiskSaver (class in ignite.handlers)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.auto.DistributedProxySampler">DistributedProxySampler (class in ignite.distributed.auto)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -396,21 +505,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="handlers.html#ignite.handlers.EarlyStopping">EarlyStopping (class in ignite.handlers)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine">Engine (class in ignite.engine)</a>, <a href="engine.html#ignite.engine.Engine">[1]</a>
+      <li><a href="engine.html#ignite.engine.engine.Engine">Engine (class in ignite.engine.engine)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events.EPOCH_COMPLETED">EPOCH_COMPLETED (ignite.engine.Events attribute)</a>
-</li>
-      <li><a href="engine.html#ignite.engine.Events.EPOCH_STARTED">EPOCH_STARTED (ignite.engine.Events attribute)</a>
+      <li><a href="metrics.html#ignite.metrics.EpochMetric">EpochMetric (class in ignite.metrics)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="metrics.html#ignite.metrics.EpochMetric">EpochMetric (class in ignite.metrics)</a>
+      <li><a href="metrics.html#ignite.metrics.EpochWise">EpochWise (class in ignite.metrics)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.EventEnum">EventEnum (class in ignite.engine)</a>
+      <li><a href="engine.html#ignite.engine.events.EventEnum">EventEnum (class in ignite.engine.events)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events">Events (class in ignite.engine)</a>, <a href="engine.html#ignite.engine.Events">[1]</a>
-</li>
-      <li><a href="engine.html#ignite.engine.Events.EXCEPTION_RAISED">EXCEPTION_RAISED (ignite.engine.Events attribute)</a>
+      <li><a href="engine.html#ignite.engine.events.Events">Events (class in ignite.engine.events)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -418,12 +523,16 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.lr_finder.FastaiLRFinder">FastaiLRFinder (class in ignite.contrib.handlers.lr_finder)</a>
+</li>
       <li><a href="metrics.html#ignite.metrics.Fbeta">Fbeta() (in module ignite.metrics)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.fire_event">fire_event() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.fire_event">[1]</a>
+      <li><a href="distributed.html#ignite.distributed.utils.finalize">finalize() (in module ignite.distributed.utils)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="engine.html#ignite.engine.engine.Engine.fire_event">fire_event() (ignite.engine.engine.Engine method)</a>
+</li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.FractionalAbsoluteError">FractionalAbsoluteError (class in ignite.contrib.metrics.regression)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.FractionalBias">FractionalBias (class in ignite.contrib.metrics.regression)</a>
@@ -434,33 +543,51 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.gen_save_best_models_by_val_score">gen_save_best_models_by_val_score() (in module ignite.contrib.engines.common)</a>
+</li>
       <li><a href="metrics.html#ignite.metrics.GeometricAverage">GeometricAverage (class in ignite.metrics)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.GeometricMeanAbsoluteError">GeometricMeanAbsoluteError (class in ignite.contrib.metrics.regression)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.GeometricMeanRelativeAbsoluteError">GeometricMeanRelativeAbsoluteError (class in ignite.contrib.metrics.regression)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events.GET_BATCH_COMPLETED">GET_BATCH_COMPLETED (ignite.engine.Events attribute)</a>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsSaver.get_local_copy">get_local_copy() (ignite.contrib.handlers.trains_logger.TrainsSaver method)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events.GET_BATCH_STARTED">GET_BATCH_STARTED (ignite.engine.Events attribute)</a>
+      <li><a href="distributed.html#ignite.distributed.utils.get_local_rank">get_local_rank() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.get_nnodes">get_nnodes() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.get_node_rank">get_node_rank() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.get_nproc_per_node">get_nproc_per_node() (in module ignite.distributed.utils)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.get_param">get_param() (ignite.contrib.handlers.param_scheduler.ConcatScheduler method)</a>
 
       <ul>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.CosineAnnealingScheduler.get_param">(ignite.contrib.handlers.param_scheduler.CosineAnnealingScheduler method)</a>
 </li>
-        <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler.get_param">(ignite.contrib.handlers.param_scheduler.LRScheduler method)</a>
-</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LinearCyclicalScheduler.get_param">(ignite.contrib.handlers.param_scheduler.LinearCyclicalScheduler method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler.get_param">(ignite.contrib.handlers.param_scheduler.LRScheduler method)</a>
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.get_param">(ignite.contrib.handlers.param_scheduler.ParamScheduler method)</a>
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.PiecewiseLinear.get_param">(ignite.contrib.handlers.param_scheduler.PiecewiseLinear method)</a>
 </li>
       </ul></li>
+      <li><a href="distributed.html#ignite.distributed.utils.get_rank">get_rank() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.lr_finder.FastaiLRFinder.get_results">get_results() (ignite.contrib.handlers.lr_finder.FastaiLRFinder method)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler.get_results">(ignite.contrib.handlers.time_profilers.BasicTimeProfiler method)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.HandlersTimeProfiler.get_results">(ignite.contrib.handlers.time_profilers.HandlersTimeProfiler method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler.get_results">get_results() (ignite.contrib.handlers.time_profilers.BasicTimeProfiler method)</a>
+      <li><a href="distributed.html#ignite.distributed.utils.get_world_size">get_world_size() (in module ignite.distributed.utils)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.global_step_from_engine">global_step_from_engine() (in module ignite.contrib.handlers.mlflow_logger)</a>
 
@@ -471,17 +598,29 @@
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.global_step_from_engine">(in module ignite.contrib.handlers.tensorboard_logger)</a>
 </li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.global_step_from_engine">(in module ignite.contrib.handlers.trains_logger)</a>
+</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.global_step_from_engine">(in module ignite.contrib.handlers.visdom_logger)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.global_step_from_engine">(in module ignite.contrib.handlers.wandb_logger)</a>
+</li>
+        <li><a href="handlers.html#ignite.handlers.global_step_from_engine">(in module ignite.handlers)</a>
 </li>
       </ul></li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.GpuInfo">GpuInfo (class in ignite.contrib.metrics)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.GradsHistHandler">GradsHistHandler (class in ignite.contrib.handlers.tensorboard_logger)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.GradsHistHandler">(class in ignite.contrib.handlers.trains_logger)</a>
 </li>
+      </ul></li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.GradsScalarHandler">GradsScalarHandler (class in ignite.contrib.handlers.neptune_logger)</a>
 
       <ul>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.GradsScalarHandler">(class in ignite.contrib.handlers.tensorboard_logger)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.GradsScalarHandler">(class in ignite.contrib.handlers.trains_logger)</a>
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.GradsScalarHandler">(class in ignite.contrib.handlers.visdom_logger)</a>
 </li>
@@ -492,7 +631,17 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.Engine.has_event_handler">has_event_handler() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.has_event_handler">[1]</a>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.HandlersTimeProfiler">HandlersTimeProfiler (class in ignite.contrib.handlers.time_profilers)</a>
+</li>
+      <li><a href="engine.html#ignite.engine.engine.Engine.has_event_handler">has_event_handler() (ignite.engine.engine.Engine method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="distributed.html#ignite.distributed.utils.has_native_dist_support">has_native_dist_support (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.has_xla_support">has_xla_support (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.hostname">hostname() (in module ignite.distributed.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -500,43 +649,177 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#module-ignite">ignite (module)</a>
+      <li>
+    ignite
+
+      <ul>
+        <li><a href="index.html#module-ignite">module</a>
 </li>
-      <li><a href="contrib/engines.html#module-ignite.contrib.engines">ignite.contrib.engines (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib
+
+      <ul>
+        <li><a href="index.html#module-ignite.contrib">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.custom_events">ignite.contrib.handlers.custom_events (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.engines.common
+
+      <ul>
+        <li><a href="contrib/engines.html#module-ignite.contrib.engines.common">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.lr_finder">ignite.contrib.handlers.lr_finder (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.engines.tbptt
+
+      <ul>
+        <li><a href="contrib/engines.html#module-ignite.contrib.engines.tbptt">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.mlflow_logger">ignite.contrib.handlers.mlflow_logger (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.lr_finder
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.lr_finder">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.neptune_logger">ignite.contrib.handlers.neptune_logger (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.mlflow_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.mlflow_logger">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.param_scheduler">ignite.contrib.handlers.param_scheduler (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.neptune_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.neptune_logger">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.polyaxon_logger">ignite.contrib.handlers.polyaxon_logger (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.param_scheduler
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.param_scheduler">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tensorboard_logger">ignite.contrib.handlers.tensorboard_logger (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.polyaxon_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.polyaxon_logger">module</a>
 </li>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.tensorboard_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tensorboard_logger">module</a>
+</li>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.time_profilers
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.time_profilers">module</a>
+</li>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.tqdm_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tqdm_logger">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.time_profilers">ignite.contrib.handlers.time_profilers (module)</a>
+      <li>
+    ignite.contrib.handlers.trains_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.trains_logger">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tqdm_logger">ignite.contrib.handlers.tqdm_logger (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.visdom_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.visdom_logger">module</a>
 </li>
-      <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.visdom_logger">ignite.contrib.handlers.visdom_logger (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.handlers.wandb_logger
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.wandb_logger">module</a>
 </li>
-      <li><a href="contrib/metrics.html#module-ignite.contrib.metrics">ignite.contrib.metrics (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.metrics
+
+      <ul>
+        <li><a href="contrib/metrics.html#module-ignite.contrib.metrics">module</a>
 </li>
-      <li><a href="engine.html#module-ignite.engine">ignite.engine (module)</a>
+      </ul></li>
+      <li>
+    ignite.contrib.metrics.regression
+
+      <ul>
+        <li><a href="contrib/metrics.html#module-ignite.contrib.metrics.regression">module</a>
 </li>
-      <li><a href="utils.html#module-ignite.utils">ignite.utils (module)</a>
+      </ul></li>
+      <li>
+    ignite.distributed.auto
+
+      <ul>
+        <li><a href="distributed.html#module-ignite.distributed.auto">module</a>
+</li>
+      </ul></li>
+      <li>
+    ignite.distributed.launcher
+
+      <ul>
+        <li><a href="distributed.html#module-ignite.distributed.launcher">module</a>
+</li>
+      </ul></li>
+      <li>
+    ignite.distributed.utils
+
+      <ul>
+        <li><a href="distributed.html#module-ignite.distributed.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    ignite.engine.deterministic
+
+      <ul>
+        <li><a href="engine.html#module-ignite.engine.deterministic">module</a>
+</li>
+      </ul></li>
+      <li>
+    ignite.utils
+
+      <ul>
+        <li><a href="utils.html#module-ignite.utils">module</a>
+</li>
+      </ul></li>
+      <li><a href="distributed.html#ignite.distributed.utils.initialize">initialize() (in module ignite.distributed.utils)</a>
 </li>
       <li><a href="metrics.html#ignite.metrics.IoU">IoU() (in module ignite.metrics)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events.ITERATION_COMPLETED">ITERATION_COMPLETED (ignite.engine.Events attribute)</a>
+      <li><a href="metrics.html#ignite.metrics.Metric.is_attached">is_attached() (ignite.metrics.Metric method)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Events.ITERATION_STARTED">ITERATION_STARTED (ignite.engine.Events attribute)</a>
+      <li><a href="metrics.html#ignite.metrics.Metric.iteration_completed">iteration_completed() (ignite.metrics.Metric method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="engine.html#ignite.engine.deterministic.keep_random_state">keep_random_state() (in module ignite.engine.deterministic)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -544,9 +827,11 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.Engine.last_event_name">last_event_name (ignite.engine.Engine attribute)</a>, <a href="engine.html#ignite.engine.Engine.last_event_name">[1]</a>
+      <li><a href="engine.html#ignite.engine.engine.Engine.last_event_name">last_event_name (ignite.engine.engine.Engine attribute)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LinearCyclicalScheduler">LinearCyclicalScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
+</li>
+      <li><a href="handlers.html#ignite.handlers.Checkpoint.load_objects">load_objects() (ignite.handlers.Checkpoint static method)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.load_state_dict">load_state_dict() (ignite.contrib.handlers.param_scheduler.ConcatScheduler method)</a>
 
@@ -555,7 +840,7 @@
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.load_state_dict">(ignite.contrib.handlers.param_scheduler.ParamScheduler method)</a>
 </li>
-        <li><a href="engine.html#ignite.engine.Engine.load_state_dict">(ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.load_state_dict">[1]</a>
+        <li><a href="engine.html#ignite.engine.engine.Engine.load_state_dict">(ignite.engine.engine.Engine method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -563,6 +848,8 @@
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.tqdm_logger.ProgressBar.log_message">log_message() (ignite.contrib.handlers.tqdm_logger.ProgressBar method)</a>
 </li>
       <li><a href="metrics.html#ignite.metrics.Loss">Loss (class in ignite.metrics)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.lr_finder.FastaiLRFinder.lr_suggestion">lr_suggestion() (ignite.contrib.handlers.lr_finder.FastaiLRFinder method)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler">LRScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
 </li>
@@ -573,6 +860,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.ManhattanDistance">ManhattanDistance (class in ignite.contrib.metrics.regression)</a>
+</li>
+      <li><a href="utils.html#ignite.utils.manual_seed">manual_seed() (in module ignite.utils)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.MaximumAbsoluteError">MaximumAbsoluteError (class in ignite.contrib.metrics.regression)</a>
 </li>
@@ -588,8 +877,6 @@
 </li>
       <li><a href="metrics.html#ignite.metrics.MeanSquaredError">MeanSquaredError (class in ignite.metrics)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.MedianAbsoluteError">MedianAbsoluteError (class in ignite.contrib.metrics.regression)</a>
 </li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.MedianAbsolutePercentageError">MedianAbsolutePercentageError (class in ignite.contrib.metrics.regression)</a>
@@ -600,23 +887,78 @@
 </li>
       <li><a href="metrics.html#ignite.metrics.MetricsLambda">MetricsLambda (class in ignite.metrics)</a>
 </li>
+      <li><a href="metrics.html#ignite.metrics.MetricUsage">MetricUsage (class in ignite.metrics)</a>
+</li>
       <li><a href="metrics.html#ignite.metrics.mIoU">mIoU() (in module ignite.metrics)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.MLflowLogger">MLflowLogger (class in ignite.contrib.handlers.mlflow_logger)</a>
 </li>
+      <li><a href="distributed.html#ignite.distributed.utils.model_name">model_name() (in module ignite.distributed.utils)</a>
+</li>
       <li><a href="handlers.html#ignite.handlers.ModelCheckpoint">ModelCheckpoint (class in ignite.handlers)</a>
 </li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="index.html#module-ignite">ignite</a>
+</li>
+        <li><a href="index.html#module-ignite.contrib">ignite.contrib</a>
+</li>
+        <li><a href="contrib/engines.html#module-ignite.contrib.engines.common">ignite.contrib.engines.common</a>
+</li>
+        <li><a href="contrib/engines.html#module-ignite.contrib.engines.tbptt">ignite.contrib.engines.tbptt</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.lr_finder">ignite.contrib.handlers.lr_finder</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.mlflow_logger">ignite.contrib.handlers.mlflow_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.neptune_logger">ignite.contrib.handlers.neptune_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.param_scheduler">ignite.contrib.handlers.param_scheduler</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.polyaxon_logger">ignite.contrib.handlers.polyaxon_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tensorboard_logger">ignite.contrib.handlers.tensorboard_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.time_profilers">ignite.contrib.handlers.time_profilers</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tqdm_logger">ignite.contrib.handlers.tqdm_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.trains_logger">ignite.contrib.handlers.trains_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.visdom_logger">ignite.contrib.handlers.visdom_logger</a>
+</li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.wandb_logger">ignite.contrib.handlers.wandb_logger</a>
+</li>
+        <li><a href="contrib/metrics.html#module-ignite.contrib.metrics">ignite.contrib.metrics</a>
+</li>
+        <li><a href="contrib/metrics.html#module-ignite.contrib.metrics.regression">ignite.contrib.metrics.regression</a>
+</li>
+        <li><a href="distributed.html#module-ignite.distributed.auto">ignite.distributed.auto</a>
+</li>
+        <li><a href="distributed.html#module-ignite.distributed.launcher">ignite.distributed.launcher</a>
+</li>
+        <li><a href="distributed.html#module-ignite.distributed.utils">ignite.distributed.utils</a>
+</li>
+        <li><a href="engine.html#module-ignite.engine.deterministic">ignite.engine.deterministic</a>
+</li>
+        <li><a href="utils.html#module-ignite.utils">ignite.utils</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.CallableEventWithFilter.name">name (ignite.engine.CallableEventWithFilter attribute)</a>
+      <li><a href="engine.html#ignite.engine.events.CallableEventWithFilter.name">name (ignite.engine.events.CallableEventWithFilter attribute)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneLogger">NeptuneLogger (class in ignite.contrib.handlers.neptune_logger)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneLogger">NeptuneLogger (class in ignite.contrib.handlers.neptune_logger)</a>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneSaver">NeptuneSaver (class in ignite.contrib.handlers.neptune_logger)</a>
 </li>
       <li><a href="exceptions.html#ignite.exceptions.NotComputableError">NotComputableError (class in ignite.exceptions)</a>
 </li>
@@ -626,7 +968,9 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.Engine.on">on() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.on">[1]</a>
+      <li><a href="engine.html#ignite.engine.engine.Engine.on">on() (ignite.engine.engine.Engine method)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.one_rank_only">one_rank_only() (in module ignite.distributed.utils)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.mlflow_logger.OptimizerParamsHandler">OptimizerParamsHandler (class in ignite.contrib.handlers.mlflow_logger)</a>
 
@@ -637,7 +981,11 @@
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.OptimizerParamsHandler">(class in ignite.contrib.handlers.tensorboard_logger)</a>
 </li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.OptimizerParamsHandler">(class in ignite.contrib.handlers.trains_logger)</a>
+</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.OptimizerParamsHandler">(class in ignite.contrib.handlers.visdom_logger)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.OptimizerParamsHandler">(class in ignite.contrib.handlers.wandb_logger)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -651,7 +999,11 @@
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.OutputHandler">(class in ignite.contrib.handlers.tensorboard_logger)</a>
 </li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.OutputHandler">(class in ignite.contrib.handlers.trains_logger)</a>
+</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.OutputHandler">(class in ignite.contrib.handlers.visdom_logger)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.OutputHandler">(class in ignite.contrib.handlers.wandb_logger)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -660,11 +1012,15 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="distributed.html#ignite.distributed.launcher.Parallel">Parallel (class in ignite.distributed.launcher)</a>
+</li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler">ParamGroupScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler">ParamScheduler (class in ignite.contrib.handlers.param_scheduler)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.PiecewiseLinear">PiecewiseLinear (class in ignite.contrib.handlers.param_scheduler)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.lr_finder.FastaiLRFinder.plot">plot() (ignite.contrib.handlers.lr_finder.FastaiLRFinder method)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.plot_values">plot_values() (ignite.contrib.handlers.param_scheduler.ParamScheduler class method)</a>
 </li>
@@ -674,8 +1030,14 @@
 </li>
       <li><a href="metrics.html#ignite.metrics.Precision">Precision (class in ignite.metrics)</a>
 </li>
-      <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler.print_results">print_results() (ignite.contrib.handlers.time_profilers.BasicTimeProfiler static method)</a>
+      <li><a href="contrib/metrics.html#ignite.contrib.metrics.PrecisionRecallCurve">PrecisionRecallCurve (class in ignite.contrib.metrics)</a>
 </li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler.print_results">print_results() (ignite.contrib.handlers.time_profilers.BasicTimeProfiler static method)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.HandlersTimeProfiler.print_results">(ignite.contrib.handlers.time_profilers.HandlersTimeProfiler static method)</a>
+</li>
+      </ul></li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.tqdm_logger.ProgressBar">ProgressBar (class in ignite.contrib.handlers.tqdm_logger)</a>
 </li>
   </ul></td>
@@ -688,16 +1050,30 @@
 </li>
       <li><a href="metrics.html#ignite.metrics.Recall">Recall (class in ignite.metrics)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.register_events">register_events() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.register_events">[1]</a>
+      <li><a href="engine.html#ignite.engine.engine.Engine.register_events">register_events() (ignite.engine.engine.Engine method)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.engine.RemovableEventHandle">RemovableEventHandle (class in ignite.engine.engine)</a>
+      <li><a href="metrics.html#ignite.metrics.metric.reinit__is_reduced">reinit__is_reduced() (in module ignite.metrics.metric)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.engine.RemovableEventHandle.remove">remove() (ignite.engine.engine.RemovableEventHandle method)</a>
+      <li><a href="engine.html#ignite.engine.events.RemovableEventHandle">RemovableEventHandle (class in ignite.engine.events)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.remove_event_handler">remove_event_handler() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.remove_event_handler">[1]</a>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.NeptuneSaver.remove">remove() (ignite.contrib.handlers.neptune_logger.NeptuneSaver method)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsSaver.remove">(ignite.contrib.handlers.trains_logger.TrainsSaver method)</a>
+</li>
+        <li><a href="engine.html#ignite.engine.events.RemovableEventHandle.remove">(ignite.engine.events.RemovableEventHandle method)</a>
+</li>
+        <li><a href="handlers.html#ignite.handlers.checkpoint.BaseSaveHandler.remove">(ignite.handlers.checkpoint.BaseSaveHandler method)</a>
+</li>
+      </ul></li>
+      <li><a href="engine.html#ignite.engine.engine.Engine.remove_event_handler">remove_event_handler() (ignite.engine.engine.Engine method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="engine.html#ignite.engine.deterministic.ReproducibleBatchSampler">ReproducibleBatchSampler (class in ignite.engine.deterministic)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.Metric.required_output_keys">required_output_keys (ignite.metrics.Metric attribute)</a>
+</li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.GpuInfo.reset">reset() (ignite.contrib.metrics.GpuInfo method)</a>
 
       <ul>
@@ -706,10 +1082,16 @@
       </ul></li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.ROC_AUC">ROC_AUC (class in ignite.contrib.metrics)</a>
 </li>
+      <li><a href="contrib/metrics.html#ignite.contrib.metrics.RocCurve">RocCurve (class in ignite.contrib.metrics)</a>
+</li>
       <li><a href="metrics.html#ignite.metrics.RootMeanSquaredError">RootMeanSquaredError (class in ignite.metrics)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.run">run() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.run">[1]</a>
+      <li><a href="distributed.html#ignite.distributed.launcher.Parallel.run">run() (ignite.distributed.launcher.Parallel method)</a>
+
+      <ul>
+        <li><a href="engine.html#ignite.engine.engine.Engine.run">(ignite.engine.engine.Engine method)</a>
 </li>
+      </ul></li>
       <li><a href="handlers.html#ignite.handlers.Timer.running">running (ignite.handlers.Timer attribute)</a>
 </li>
       <li><a href="metrics.html#ignite.metrics.RunningAverage">RunningAverage (class in ignite.metrics)</a>
@@ -720,23 +1102,57 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.save_best_model_by_val_score">save_best_model_by_val_score() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.set_bypass_mode">set_bypass_mode() (ignite.contrib.handlers.trains_logger.TrainsLogger class method)</a>
+</li>
+      <li><a href="engine.html#ignite.engine.engine.Engine.set_data">set_data() (ignite.engine.engine.Engine method)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.set_local_rank">set_local_rank() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_common_distrib_training_handlers">setup_common_distrib_training_handlers() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_common_training_handlers">setup_common_training_handlers() (in module ignite.contrib.engines.common)</a>
+</li>
       <li><a href="utils.html#ignite.utils.setup_logger">setup_logger() (in module ignite.utils)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_mlflow_logging">setup_mlflow_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_neptune_logging">setup_neptune_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_plx_logging">setup_plx_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_tb_logging">setup_tb_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_trains_logging">setup_trains_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_visdom_logging">setup_visdom_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.common.setup_wandb_logging">setup_wandb_logging() (in module ignite.contrib.engines.common)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.show_config">show_config() (in module ignite.distributed.utils)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.simulate_values">simulate_values() (ignite.contrib.handlers.param_scheduler.ConcatScheduler class method)</a>
 
       <ul>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.LRScheduler.simulate_values">(ignite.contrib.handlers.param_scheduler.LRScheduler class method)</a>
 </li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamGroupScheduler.simulate_values">(ignite.contrib.handlers.param_scheduler.ParamGroupScheduler class method)</a>
+</li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.simulate_values">(ignite.contrib.handlers.param_scheduler.ParamScheduler class method)</a>
 </li>
       </ul></li>
-      <li><a href="engine.html#ignite.engine.Events.STARTED">STARTED (ignite.engine.Events attribute)</a>
-</li>
-      <li><a href="engine.html#ignite.engine.State">State (class in ignite.engine)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.Engine.state">state (ignite.engine.Engine attribute)</a>, <a href="engine.html#ignite.engine.Engine.state">[1]</a>
+      <li><a href="distributed.html#ignite.distributed.utils.spawn">spawn() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.SSIM">SSIM (class in ignite.metrics)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.Metric.started">started() (ignite.metrics.Metric method)</a>
+</li>
+      <li><a href="engine.html#ignite.engine.events.State">State (class in ignite.engine.events)</a>
+</li>
+      <li><a href="engine.html#ignite.engine.engine.Engine.state">state (ignite.engine.engine.Engine attribute)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ConcatScheduler.state_dict">state_dict() (ignite.contrib.handlers.param_scheduler.ConcatScheduler method)</a>
 
@@ -745,10 +1161,16 @@
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.param_scheduler.ParamScheduler.state_dict">(ignite.contrib.handlers.param_scheduler.ParamScheduler method)</a>
 </li>
-        <li><a href="engine.html#ignite.engine.Engine.state_dict">(ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.state_dict">[1]</a>
+        <li><a href="engine.html#ignite.engine.deterministic.DeterministicEngine.state_dict">(ignite.engine.deterministic.DeterministicEngine method)</a>
+</li>
+        <li><a href="engine.html#ignite.engine.engine.Engine.state_dict">(ignite.engine.engine.Engine method)</a>
 </li>
       </ul></li>
       <li><a href="handlers.html#ignite.handlers.Timer.step_count">step_count (ignite.handlers.Timer attribute)</a>
+</li>
+      <li><a href="distributed.html#ignite.distributed.utils.sync">sync() (in module ignite.distributed.utils)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.metric.sync_all_reduce">sync_all_reduce() (in module ignite.metrics.metric)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -756,22 +1178,18 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contrib/engines.html#ignite.contrib.engines.Tbptt_Events">Tbptt_Events (class in ignite.contrib.engines)</a>
+      <li><a href="contrib/engines.html#ignite.contrib.engines.tbptt.Tbptt_Events">Tbptt_Events (class in ignite.contrib.engines.tbptt)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger">TensorboardLogger (class in ignite.contrib.handlers.tensorboard_logger)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.terminate">terminate() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.terminate">[1]</a>
+      <li><a href="engine.html#ignite.engine.engine.Engine.terminate">terminate() (ignite.engine.engine.Engine method)</a>
 </li>
-      <li><a href="engine.html#ignite.engine.Engine.terminate_epoch">terminate_epoch() (ignite.engine.Engine method)</a>, <a href="engine.html#ignite.engine.Engine.terminate_epoch">[1]</a>
+      <li><a href="engine.html#ignite.engine.engine.Engine.terminate_epoch">terminate_epoch() (ignite.engine.engine.Engine method)</a>
 </li>
       <li><a href="handlers.html#ignite.handlers.TerminateOnNan">TerminateOnNan (class in ignite.handlers)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="contrib/engines.html#ignite.contrib.engines.Tbptt_Events.TIME_ITERATION_COMPLETED">TIME_ITERATION_COMPLETED (ignite.contrib.engines.Tbptt_Events attribute)</a>
-</li>
-      <li><a href="contrib/engines.html#ignite.contrib.engines.Tbptt_Events.TIME_ITERATION_STARTED">TIME_ITERATION_STARTED (ignite.contrib.engines.Tbptt_Events attribute)</a>
-</li>
       <li><a href="handlers.html#ignite.handlers.Timer">Timer (class in ignite.handlers)</a>
 </li>
       <li><a href="utils.html#ignite.utils.to_onehot">to_onehot() (in module ignite.utils)</a>
@@ -779,6 +1197,10 @@
       <li><a href="metrics.html#ignite.metrics.TopKCategoricalAccuracy">TopKCategoricalAccuracy (class in ignite.metrics)</a>
 </li>
       <li><a href="handlers.html#ignite.handlers.Timer.total">total (ignite.handlers.Timer attribute)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger">TrainsLogger (class in ignite.contrib.handlers.trains_logger)</a>
+</li>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsSaver">TrainsSaver (class in ignite.contrib.handlers.trains_logger)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -793,12 +1215,22 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="engine.html#ignite.engine.deterministic.update_dataloader">update_dataloader() (in module ignite.engine.deterministic)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.BatchWise.usage_name">usage_name (ignite.metrics.BatchWise attribute)</a>
+
+      <ul>
+        <li><a href="metrics.html#ignite.metrics.EpochWise.usage_name">(ignite.metrics.EpochWise attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="engine.html#ignite.engine.CallableEventWithFilter.value">value (ignite.engine.CallableEventWithFilter attribute)</a>
+      <li><a href="engine.html#ignite.engine.events.CallableEventWithFilter.value">value (ignite.engine.events.CallableEventWithFilter attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -812,14 +1244,22 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.wandb_logger.WandBLogger">WandBLogger (class in ignite.contrib.handlers.wandb_logger)</a>
+</li>
       <li><a href="contrib/metrics.html#ignite.contrib.metrics.regression.WaveHedgesDistance">WaveHedgesDistance (class in ignite.contrib.metrics.regression)</a>
 </li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.WeightsHistHandler">WeightsHistHandler (class in ignite.contrib.handlers.tensorboard_logger)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.WeightsHistHandler">(class in ignite.contrib.handlers.trains_logger)</a>
 </li>
+      </ul></li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.neptune_logger.WeightsScalarHandler">WeightsScalarHandler (class in ignite.contrib.handlers.neptune_logger)</a>
 
       <ul>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.tensorboard_logger.WeightsScalarHandler">(class in ignite.contrib.handlers.tensorboard_logger)</a>
+</li>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.trains_logger.WeightsScalarHandler">(class in ignite.contrib.handlers.trains_logger)</a>
 </li>
         <li><a href="contrib/handlers.html#ignite.contrib.handlers.visdom_logger.WeightsScalarHandler">(class in ignite.contrib.handlers.visdom_logger)</a>
 </li>
@@ -827,7 +1267,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler.write_results">write_results() (ignite.contrib.handlers.time_profilers.BasicTimeProfiler method)</a>
+
+      <ul>
+        <li><a href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.HandlersTimeProfiler.write_results">(ignite.contrib.handlers.time_profilers.HandlersTimeProfiler method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -847,7 +1291,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -876,11 +1320,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -927,14 +1371,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -1017,7 +1461,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlfaq.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ignite.engine" href="engine.html" />
@@ -61,17 +64,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="concepts.html">Concepts</a>
+            <a href="quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="quickstart.html">Quickstart</a>
+            <a href="concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +90,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -116,7 +126,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -146,8 +156,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a></li>
 </ul>
@@ -156,6 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">ignite.utils</a></li>
 </ul>
@@ -164,6 +175,11 @@
 <li class="toctree-l1"><a class="reference internal" href="contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -279,7 +295,7 @@
 </div>
 <p>Trainer engine has its own loop and runs multiple times over the training dataset. When a training epoch is over we
 launch evaluator engine and run a single time of over the validation dataset. <strong>Evaluator has its own loop</strong>. Therefore,
-it runs only one epoch and <a class="reference internal" href="engine.html#ignite.engine.Events.EPOCH_COMPLETED" title="ignite.engine.Events.EPOCH_COMPLETED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">EPOCH_COMPLETED</span></code></a> is equivalent to <a class="reference internal" href="engine.html#ignite.engine.Events.COMPLETED" title="ignite.engine.Events.COMPLETED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">COMPLETED</span></code></a>.
+it runs only one epoch and <cite>Events.EPOCH_COMPLETED</cite> is equivalent to <cite>Events.COMPLETED</cite>.
 As a consequence, the following code is correct too:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">handler</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">score_function</span><span class="o">=</span><span class="n">score_function</span><span class="p">,</span> <span class="n">trainer</span><span class="o">=</span><span class="n">trainer</span><span class="p">)</span>
 <span class="n">evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
@@ -288,13 +304,15 @@ As a consequence, the following code is correct too:</p>
 <span class="n">evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">best_model_saver</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;mymodel&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">})</span>
 </pre></div>
 </div>
-<p>More details <a class="reference external" href="concepts.html#events-and-handlers">Events and Handlers</a>.</p>
+<p>More details <a class="reference internal" href="concepts.html#events-and-handlers"><span class="std std-ref">Events and Handlers</span></a>.</p>
 </div>
 <div class="section" id="creating-custom-events-based-on-forward-backward-pass">
 <h2>Creating Custom Events based on Forward/Backward Pass<a class="headerlink" href="#creating-custom-events-based-on-forward-backward-pass" title="Permalink to this headline">¶</a></h2>
 <p>There are cases where the user might want to add events based on the loss calculation and backward pass. Ignite provides
 flexibility to the user to allow for this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BackpropEvents</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">EventEnum</span>
+
+<span class="k">class</span> <span class="nc">BackpropEvents</span><span class="p">(</span><span class="n">EventEnum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Events based on back propagation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -324,16 +342,15 @@ flexibility to the user to allow for this:</p>
     <span class="c1"># insert custom function here</span>
 </pre></div>
 </div>
-<p>More detailed implementation can be found in <a class="reference external" href="_modules/ignite/contrib/engines/tbptt.html#create_supervised_tbptt_trainer">TBPTT Trainer</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Events defined by user should inherit from <a class="reference internal" href="engine.html#ignite.engine.events.EventEnum" title="ignite.engine.events.EventEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventEnum</span></code></a></p>
 </div>
-<div class="section" id="creating-custom-events-based-on-iteration-and-epoch">
-<h2>Creating Custom Events based on Iteration and Epoch<a class="headerlink" href="#creating-custom-events-based-on-iteration-and-epoch" title="Permalink to this headline">¶</a></h2>
-<p>Another type of custom event could be based on number of iteration and epochs. Ignite has <a class="reference internal" href="contrib/handlers.html#ignite.contrib.handlers.custom_events.CustomPeriodicEvent" title="ignite.contrib.handlers.custom_events.CustomPeriodicEvent"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CustomPeriodicEvent</span></code></a>, which allows the user to
-define events based on number of elapsed iterations/epochs.</p>
+<p>More detailed implementation can be found in <a class="reference external" href="_modules/ignite/contrib/engines/tbptt.html#create_supervised_tbptt_trainer">TBPTT Trainer</a>.</p>
 </div>
 <div class="section" id="gradients-accumulation">
 <h2>Gradients accumulation<a class="headerlink" href="#gradients-accumulation" title="Permalink to this headline">¶</a></h2>
-<p>A best practice to use if we need to increase effectively the batchsize on limited GPU resources. There several ways to
+<p>A best practice to use if we need to increase effectively the batch size on limited GPU resources. There several ways to
 do this, the most simple is the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">accumulation_steps</span> <span class="o">=</span> <span class="mi">4</span>
 
@@ -356,8 +373,348 @@ do this, the most simple is the following:</p>
 </div>
 <p>Based on <a class="reference external" href="https://medium.com/huggingface/training-larger-batches-practical-tips-on-1-gpu-multi-gpu-distributed-setups-ec88c3e51255">this blog article</a> and
 <a class="reference external" href="https://gist.github.com/thomwolf/ac7a7da6b1888c2eeac8ac8b9b05d3d3#file-gradient_accumulation-py">this code</a>.</p>
-<p>Other answers can be found on the github among the issues labeled by
-<a class="reference external" href="https://github.com/pytorch/ignite/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+label%3Aquestion+">question</a>.</p>
+</div>
+<div class="section" id="working-with-iterators">
+<h2>Working with iterators<a class="headerlink" href="#working-with-iterators" title="Permalink to this headline">¶</a></h2>
+<p>If data provider for training or validation is an iterator (infinite or finite with known or unknown size), here are
+basic examples of how to setup trainer or evaluator.</p>
+<div class="section" id="infinite-iterator-for-training">
+<h3>Infinite iterator for training<a class="headerlink" href="#infinite-iterator-for-training" title="Permalink to this headline">¶</a></h3>
+<p>Let’s use an infinite data iterator as training dataflow</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">infinite_iterator</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">batch</span>
+
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+    <span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
+<span class="c1"># We need to specify epoch_length to define the epoch</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">infinite_iterator</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">epoch_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case we will obtain the following output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1/3 : 1 - 63.862
+1/3 : 2 - 64.042
+1/3 : 3 - 63.936
+1/3 : 4 - 64.141
+1/3 : 5 - 64.767
+2/3 : 6 - 63.791
+2/3 : 7 - 64.565
+2/3 : 8 - 63.602
+2/3 : 9 - 63.995
+2/3 : 10 - 63.943
+3/3 : 11 - 63.831
+3/3 : 12 - 64.276
+3/3 : 13 - 64.148
+3/3 : 14 - 63.920
+3/3 : 15 - 64.226
+</pre></div>
+</div>
+<p>If we do not specify <cite>epoch_length</cite>, we can stop the training explicitly by calling <a class="reference internal" href="engine.html#ignite.engine.engine.Engine.terminate" title="ignite.engine.engine.Engine.terminate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">terminate()</span></code></a>
+In this case, there will be only a single epoch defined.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">infinite_iterator</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">batch</span>
+
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+    <span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">once</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">stop_training</span><span class="p">():</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">infinite_iterator</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We obtain the following output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1/1 : 1 - 63.862
+1/1 : 2 - 64.042
+1/1 : 3 - 63.936
+1/1 : 4 - 64.141
+1/1 : 5 - 64.767
+1/1 : 6 - 63.791
+1/1 : 7 - 64.565
+1/1 : 8 - 63.602
+1/1 : 9 - 63.995
+1/1 : 10 - 63.943
+1/1 : 11 - 63.831
+1/1 : 12 - 64.276
+1/1 : 13 - 64.148
+1/1 : 14 - 63.920
+1/1 : 15 - 64.226
+</pre></div>
+</div>
+<p>Same code can be used for validating models.</p>
+</div>
+<div class="section" id="finite-iterator-with-unknown-length">
+<h3>Finite iterator with unknown length<a class="headerlink" href="#finite-iterator-with-unknown-length" title="Permalink to this headline">¶</a></h3>
+<p>Let’s use a finite data iterator but with unknown length (for user). In case of training, we would like to perform
+several passes over the dataflow and thus we need to restart the data iterator when it is exhausted.
+In the code, we do not specify <cite>epoch_length</cite> which will be automatically determined.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">finite_unk_size_data_iter</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">DATALOADER_STOP_ITERATION</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">restart_iter</span><span class="p">():</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">finite_unk_size_data_iter</span><span class="p">()</span>
+
+<span class="n">data_iter</span> <span class="o">=</span> <span class="n">finite_unk_size_data_iter</span><span class="p">()</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data_iter</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In case of validation, the code is simply</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">finite_unk_size_data_iter</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">val_step</span><span class="p">(</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">val_step</span><span class="p">)</span>
+
+<span class="n">data_iter</span> <span class="o">=</span> <span class="n">finite_unk_size_data_iter</span><span class="p">()</span>
+<span class="n">evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data_iter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="finite-iterator-with-known-length">
+<h3>Finite iterator with known length<a class="headerlink" href="#finite-iterator-with-known-length" title="Permalink to this headline">¶</a></h3>
+<p>Let’s use a finite data iterator with known size for training or validation.
+If we need to restart the data iterator, we can do this either as in case of
+unknown size by attaching the restart handler on <cite>&#64;trainer.on(Events.DATALOADER_STOP_ITERATION)</cite>,
+but here we will do this explicitly on iteration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">size</span> <span class="o">=</span> <span class="mi">11</span>
+
+<span class="k">def</span> <span class="nf">finite_size_data_iter</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">restart_iter</span><span class="p">():</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">finite_size_data_iter</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="n">data_iter</span> <span class="o">=</span> <span class="n">finite_size_data_iter</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data_iter</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In case of validation, the code is simply</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">size</span> <span class="o">=</span> <span class="mi">11</span>
+
+<span class="k">def</span> <span class="nf">finite_size_data_iter</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">val_step</span><span class="p">(</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">val_step</span><span class="p">)</span>
+
+<span class="n">data_iter</span> <span class="o">=</span> <span class="n">finite_size_data_iter</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+<span class="n">evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data_iter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="switching-data-provider-during-the-training">
+<h2>Switching data provider during the training<a class="headerlink" href="#switching-data-provider-during-the-training" title="Permalink to this headline">¶</a></h2>
+<p>User can easily switch data provider during the training using <a class="reference internal" href="engine.html#ignite.engine.engine.Engine.set_data" title="ignite.engine.engine.Engine.set_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_data()</span></code></a>.
+See an example in the documentation of the method.</p>
+</div>
+<div class="section" id="time-profiling-during-training">
+<h2>Time profiling during training<a class="headerlink" href="#time-profiling-during-training" title="Permalink to this headline">¶</a></h2>
+<p>User can fetch times in several manners depending on complexity of required time profiling:</p>
+<div class="section" id="single-epoch-and-total-time">
+<h3>Single epoch and total time<a class="headerlink" href="#single-epoch-and-total-time" title="Permalink to this headline">¶</a></h3>
+<p>Simpliest way to fetch time of single epoch and complete training is to use
+<code class="docutils literal notranslate"><span class="pre">engine.state.times[&quot;EPOCH_COMPLETED&quot;]</span></code> and <code class="docutils literal notranslate"><span class="pre">engine.state.times[&quot;COMPLETED&quot;]</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">log_epoch_time</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s2">&quot;EPOCH_COMPLETED&quot;</span><span class="p">]))</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">log_total_time</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s2">&quot;COMPLETED&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>For details, see <a class="reference internal" href="engine.html#ignite.engine.events.State" title="ignite.engine.events.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>.</p>
+</div>
+<div class="section" id="basic-time-profiling">
+<h3>Basic time profiling<a class="headerlink" href="#basic-time-profiling" title="Permalink to this headline">¶</a></h3>
+<p>User can setup <a class="reference internal" href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler" title="ignite.contrib.handlers.time_profilers.BasicTimeProfiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicTimeProfiler</span></code></a> to fetch times spent in data
+processing, training step, event handlers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers</span> <span class="kn">import</span> <span class="n">BasicTimeProfiler</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1"># Create an object of the profiler and attach an engine to it</span>
+<span class="n">profiler</span> <span class="o">=</span> <span class="n">BasicTimeProfiler</span><span class="p">()</span>
+<span class="n">profiler</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">log_intermediate_results</span><span class="p">():</span>
+    <span class="n">profiler</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_results</span><span class="p">())</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Typical output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> ----------------------------------------------------
+| Time profiling stats (in seconds):                 |
+ ----------------------------------------------------
+total  |  min/index  |  max/index  |  mean  |  std
+
+Processing function:
+157.46292 | 0.01452/1501 | 0.26905/0 | 0.07730 | 0.01258
+
+Dataflow:
+6.11384 | 0.00008/1935 | 0.28461/1551 | 0.00300 | 0.02693
+
+Event handlers:
+2.82721
+
+- Events.STARTED: []
+0.00000
+
+- Events.EPOCH_STARTED: []
+0.00006 | 0.00000/0 | 0.00000/17 | 0.00000 | 0.00000
+
+- Events.ITERATION_STARTED: [&#39;PiecewiseLinear&#39;]
+0.03482 | 0.00001/188 | 0.00018/679 | 0.00002 | 0.00001
+
+- Events.ITERATION_COMPLETED: [&#39;TerminateOnNan&#39;]
+0.20037 | 0.00006/866 | 0.00089/1943 | 0.00010 | 0.00003
+
+- Events.EPOCH_COMPLETED: [&#39;empty_cuda_cache&#39;, &#39;training.&lt;locals&gt;.log_elapsed_time&#39;, ]
+2.57860 | 0.11529/0 | 0.14977/13 | 0.12893 | 0.00790
+
+- Events.COMPLETED: []
+not yet triggered
+</pre></div>
+</div>
+<p>For details, see <a class="reference internal" href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.BasicTimeProfiler" title="ignite.contrib.handlers.time_profilers.BasicTimeProfiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicTimeProfiler</span></code></a>.</p>
+</div>
+<div class="section" id="event-handlers-time-profiling">
+<h3>Event handlers time profiling<a class="headerlink" href="#event-handlers-time-profiling" title="Permalink to this headline">¶</a></h3>
+<p>If you want to get time breakdown per handler basis then you can setup
+<a class="reference internal" href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.HandlersTimeProfiler" title="ignite.contrib.handlers.time_profilers.HandlersTimeProfiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">HandlersTimeProfiler</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers</span> <span class="kn">import</span> <span class="n">HandlersTimeProfiler</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1"># Create an object of the profiler and attach an engine to it</span>
+<span class="n">profiler</span> <span class="o">=</span> <span class="n">HandlersTimeProfiler</span><span class="p">()</span>
+<span class="n">profiler</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">log_intermediate_results</span><span class="p">():</span>
+    <span class="n">profiler</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_results</span><span class="p">())</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Typical output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-----------------------------------------  -----------------------  -------------- ...
+Handler                                    Event Name                     Total(s)
+-----------------------------------------  -----------------------  --------------
+run.&lt;locals&gt;.log_training_results          EPOCH_COMPLETED                19.43245
+run.&lt;locals&gt;.log_validation_results        EPOCH_COMPLETED                 2.55271
+run.&lt;locals&gt;.log_time                      EPOCH_COMPLETED                 0.00049
+run.&lt;locals&gt;.log_intermediate_results      EPOCH_COMPLETED                 0.00106
+run.&lt;locals&gt;.log_training_loss             ITERATION_COMPLETED               0.059
+run.&lt;locals&gt;.log_time                      COMPLETED                 not triggered
+-----------------------------------------  -----------------------  --------------
+Total                                                                     22.04571
+-----------------------------------------  -----------------------  --------------
+Processing took total 11.29543s [min/index: 0.00393s/1875, max/index: 0.00784s/0,
+ mean: 0.00602s, std: 0.00034s]
+Dataflow took total 16.24365s [min/index: 0.00533s/1874, max/index: 0.01129s/937,
+ mean: 0.00866s, std: 0.00113s]
+</pre></div>
+</div>
+<p>For details, see <a class="reference internal" href="contrib/handlers.html#ignite.contrib.handlers.time_profilers.HandlersTimeProfiler" title="ignite.contrib.handlers.time_profilers.HandlersTimeProfiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">HandlersTimeProfiler</span></code></a>.</p>
+</div>
+<div class="section" id="custom-time-measures">
+<h3>Custom time measures<a class="headerlink" href="#custom-time-measures" title="Permalink to this headline">¶</a></h3>
+<p>Custom time measures can be performed using <a class="reference internal" href="handlers.html#ignite.handlers.Timer" title="ignite.handlers.Timer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timer</span></code></a>. See its docstring for details.</p>
+</div>
+</div>
+<div class="section" id="other-questions">
+<h2>Other questions<a class="headerlink" href="#other-questions" title="Permalink to this headline">¶</a></h2>
+<p>Other questions and answers can be also found on the github among the issues labeled by
+<a class="reference external" href="https://github.com/pytorch/ignite/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+label%3Aquestion+">question</a> and on the forum
+<a class="reference external" href="https://discuss.pytorch.org/c/ignite">Discuss.PyTorch</a>, category “Ignite”.</p>
 </div>
 </div>
 
@@ -385,7 +742,7 @@ do this, the most simple is the following:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -407,8 +764,22 @@ do this, the most simple is the following:</p>
 <li><a class="reference internal" href="#">FAQ</a><ul>
 <li><a class="reference internal" href="#each-engine-has-its-own-events">Each engine has its own Events</a></li>
 <li><a class="reference internal" href="#creating-custom-events-based-on-forward-backward-pass">Creating Custom Events based on Forward/Backward Pass</a></li>
-<li><a class="reference internal" href="#creating-custom-events-based-on-iteration-and-epoch">Creating Custom Events based on Iteration and Epoch</a></li>
 <li><a class="reference internal" href="#gradients-accumulation">Gradients accumulation</a></li>
+<li><a class="reference internal" href="#working-with-iterators">Working with iterators</a><ul>
+<li><a class="reference internal" href="#infinite-iterator-for-training">Infinite iterator for training</a></li>
+<li><a class="reference internal" href="#finite-iterator-with-unknown-length">Finite iterator with unknown length</a></li>
+<li><a class="reference internal" href="#finite-iterator-with-known-length">Finite iterator with known length</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#switching-data-provider-during-the-training">Switching data provider during the training</a></li>
+<li><a class="reference internal" href="#time-profiling-during-training">Time profiling during training</a><ul>
+<li><a class="reference internal" href="#single-epoch-and-total-time">Single epoch and total time</a></li>
+<li><a class="reference internal" href="#basic-time-profiling">Basic time profiling</a></li>
+<li><a class="reference internal" href="#event-handlers-time-profiling">Event handlers time profiling</a></li>
+<li><a class="reference internal" href="#custom-time-measures">Custom time measures</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-questions">Other questions</a></li>
 </ul>
 </li>
 </ul>
@@ -423,11 +794,11 @@ do this, the most simple is the following:</p>
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -474,14 +845,14 @@ do this, the most simple is the following:</p>
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -564,7 +935,7 @@ do this, the most simple is the following:</p>
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

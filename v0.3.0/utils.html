@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlutils.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="concepts.html">Concepts</a>
+            <a href="quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="quickstart.html">Quickstart</a>
+            <a href="concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -263,46 +272,42 @@
   <div class="section" id="ignite-utils">
 <h1>ignite.utils<a class="headerlink" href="#ignite-utils" title="Permalink to this headline">¶</a></h1>
 <p>Module with helper methods</p>
-<span class="target" id="module-ignite.utils"></span><dl class="function">
+<span class="target" id="module-ignite.utils"></span><dl class="py function">
 <dt id="ignite.utils.apply_to_tensor">
-<code class="descclassname">ignite.utils.</code><code class="descname">apply_to_tensor</code><span class="sig-paren">(</span><em>input_</em>, <em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#apply_to_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.apply_to_tensor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.utils.</code><code class="sig-name descname">apply_to_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_</span></em>, <em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#apply_to_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.apply_to_tensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a function on a tensor or mapping, or sequence of tensors.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.utils.apply_to_type">
-<code class="descclassname">ignite.utils.</code><code class="descname">apply_to_type</code><span class="sig-paren">(</span><em>input_</em>, <em>input_type</em>, <em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#apply_to_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.apply_to_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.utils.</code><code class="sig-name descname">apply_to_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_</span></em>, <em class="sig-param"><span class="n">input_type</span></em>, <em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#apply_to_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.apply_to_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a function on a object of <cite>input_type</cite> or mapping, or sequence of objects of <cite>input_type</cite>.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.utils.convert_tensor">
-<code class="descclassname">ignite.utils.</code><code class="descname">convert_tensor</code><span class="sig-paren">(</span><em>input_</em>, <em>device=None</em>, <em>non_blocking=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#convert_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.convert_tensor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.utils.</code><code class="sig-name descname">convert_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">non_blocking</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#convert_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.convert_tensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move tensors to relevant device.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.utils.setup_logger">
-<code class="descclassname">ignite.utils.</code><code class="descname">setup_logger</code><span class="sig-paren">(</span><em>name</em>, <em>level=20</em>, <em>format='%(asctime)s %(name)s %(levelname)s: %(message)s'</em>, <em>filepath=None</em>, <em>distributed_rank=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#setup_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.setup_logger" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.utils.</code><code class="sig-name descname">setup_logger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">'%(asctime)s %(name)s %(levelname)s: %(message)s'</span></em>, <em class="sig-param"><span class="n">filepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">distributed_rank</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#setup_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.setup_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setups logger: name, level, format etc.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – new name for the logger.</li>
-<li><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – logging level, e.g. CRITICAL, ERROR, WARNING, INFO, DEBUG</li>
-<li><strong>format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – logging format. By default, <cite>%(asctime)s %(name)s %(levelname)s: %(message)s</cite></li>
-<li><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Optional logging file path. If not None, logs are written to the file.</li>
-<li><strong>distributed_rank</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Optional, rank in distributed configuration to avoid logger setup for workers.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – new name for the logger.</p></li>
+<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – logging level, e.g. CRITICAL, ERROR, WARNING, INFO, DEBUG</p></li>
+<li><p><strong>format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – logging format. By default, <cite>%(asctime)s %(name)s %(levelname)s: %(message)s</cite></p></li>
+<li><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Optional logging file path. If not None, logs are written to the file.</p></li>
+<li><p><strong>distributed_rank</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Optional, rank in distributed configuration to avoid logger setup for workers.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">logging.Logger</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>logging.Logger</p>
+</dd>
+</dl>
 <p>For example, to improve logs readability when training with a trainer and evaluator:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.utils</span> <span class="kn">import</span> <span class="n">setup_logger</span>
 
@@ -324,9 +329,9 @@
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.utils.to_onehot">
-<code class="descclassname">ignite.utils.</code><code class="descname">to_onehot</code><span class="sig-paren">(</span><em>indices</em>, <em>num_classes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#to_onehot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.to_onehot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.utils.</code><code class="sig-name descname">to_onehot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">indices</span></em>, <em class="sig-param"><span class="n">num_classes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/utils.html#to_onehot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.utils.to_onehot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a tensor of indices of any shape <cite>(N, …)</cite> to a
 tensor of one-hot indicators of shape <cite>(N, num_classes, …) and of type uint8. Output’s device is equal to the
 input’s device</cite>.</p>
@@ -358,7 +363,7 @@ input’s device</cite>.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -390,11 +395,11 @@ input’s device</cite>.</p>
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -441,14 +446,14 @@ input’s device</cite>.</p>
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -531,7 +536,7 @@ input’s device</cite>.</p>
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

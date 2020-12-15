@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="../../_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/engine.html"/>
@@ -30,6 +32,7 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!-- <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" /> -->
   <link rel="stylesheet" href="../../_static/css/ignite_theme.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -59,17 +62,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="../../concepts.html">Concepts</a>
+            <a href="../../quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="../../quickstart.html">Quickstart</a>
+            <a href="../../concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -83,6 +88,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -114,7 +124,7 @@
               
               
                 <div class="version">
-                  master (0.4.0)
+                  master (0.5.0)
                 </div>
               
             
@@ -144,8 +154,8 @@
             
               <p class="caption"><span class="caption-text">Notes</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
 </ul>
@@ -154,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../engine.html">ignite.engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../handlers.html">ignite.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../metrics.html">ignite.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../distributed.html">ignite.distributed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exceptions.html">ignite.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utils.html">ignite.utils</a></li>
 </ul>
@@ -162,6 +173,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../contrib/engines.html">ignite.contrib.engines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contrib/metrics.html">ignite.contrib.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contrib/handlers.html">ignite.contrib.handlers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Team</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">PyTorch-Ignite governance</a></li>
 </ul>
 
             
@@ -257,27 +273,37 @@
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
   <h1>Source code for ignite.engine</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">import</span> <span class="nn">torch</span>
 
+<span class="kn">import</span> <span class="nn">ignite.distributed</span> <span class="k">as</span> <span class="nn">idist</span>
+<span class="kn">from</span> <span class="nn">ignite.engine.deterministic</span> <span class="kn">import</span> <span class="n">DeterministicEngine</span>
 <span class="kn">from</span> <span class="nn">ignite.engine.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
-<span class="kn">from</span> <span class="nn">ignite.engine.events</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">Events</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">,</span> <span class="n">CallableEventWithFilter</span>
-<span class="kn">from</span> <span class="nn">ignite.utils</span> <span class="kn">import</span> <span class="n">convert_tensor</span>
+<span class="kn">from</span> <span class="nn">ignite.engine.events</span> <span class="kn">import</span> <span class="n">CallableEventWithFilter</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">,</span> <span class="n">Events</span><span class="p">,</span> <span class="n">State</span>
 <span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Metric</span>
+<span class="kn">from</span> <span class="nn">ignite.utils</span> <span class="kn">import</span> <span class="n">convert_tensor</span>
+
+<span class="k">if</span> <span class="n">idist</span><span class="o">.</span><span class="n">has_xla_support</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">torch_xla.core.xla_model</span> <span class="k">as</span> <span class="nn">xm</span>
+
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;create_supervised_trainer&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;create_supervised_evaluator&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Engine&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Events&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;EventEnum&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;CallableEventWithFilter&#39;</span>
+    <span class="s2">&quot;State&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_supervised_trainer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_supervised_evaluator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Engine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DeterministicEngine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Events&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EventEnum&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CallableEventWithFilter&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_prepare_batch</span><span class="p">(</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">non_blocking</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Prepare batch for training: pass to a device with options.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -296,31 +322,51 @@
     <span class="n">non_blocking</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">prepare_batch</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">_prepare_batch</span><span class="p">,</span>
     <span class="n">output_transform</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">loss</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+    <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Factory function for creating a trainer for supervised models.</span>
+    <span class="sd">&quot;&quot;&quot;Factory function for creating a trainer for supervised models.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (`torch.nn.Module`): the model to train.</span>
 <span class="sd">        optimizer (`torch.optim.Optimizer`): the optimizer to use.</span>
 <span class="sd">        loss_fn (torch.nn loss function): the loss function to use.</span>
 <span class="sd">        device (str, optional): device type specification (default: None).</span>
-<span class="sd">            Applies to both model and batches.</span>
+<span class="sd">            Applies to batches after starting the engine. Model *will not* be moved.</span>
+<span class="sd">            Device can be CPU, GPU or TPU.</span>
 <span class="sd">        non_blocking (bool, optional): if True and this copy is between CPU and GPU, the copy may occur asynchronously</span>
 <span class="sd">            with respect to the host. For other cases, this argument has no effect.</span>
 <span class="sd">        prepare_batch (callable, optional): function that receives `batch`, `device`, `non_blocking` and outputs</span>
 <span class="sd">            tuple of tensors `(batch_x, batch_y)`.</span>
 <span class="sd">        output_transform (callable, optional): function that receives &#39;x&#39;, &#39;y&#39;, &#39;y_pred&#39;, &#39;loss&#39; and returns value</span>
 <span class="sd">            to be assigned to engine&#39;s state.output after each iteration. Default is returning `loss.item()`.</span>
+<span class="sd">        deterministic (bool, optional): if True, returns deterministic engine of type</span>
+<span class="sd">            :class:`~ignite.engine.deterministic.DeterministicEngine`, otherwise :class:`~ignite.engine.engine.Engine`</span>
+<span class="sd">            (default: False).</span>
 
-<span class="sd">    Note: `engine.state.output` for this engine is defind by `output_transform` parameter and is the loss</span>
+<span class="sd">    Note:</span>
+<span class="sd">        `engine.state.output` for this engine is defined by `output_transform` parameter and is the loss</span>
 <span class="sd">        of the processed batch by default.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The internal use of `device` has changed.</span>
+<span class="sd">        `device` will now *only* be used to move the input data to the correct device.</span>
+<span class="sd">        The `model` should be moved by the user before creating an optimizer.</span>
+<span class="sd">        For more information see:</span>
+
+<span class="sd">        - `PyTorch Documentation &lt;https://pytorch.org/docs/stable/optim.html#constructing-it&gt;`_</span>
+
+<span class="sd">        - `PyTorch&#39;s Explanation &lt;https://github.com/pytorch/pytorch/issues/7844#issuecomment-503713840&gt;`_</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Engine: a trainer engine with supervised update function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="n">device_type</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="k">else</span> <span class="n">device</span>
+    <span class="n">on_tpu</span> <span class="o">=</span> <span class="s2">&quot;xla&quot;</span> <span class="ow">in</span> <span class="n">device_type</span> <span class="k">if</span> <span class="n">device_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">on_tpu</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">idist</span><span class="o">.</span><span class="n">has_xla_support</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;In order to run on TPU, please install PyTorch XLA&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
         <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
@@ -329,10 +375,17 @@
         <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">on_tpu</span><span class="p">:</span>
+            <span class="n">xm</span><span class="o">.</span><span class="n">optimizer_step</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">barrier</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
         <span class="k">return</span> <span class="n">output_transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">Engine</span><span class="p">(</span><span class="n">_update</span><span class="p">)</span></div>
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">_update</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">deterministic</span> <span class="k">else</span> <span class="n">DeterministicEngine</span><span class="p">(</span><span class="n">_update</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">trainer</span></div>
 
 
 <div class="viewcode-block" id="create_supervised_evaluator"><a class="viewcode-back" href="../../engine.html#ignite.engine.create_supervised_evaluator">[docs]</a><span class="k">def</span> <span class="nf">create_supervised_evaluator</span><span class="p">(</span>
@@ -341,7 +394,7 @@
     <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_blocking</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">prepare_batch</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">_prepare_batch</span><span class="p">,</span>
-    <span class="n">output_transform</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">,),</span>
+    <span class="n">output_transform</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Factory function for creating an evaluator for supervised models.</span>
@@ -350,7 +403,7 @@
 <span class="sd">        model (`torch.nn.Module`): the model to train.</span>
 <span class="sd">        metrics (dict of str - :class:`~ignite.metrics.Metric`): a map of metric names to Metrics.</span>
 <span class="sd">        device (str, optional): device type specification (default: None).</span>
-<span class="sd">            Applies to both model and batches.</span>
+<span class="sd">            Applies to batches after starting the engine. Model *will not* be moved.</span>
 <span class="sd">        non_blocking (bool, optional): if True and this copy is between CPU and GPU, the copy may occur asynchronously</span>
 <span class="sd">            with respect to the host. For other cases, this argument has no effect.</span>
 <span class="sd">        prepare_batch (callable, optional): function that receives `batch`, `device`, `non_blocking` and outputs</span>
@@ -359,16 +412,26 @@
 <span class="sd">            to be assigned to engine&#39;s state.output after each iteration. Default is returning `(y_pred, y,)` which fits</span>
 <span class="sd">            output expected by metrics. If you change it you should use `output_transform` in metrics.</span>
 
-<span class="sd">    Note: `engine.state.output` for this engine is defind by `output_transform` parameter and is</span>
+<span class="sd">    Note:</span>
+<span class="sd">        `engine.state.output` for this engine is defind by `output_transform` parameter and is</span>
 <span class="sd">        a tuple of `(batch_pred, batch_y)` by default.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The internal use of `device` has changed.</span>
+<span class="sd">        `device` will now *only* be used to move the input data to the correct device.</span>
+<span class="sd">        The `model` should be moved by the user before creating an optimizer.</span>
+
+<span class="sd">        For more information see:</span>
+
+<span class="sd">        - `PyTorch Documentation &lt;https://pytorch.org/docs/stable/optim.html#constructing-it&gt;`_</span>
+
+<span class="sd">        - `PyTorch&#39;s Explanation &lt;https://github.com/pytorch/pytorch/issues/7844#issuecomment-503713840&gt;`_</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Engine: an evaluator engine with supervised inference function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="p">{}</span>
-
-    <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_inference</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
         <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -377,12 +440,12 @@
             <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">output_transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
 
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">_inference</span><span class="p">)</span>
+    <span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">_inference</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">metric</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">metric</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">engine</span></div>
+    <span class="k">return</span> <span class="n">evaluator</span></div>
 </pre></div>
 
              </article>
@@ -399,7 +462,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -428,11 +491,11 @@
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-         <script type="text/javascript" src="../../_static/jquery.js"></script>
-         <script type="text/javascript" src="../../_static/underscore.js"></script>
-         <script type="text/javascript" src="../../_static/doctools.js"></script>
-         <script type="text/javascript" src="../../_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="../../_static/jquery.js"></script>
+         <script src="../../_static/underscore.js"></script>
+         <script src="../../_static/doctools.js"></script>
+         <script src="../../_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -479,14 +542,14 @@
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -569,7 +632,7 @@
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>

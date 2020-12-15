@@ -14,6 +14,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/ignite_logomark.svg"/>
+  
   
   
     <link rel="canonical" href="https://pytorch.org/ignite/index.htmlmetrics.html"/>
@@ -61,17 +63,19 @@
 
 <div class="container-fluid header-holder tutorials-header" id="header-holder">
   <div class="container">
+
+    <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
+
     <div class="header-container">
-      <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
 
       <div class="main-menu">
         <ul>
           <li>
-            <a href="concepts.html">Concepts</a>
+            <a href="quickstart.html">Quickstart</a>
           </li>
 
           <li>
-            <a href="quickstart.html">Quickstart</a>
+            <a href="concepts.html">Concepts</a>
           </li>
 
           <li>
@@ -85,6 +89,11 @@
           <li>
             <a href="https://github.com/pytorch/ignite">Github</a>
           </li>
+
+          <li>
+            <a href="https://pytorch.org/ignite/master/about.html">About us</a>
+          </li>
+
         </ul>
       </div>
 
@@ -294,11 +303,11 @@ use the <cite>output_transform</cite> argument to transform it:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Most of implemented metrics are adapted to distributed computations and reduce their internal states across the GPUs
 before computing metric value. This can be helpful to run the evaluation on multiple nodes/GPU instances with a
 distributed data sampler. Following code snippet shows in detail how to adapt metrics:</p>
-<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_rank</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_rank</span><span class="p">)</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                                   <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">local_rank</span><span class="p">,</span> <span class="p">],</span>
                                                   <span class="n">output_device</span><span class="o">=</span><span class="n">local_rank</span><span class="p">)</span>
@@ -322,8 +331,8 @@ or use a lambda function, such as <code class="docutils literal notranslate"><sp
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This example computes the mean of F1 across classes. To combine
+<p class="admonition-title">Note</p>
+<p>This example computes the mean of F1 across classes. To combine
 precision and recall to get F1 or other F metrics, we have to be careful
 that <cite>average=False</cite>, i.e. to use the unaveraged precision and recall,
 otherwise we will not be computing F-beta metrics.</p>
@@ -342,9 +351,9 @@ otherwise we will not be computing F-beta metrics.</p>
 <p>To create a custom metric one needs to create a new class inheriting from <a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> and override
 three methods :</p>
 <ul class="simple">
-<li><cite>reset()</cite> : resets internal variables and accumulators</li>
-<li><cite>update(output)</cite> : updates internal variables and accumulators with provided batch output <cite>(y_pred, y)</cite></li>
-<li><cite>compute()</cite> : computes custom metric and return the result</li>
+<li><p><cite>reset()</cite> : resets internal variables and accumulators</p></li>
+<li><p><cite>update(output)</cite> : updates internal variables and accumulators with provided batch output <cite>(y_pred, y)</cite></p></li>
+<li><p><cite>compute()</cite> : computes custom metric and return the result</p></li>
 </ul>
 <p>For example, we would like to implement for illustration purposes a multi-class accuracy metric with some
 specific condition (e.g. ignore user-defined classes):</p>
@@ -426,38 +435,38 @@ the internal variables. And finally in <cite>compute</cite> method, we compute m
 <h2>Complete list of metrics<a class="headerlink" href="#complete-list-of-metrics" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="#ignite.metrics.Accuracy" title="ignite.metrics.Accuracy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Accuracy</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.Average" title="ignite.metrics.Average"><code class="xref py py-class docutils literal notranslate"><span class="pre">Average</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfusionMatrix</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.DiceCoefficient" title="ignite.metrics.DiceCoefficient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DiceCoefficient()</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.EpochMetric" title="ignite.metrics.EpochMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">EpochMetric</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.Fbeta" title="ignite.metrics.Fbeta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Fbeta()</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.GeometricAverage" title="ignite.metrics.GeometricAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricAverage</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.IoU" title="ignite.metrics.IoU"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IoU()</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.mIoU" title="ignite.metrics.mIoU"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mIoU()</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.Loss" title="ignite.metrics.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loss</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.MeanAbsoluteError" title="ignite.metrics.MeanAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanAbsoluteError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.MeanPairwiseDistance" title="ignite.metrics.MeanPairwiseDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanPairwiseDistance</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.MeanSquaredError" title="ignite.metrics.MeanSquaredError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanSquaredError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.MetricsLambda" title="ignite.metrics.MetricsLambda"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricsLambda</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.Precision" title="ignite.metrics.Precision"><code class="xref py py-class docutils literal notranslate"><span class="pre">Precision</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.Recall" title="ignite.metrics.Recall"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recall</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.RootMeanSquaredError" title="ignite.metrics.RootMeanSquaredError"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootMeanSquaredError</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.RunningAverage" title="ignite.metrics.RunningAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunningAverage</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.TopKCategoricalAccuracy" title="ignite.metrics.TopKCategoricalAccuracy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopKCategoricalAccuracy</span></code></a></li>
-<li><a class="reference internal" href="#ignite.metrics.VariableAccumulation" title="ignite.metrics.VariableAccumulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableAccumulation</span></code></a></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Accuracy" title="ignite.metrics.Accuracy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Accuracy</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Average" title="ignite.metrics.Average"><code class="xref py py-class docutils literal notranslate"><span class="pre">Average</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfusionMatrix</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.DiceCoefficient" title="ignite.metrics.DiceCoefficient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DiceCoefficient()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.EpochMetric" title="ignite.metrics.EpochMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">EpochMetric</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Fbeta" title="ignite.metrics.Fbeta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Fbeta()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.GeometricAverage" title="ignite.metrics.GeometricAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometricAverage</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.IoU" title="ignite.metrics.IoU"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IoU()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.mIoU" title="ignite.metrics.mIoU"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mIoU()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Loss" title="ignite.metrics.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loss</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.MeanAbsoluteError" title="ignite.metrics.MeanAbsoluteError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanAbsoluteError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.MeanPairwiseDistance" title="ignite.metrics.MeanPairwiseDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanPairwiseDistance</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.MeanSquaredError" title="ignite.metrics.MeanSquaredError"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeanSquaredError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.MetricsLambda" title="ignite.metrics.MetricsLambda"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricsLambda</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Precision" title="ignite.metrics.Precision"><code class="xref py py-class docutils literal notranslate"><span class="pre">Precision</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Recall" title="ignite.metrics.Recall"><code class="xref py py-class docutils literal notranslate"><span class="pre">Recall</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.RootMeanSquaredError" title="ignite.metrics.RootMeanSquaredError"><code class="xref py py-class docutils literal notranslate"><span class="pre">RootMeanSquaredError</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.RunningAverage" title="ignite.metrics.RunningAverage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunningAverage</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.TopKCategoricalAccuracy" title="ignite.metrics.TopKCategoricalAccuracy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TopKCategoricalAccuracy</span></code></a></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.VariableAccumulation" title="ignite.metrics.VariableAccumulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableAccumulation</span></code></a></p></li>
 </ul>
 </div></blockquote>
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.Accuracy">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">Accuracy</code><span class="sig-paren">(</span><em>output_transform=&lt;function Accuracy.&lt;lambda&gt;&gt;</em>, <em>is_multilabel=False</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accuracy.html#Accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Accuracy" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Accuracy</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Accuracy.&lt;lambda&gt;&gt;</em>, <em class="sig-param">is_multilabel=False</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accuracy.html#Accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the accuracy for binary, multiclass and multilabel data.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
-<li><cite>y_pred</cite> must be in the following shape (batch_size, num_categories, …) or (batch_size, …).</li>
-<li><cite>y</cite> must be in the following shape (batch_size, …).</li>
-<li><cite>y</cite> and <cite>y_pred</cite> must be in the following shape of (batch_size, num_categories, …) for multilabel cases.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
+<li><p><cite>y_pred</cite> must be in the following shape (batch_size, num_categories, …) or (batch_size, …).</p></li>
+<li><p><cite>y</cite> must be in the following shape (batch_size, …).</p></li>
+<li><p><cite>y</cite> and <cite>y_pred</cite> must be in the following shape of (batch_size, num_categories, …) for multilabel cases.</p></li>
 </ul>
 <p>In binary and multilabel cases, the elements of <cite>y</cite> and <cite>y_pred</cite> should have 0 or 1 values. Thresholding of
 predictions can be done as below:</p>
@@ -469,44 +478,40 @@ predictions can be done as below:</p>
 <span class="n">binary_accuracy</span> <span class="o">=</span> <span class="n">Accuracy</span><span class="p">(</span><span class="n">thresholded_output_transform</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>is_multilabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to use in multilabel case. By default, False.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>is_multilabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to use in multilabel case. By default, False.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.Average">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">Average</code><span class="sig-paren">(</span><em>output_transform=&lt;function Average.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accumulation.html#Average"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Average" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Average</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Average.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accumulation.html#Average"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Average" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper class to compute arithmetic average of a single variable.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>x</cite>.</li>
-<li><cite>x</cite> can be a number or <cite>torch.Tensor</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>x</cite>.</p></li>
+<li><p><cite>x</cite> can be a number or <cite>torch.Tensor</cite>.</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Number of samples is updated following the rule:</p>
 <ul class="simple">
-<li><cite>+1</cite> if input is a number</li>
-<li><cite>+1</cite> if input is a 1D <cite>torch.Tensor</cite></li>
-<li><cite>+batch_size</cite> if input is an ND <cite>torch.Tensor</cite>. Batch size is the first dimension (<cite>shape[0]</cite>).</li>
+<li><p><cite>+1</cite> if input is a number</p></li>
+<li><p><cite>+1</cite> if input is a 1D <cite>torch.Tensor</cite></p></li>
+<li><p><cite>+batch_size</cite> if input is an ND <cite>torch.Tensor</cite>. Batch size is the first dimension (<cite>shape[0]</cite>).</p></li>
 </ul>
-<p class="last">For input <cite>x</cite> being an ND <cite>torch.Tensor</cite> with N &gt; 1, the first dimension is seen as the number of samples and
+<p>For input <cite>x</cite> being an ND <cite>torch.Tensor</cite> with N &gt; 1, the first dimension is seen as the number of samples and
 is summed up and added to the accumulator: <cite>accumulator += x.sum(dim=0)</cite></p>
 </div>
 <p>Examples:</p>
@@ -519,213 +524,185 @@ is summed up and added to the accumulator: <cite>accumulator += x.sum(dim=0)</ci
 <span class="c1"># state.metrics[&#39;mean_custom_var&#39;] -&gt; average of output[&#39;custom_var&#39;]</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>device</strong> (<em>str of torch.device</em>) – device specification in case of distributed computation usage.
-In most of the cases, it should defined as “cuda:local_rank”.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em>) – device specification in case of distributed computation usage.
+In most of the cases, it should defined as “cuda:local_rank”.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.ConfusionMatrix">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">ConfusionMatrix</code><span class="sig-paren">(</span><em>num_classes</em>, <em>average=None</em>, <em>output_transform=&lt;function ConfusionMatrix.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#ConfusionMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.ConfusionMatrix" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">ConfusionMatrix</code><span class="sig-paren">(</span><em class="sig-param">num_classes</em>, <em class="sig-param">average=None</em>, <em class="sig-param">output_transform=&lt;function ConfusionMatrix.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#ConfusionMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.ConfusionMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates confusion matrix for multi-class data.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
-<li><cite>y_pred</cite> must contain logits and has the following shape (batch_size, num_categories, …)</li>
-<li><dl class="first docutils">
-<dt><cite>y</cite> should have the following shape (batch_size, …) and contains ground-truth class indices</dt>
-<dd>with or without the background class. During the computation, argmax of <cite>y_pred</cite> is taken to determine
-predicted classes.</dd>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
+<li><p><cite>y_pred</cite> must contain logits and has the following shape (batch_size, num_categories, …)</p></li>
+<li><dl class="simple">
+<dt><cite>y</cite> should have the following shape (batch_size, …) and contains ground-truth class indices</dt><dd><p>with or without the background class. During the computation, argmax of <cite>y_pred</cite> is taken to determine
+predicted classes.</p>
+</dd>
 </dl>
 </li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>num_classes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – number of classes. See notes for more details.</li>
-<li><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – confusion matrix values averaging schema: None, “samples”, “recall”, “precision”.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_classes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – number of classes. See notes for more details.</p></li>
+<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – confusion matrix values averaging schema: None, “samples”, “recall”, “precision”.
 Default is None. If <cite>average=”samples”</cite> then confusion matrix values are normalized by the number of seen
 samples. If <cite>average=”recall”</cite> then confusion matrix values are normalized such that diagonal values
 represent class recalls. If <cite>average=”precision”</cite> then confusion matrix values are normalized such that
-diagonal values represent class precisions.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+diagonal values represent class precisions.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In case of the targets <cite>y</cite> in <cite>(batch_size, …)</cite> format, target indices between 0 and <cite>num_classes</cite> only
+<p class="admonition-title">Note</p>
+<p>In case of the targets <cite>y</cite> in <cite>(batch_size, …)</cite> format, target indices between 0 and <cite>num_classes</cite> only
 contribute to the confusion matrix and others are neglected. For example, if <cite>num_classes=20</cite> and target index
 equal 255 is encountered, then it is filtered out.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.metrics.DiceCoefficient">
-<code class="descclassname">ignite.metrics.</code><code class="descname">DiceCoefficient</code><span class="sig-paren">(</span><em>cm</em>, <em>ignore_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#DiceCoefficient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.DiceCoefficient" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">DiceCoefficient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cm</span></em>, <em class="sig-param"><span class="n">ignore_index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#DiceCoefficient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.DiceCoefficient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Dice Coefficient for a given <a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfusionMatrix</span></code></a> metric.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cm</strong> (<a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><em>ConfusionMatrix</em></a>) – instance of confusion matrix metric</li>
-<li><strong>ignore_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – index to ignore, e.g. background index</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cm</strong> (<a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><em>ConfusionMatrix</em></a>) – instance of confusion matrix metric</p></li>
+<li><p><strong>ignore_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – index to ignore, e.g. background index</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.EpochMetric">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">EpochMetric</code><span class="sig-paren">(</span><em>compute_fn</em>, <em>output_transform=&lt;function EpochMetric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/epoch_metric.html#EpochMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.EpochMetric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">EpochMetric</code><span class="sig-paren">(</span><em class="sig-param">compute_fn</em>, <em class="sig-param">output_transform=&lt;function EpochMetric.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/epoch_metric.html#EpochMetric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.EpochMetric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for metrics that should be computed on the entire output history of a model.
 Model’s output and targets are restricted to be of shape <cite>(batch_size, n_classes)</cite>. Output
 datatype should be <cite>float32</cite>. Target datatype should be <cite>long</cite>.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Current implementation stores all input data (output and target) in as tensors before computing a metric.
+<p class="admonition-title">Warning</p>
+<p>Current implementation stores all input data (output and target) in as tensors before computing a metric.
 This can potentially lead to a memory error if the input data is larger than available RAM.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Current implementation does not work with distributed computations. Results are not gather across all devices
+<p class="admonition-title">Warning</p>
+<p>Current implementation does not work with distributed computations. Results are not gather across all devices
 and computed results are valid for a single device only.</p>
 </div>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
 </ul>
 <p>If target shape is <cite>(batch_size, n_classes)</cite> and <cite>n_classes &gt; 1</cite> than it should be binary: e.g. <cite>[[0, 1, 0, 1], ]</cite>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>compute_fn</strong> (<em>callable</em>) – a callable with the signature (<cite>torch.tensor</cite>, <cite>torch.tensor</cite>) takes as the input
-<cite>predictions</cite> and <cite>targets</cite> and returns a scalar.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compute_fn</strong> (<em>callable</em>) – a callable with the signature (<cite>torch.tensor</cite>, <cite>torch.tensor</cite>) takes as the input
+<cite>predictions</cite> and <cite>targets</cite> and returns a scalar.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.metrics.Fbeta">
-<code class="descclassname">ignite.metrics.</code><code class="descname">Fbeta</code><span class="sig-paren">(</span><em>beta</em>, <em>average=True</em>, <em>precision=None</em>, <em>recall=None</em>, <em>output_transform=None</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/fbeta.html#Fbeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Fbeta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Fbeta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">average</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">precision</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">recall</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_transform</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/fbeta.html#Fbeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Fbeta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates F-beta score</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – weight of precision in harmonic mean</li>
-<li><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – if True, F-beta score is computed as the unweighted average (across all classes
-in multiclass case), otherwise, returns a tensor with F-beta score for each class in multiclass case.</li>
-<li><strong>precision</strong> (<a class="reference internal" href="#ignite.metrics.Precision" title="ignite.metrics.Precision"><em>Precision</em></a><em>, </em><em>optional</em>) – precision object metric with <cite>average=False</cite> to compute F-beta score</li>
-<li><strong>recall</strong> (<a class="reference internal" href="#ignite.metrics.Precision" title="ignite.metrics.Precision"><em>Precision</em></a><em>, </em><em>optional</em>) – recall object metric with <cite>average=False</cite> to compute F-beta score</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – weight of precision in harmonic mean</p></li>
+<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – if True, F-beta score is computed as the unweighted average (across all classes
+in multiclass case), otherwise, returns a tensor with F-beta score for each class in multiclass case.</p></li>
+<li><p><strong>precision</strong> (<a class="reference internal" href="#ignite.metrics.Precision" title="ignite.metrics.Precision"><em>Precision</em></a><em>, </em><em>optional</em>) – precision object metric with <cite>average=False</cite> to compute F-beta score</p></li>
+<li><p><strong>recall</strong> (<a class="reference internal" href="#ignite.metrics.Precision" title="ignite.metrics.Precision"><em>Precision</em></a><em>, </em><em>optional</em>) – recall object metric with <cite>average=False</cite> to compute F-beta score</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
-form expected by the metric. It is used only if precision or recall are not provided.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+form expected by the metric. It is used only if precision or recall are not provided.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">MetricsLambda, F-beta metric</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MetricsLambda, F-beta metric</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.GeometricAverage">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">GeometricAverage</code><span class="sig-paren">(</span><em>output_transform=&lt;function GeometricAverage.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accumulation.html#GeometricAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.GeometricAverage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">GeometricAverage</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function GeometricAverage.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accumulation.html#GeometricAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.GeometricAverage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper class to compute geometric average of a single variable.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>x</cite>.</li>
-<li><cite>x</cite> can be a number or <cite>torch.Tensor</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>x</cite>.</p></li>
+<li><p><cite>x</cite> can be a number or <cite>torch.Tensor</cite>.</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Number of samples is updated following the rule:</p>
 <ul class="simple">
-<li><cite>+1</cite> if input is a number</li>
-<li><cite>+1</cite> if input is a 1D <cite>torch.Tensor</cite></li>
-<li><cite>+batch_size</cite> if input is a ND <cite>torch.Tensor</cite>. Batch size is the first dimension (<cite>shape[0]</cite>).</li>
+<li><p><cite>+1</cite> if input is a number</p></li>
+<li><p><cite>+1</cite> if input is a 1D <cite>torch.Tensor</cite></p></li>
+<li><p><cite>+batch_size</cite> if input is a ND <cite>torch.Tensor</cite>. Batch size is the first dimension (<cite>shape[0]</cite>).</p></li>
 </ul>
-<p class="last">For input <cite>x</cite> being an ND <cite>torch.Tensor</cite> with N &gt; 1, the first dimension is seen as the number of samples and
+<p>For input <cite>x</cite> being an ND <cite>torch.Tensor</cite> with N &gt; 1, the first dimension is seen as the number of samples and
 is aggregated and added to the accumulator: <cite>accumulator *= prod(x, dim=0)</cite></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>device</strong> (<em>str of torch.device</em>) – device specification in case of distributed computation usage.
-In most of the cases, it should defined as “cuda:local_rank”.</li>
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em>) – device specification in case of distributed computation usage.
+In most of the cases, it should defined as “cuda:local_rank”.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.metrics.IoU">
-<code class="descclassname">ignite.metrics.</code><code class="descname">IoU</code><span class="sig-paren">(</span><em>cm</em>, <em>ignore_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#IoU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.IoU" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">IoU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cm</span></em>, <em class="sig-param"><span class="n">ignore_index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#IoU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.IoU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates Intersection over Union using <a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfusionMatrix</span></code></a> metric.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cm</strong> (<a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><em>ConfusionMatrix</em></a>) – instance of confusion matrix metric</li>
-<li><strong>ignore_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – index to ignore, e.g. background index</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cm</strong> (<a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><em>ConfusionMatrix</em></a>) – instance of confusion matrix metric</p></li>
+<li><p><strong>ignore_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – index to ignore, e.g. background index</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">MetricsLambda</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MetricsLambda</p>
+</dd>
+</dl>
 <p>Examples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_evaluator</span> <span class="o">=</span> <span class="o">...</span>
 
@@ -738,25 +715,21 @@ In most of the cases, it should defined as “cuda:local_rank”.</li>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ignite.metrics.mIoU">
-<code class="descclassname">ignite.metrics.</code><code class="descname">mIoU</code><span class="sig-paren">(</span><em>cm</em>, <em>ignore_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#mIoU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.mIoU" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">mIoU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cm</span></em>, <em class="sig-param"><span class="n">ignore_index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/confusion_matrix.html#mIoU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.mIoU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates mean Intersection over Union using <a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfusionMatrix</span></code></a> metric.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cm</strong> (<a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><em>ConfusionMatrix</em></a>) – instance of confusion matrix metric</li>
-<li><strong>ignore_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – index to ignore, e.g. background index</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cm</strong> (<a class="reference internal" href="#ignite.metrics.ConfusionMatrix" title="ignite.metrics.ConfusionMatrix"><em>ConfusionMatrix</em></a>) – instance of confusion matrix metric</p></li>
+<li><p><strong>ignore_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – index to ignore, e.g. background index</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">MetricsLambda</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MetricsLambda</p>
+</dd>
+</dl>
 <p>Examples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_evaluator</span> <span class="o">=</span> <span class="o">...</span>
 
@@ -769,135 +742,123 @@ In most of the cases, it should defined as “cuda:local_rank”.</li>
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.Loss">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">Loss</code><span class="sig-paren">(</span><em>loss_fn</em>, <em>output_transform=&lt;function Loss.&lt;lambda&gt;&gt;</em>, <em>batch_size=&lt;function Loss.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/loss.html#Loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Loss" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Loss</code><span class="sig-paren">(</span><em class="sig-param">loss_fn</em>, <em class="sig-param">output_transform=&lt;function Loss.&lt;lambda&gt;&gt;</em>, <em class="sig-param">batch_size=&lt;function Loss.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/loss.html#Loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the average loss according to the passed loss_fn.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>loss_fn</strong> (<em>callable</em>) – a callable taking a prediction tensor, a target
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loss_fn</strong> (<em>callable</em>) – a callable taking a prediction tensor, a target
 tensor, optionally other arguments, and returns the average loss
-over all observations in the batch.</li>
-<li><strong>output_transform</strong> (<em>callable</em>) – a callable that is used to transform the
+over all observations in the batch.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric.
 This can be useful if, for example, you have a multi-output model and
 you want to compute the metric with respect to one of the outputs.
 The output is expected to be a tuple <cite>(prediction, target)</cite> or
 (prediction, target, kwargs) where kwargs is a dictionary of extra
-keywords arguments. If extra keywords arguments are provided they are passed to <cite>loss_fn</cite>.</li>
-<li><strong>batch_size</strong> (<em>callable</em>) – a callable taking a target tensor that returns the
-first dimension size (usually the batch size).</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+keywords arguments. If extra keywords arguments are provided they are passed to <cite>loss_fn</cite>.</p></li>
+<li><p><strong>batch_size</strong> (<em>callable</em>) – a callable taking a target tensor that returns the
+first dimension size (usually the batch size).</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.MeanAbsoluteError">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">MeanAbsoluteError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/mean_absolute_error.html#MeanAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MeanAbsoluteError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">MeanAbsoluteError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/mean_absolute_error.html#MeanAbsoluteError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MeanAbsoluteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the mean absolute error.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.MeanPairwiseDistance">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">MeanPairwiseDistance</code><span class="sig-paren">(</span><em>p=2</em>, <em>eps=1e-06</em>, <em>output_transform=&lt;function MeanPairwiseDistance.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/mean_pairwise_distance.html#MeanPairwiseDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MeanPairwiseDistance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">MeanPairwiseDistance</code><span class="sig-paren">(</span><em class="sig-param">p=2</em>, <em class="sig-param">eps=1e-06</em>, <em class="sig-param">output_transform=&lt;function MeanPairwiseDistance.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/mean_pairwise_distance.html#MeanPairwiseDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MeanPairwiseDistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the mean pairwise distance: average of pairwise distances computed on provided batches.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.MeanSquaredError">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">MeanSquaredError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/mean_squared_error.html#MeanSquaredError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MeanSquaredError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">MeanSquaredError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/mean_squared_error.html#MeanSquaredError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MeanSquaredError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the mean squared error.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.Metric">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Metric</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for all Metrics.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
 you want to compute the metric with respect to one of the outputs.
-By default, metrics require the output as <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+By default, metrics require the output as <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+</dd>
+</dl>
+<dl class="py method">
 <dt id="ignite.metrics.Metric.compute">
-<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric.compute" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric.compute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the metric based on it’s accumulated state.</p>
 <p>This is called at the end of each epoch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the actual quantity of interest.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotComputableError</span></code> – raised when the metric cannot be computed.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the actual quantity of interest.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Any</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="exceptions.html#ignite.exceptions.NotComputableError" title="ignite.exceptions.NotComputableError"><strong>NotComputableError</strong></a> – raised when the metric cannot be computed.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.metrics.Metric.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric.reset" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the metric to it’s initial state.</p>
 <p>This is called at the start of each epoch.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ignite.metrics.Metric.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>output</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric.update" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metric.html#Metric.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Metric.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the metric’s state using the passed batch output.</p>
 <p>This is called once for each batch.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>output</strong> – the is the output from the engine’s process function.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output</strong> – the is the output from the engine’s process function.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.MetricsLambda">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">MetricsLambda</code><span class="sig-paren">(</span><em>f</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metrics_lambda.html#MetricsLambda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MetricsLambda" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">MetricsLambda</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/metrics_lambda.html#MetricsLambda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.MetricsLambda" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a function to other metrics to obtain a new metric.
 The result of the new metric is defined to be the result
 of applying the function to the result of argument metrics.</p>
@@ -905,19 +866,15 @@ of applying the function to the result of argument metrics.</p>
 it depends on. When reset, all its dependency metrics would be
 resetted. When attach, all its dependencies would be automatically
 attached.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>f</strong> (<em>callable</em>) – the function that defines the computation</li>
-<li><strong>args</strong> (<em>sequence</em>) – Sequence of other metrics or something
-else that will be fed to <code class="docutils literal notranslate"><span class="pre">f</span></code> as arguments.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>callable</em>) – the function that defines the computation</p></li>
+<li><p><strong>args</strong> (<em>sequence</em>) – Sequence of other metrics or something
+else that will be fed to <code class="docutils literal notranslate"><span class="pre">f</span></code> as arguments.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">precision</span> <span class="o">=</span> <span class="n">Precision</span><span class="p">(</span><span class="n">average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">recall</span> <span class="o">=</span> <span class="n">Recall</span><span class="p">(</span><span class="n">average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -933,14 +890,14 @@ else that will be fed to <code class="docutils literal notranslate"><span class=
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.Precision">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">Precision</code><span class="sig-paren">(</span><em>output_transform=&lt;function Precision.&lt;lambda&gt;&gt;</em>, <em>average=False</em>, <em>is_multilabel=False</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/precision.html#Precision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Precision" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Precision</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Precision.&lt;lambda&gt;&gt;</em>, <em class="sig-param">average=False</em>, <em class="sig-param">is_multilabel=False</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/precision.html#Precision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates precision for binary and multiclass data.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
-<li><cite>y_pred</cite> must be in the following shape (batch_size, num_categories, …) or (batch_size, …).</li>
-<li><cite>y</cite> must be in the following shape (batch_size, …).</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
+<li><p><cite>y_pred</cite> must be in the following shape (batch_size, num_categories, …) or (batch_size, …).</p></li>
+<li><p><cite>y</cite> must be in the following shape (batch_size, …).</p></li>
 </ul>
 <p>In binary and multilabel cases, the elements of <cite>y</cite> and <cite>y_pred</cite> should have 0 or 1 values. Thresholding of
 predictions can be done as below:</p>
@@ -961,47 +918,43 @@ example, average parameter should be False. This can be done as shown below:</p>
 </pre></div>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">In multilabel cases, if average is False, current implementation stores all input data (output and target) in
+<p class="admonition-title">Warning</p>
+<p>In multilabel cases, if average is False, current implementation stores all input data (output and target) in
 as tensors before computing a metric. This can potentially lead to a memory error if the input data is larger
 than available RAM.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">In multilabel cases, if average is False, current implementation does not work with distributed computations.
+<p class="admonition-title">Warning</p>
+<p>In multilabel cases, if average is False, current implementation does not work with distributed computations.
 Results are not reduced across the GPUs. Computed result corresponds to the local rank’s (single GPU) result.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – if True, precision is computed as the unweighted average (across all classes
-in multiclass case), otherwise, returns a tensor with the precision (for each class in multiclass case).</li>
-<li><strong>is_multilabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – parameter should be True and the average is computed across samples, instead of classes.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – if True, precision is computed as the unweighted average (across all classes
+in multiclass case), otherwise, returns a tensor with the precision (for each class in multiclass case).</p></li>
+<li><p><strong>is_multilabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – parameter should be True and the average is computed across samples, instead of classes.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.Recall">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">Recall</code><span class="sig-paren">(</span><em>output_transform=&lt;function Recall.&lt;lambda&gt;&gt;</em>, <em>average=False</em>, <em>is_multilabel=False</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/recall.html#Recall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Recall" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">Recall</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Recall.&lt;lambda&gt;&gt;</em>, <em class="sig-param">average=False</em>, <em class="sig-param">is_multilabel=False</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/recall.html#Recall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.Recall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates recall for binary and multiclass data.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
-<li><cite>y_pred</cite> must be in the following shape (batch_size, num_categories, …) or (batch_size, …).</li>
-<li><cite>y</cite> must be in the following shape (batch_size, …).</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
+<li><p><cite>y_pred</cite> must be in the following shape (batch_size, num_categories, …) or (batch_size, …).</p></li>
+<li><p><cite>y</cite> must be in the following shape (batch_size, …).</p></li>
 </ul>
 <p>In binary and multilabel cases, the elements of <cite>y</cite> and <cite>y_pred</cite> should have 0 or 1 values. Thresholding of
 predictions can be done as below:</p>
@@ -1022,74 +975,66 @@ example, average parameter should be False. This can be done as shown below:</p>
 </pre></div>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">In multilabel cases, if average is False, current implementation stores all input data (output and target) in
+<p class="admonition-title">Warning</p>
+<p>In multilabel cases, if average is False, current implementation stores all input data (output and target) in
 as tensors before computing a metric. This can potentially lead to a memory error if the input data is larger
 than available RAM.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">In multilabel cases, if average is False, current implementation does not work with distributed computations.
+<p class="admonition-title">Warning</p>
+<p>In multilabel cases, if average is False, current implementation does not work with distributed computations.
 Results are not reduced across the GPUs. Computed result corresponds to the local rank’s (single GPU) result.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – if True, precision is computed as the unweighted average (across all classes
-in multiclass case), otherwise, returns a tensor with the precision (for each class in multiclass case).</li>
-<li><strong>is_multilabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – parameter should be True and the average is computed across samples, instead of classes.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>average</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – if True, precision is computed as the unweighted average (across all classes
+in multiclass case), otherwise, returns a tensor with the precision (for each class in multiclass case).</p></li>
+<li><p><strong>is_multilabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – parameter should be True and the average is computed across samples, instead of classes.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.RootMeanSquaredError">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">RootMeanSquaredError</code><span class="sig-paren">(</span><em>output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/root_mean_squared_error.html#RootMeanSquaredError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.RootMeanSquaredError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">RootMeanSquaredError</code><span class="sig-paren">(</span><em class="sig-param">output_transform=&lt;function Metric.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/root_mean_squared_error.html#RootMeanSquaredError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.RootMeanSquaredError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the root mean squared error.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form (y_pred, y) or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form (y_pred, y) or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.RunningAverage">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">RunningAverage</code><span class="sig-paren">(</span><em>src=None</em>, <em>alpha=0.98</em>, <em>output_transform=None</em>, <em>epoch_bound=True</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/running_average.html#RunningAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.RunningAverage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">RunningAverage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">src</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.98</span></em>, <em class="sig-param"><span class="n">output_transform</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">epoch_bound</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/running_average.html#RunningAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.RunningAverage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute running average of a metric or the output of process function.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>src</strong> (<a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><em>Metric</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – input source: an instance of <a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> or None. The latter
-corresponds to <cite>engine.state.output</cite> which holds the output of process function.</li>
-<li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – running average decay factor, default 0.98</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a function to use to transform the output if <cite>src</cite> is None and
-corresponds the output of process function. Otherwise it should be None.</li>
-<li><strong>epoch_bound</strong> (<em>boolean</em><em>, </em><em>optional</em>) – whether the running average should be reset after each epoch (defaults
-to True).</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> (<a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><em>Metric</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – input source: an instance of <a class="reference internal" href="#ignite.metrics.Metric" title="ignite.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> or None. The latter
+corresponds to <cite>engine.state.output</cite> which holds the output of process function.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – running average decay factor, default 0.98</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a function to use to transform the output if <cite>src</cite> is None and
+corresponds the output of process function. Otherwise it should be None.</p></li>
+<li><p><strong>epoch_bound</strong> (<em>boolean</em><em>, </em><em>optional</em>) – whether the running average should be reset after each epoch (defaults
+to True).</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 This is necessary when running average is computed on the output of process function.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Examples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.98</span>
 <span class="n">acc_metric</span> <span class="o">=</span> <span class="n">RunningAverage</span><span class="p">(</span><span class="n">Accuracy</span><span class="p">(</span><span class="n">output_transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
@@ -1106,53 +1051,49 @@ initialized and available, device is set to <cite>cuda</cite>.</li>
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.TopKCategoricalAccuracy">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">TopKCategoricalAccuracy</code><span class="sig-paren">(</span><em>k=5</em>, <em>output_transform=&lt;function TopKCategoricalAccuracy.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/top_k_categorical_accuracy.html#TopKCategoricalAccuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.TopKCategoricalAccuracy" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">TopKCategoricalAccuracy</code><span class="sig-paren">(</span><em class="sig-param">k=5</em>, <em class="sig-param">output_transform=&lt;function TopKCategoricalAccuracy.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/top_k_categorical_accuracy.html#TopKCategoricalAccuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.TopKCategoricalAccuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the top-k categorical accuracy.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>(y_pred, y)</cite> or <cite>{‘y_pred’: y_pred, ‘y’: y}</cite>.</p></li>
 </ul>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ignite.metrics.VariableAccumulation">
-<em class="property">class </em><code class="descclassname">ignite.metrics.</code><code class="descname">VariableAccumulation</code><span class="sig-paren">(</span><em>op</em>, <em>output_transform=&lt;function VariableAccumulation.&lt;lambda&gt;&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accumulation.html#VariableAccumulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.VariableAccumulation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.metrics.</code><code class="sig-name descname">VariableAccumulation</code><span class="sig-paren">(</span><em class="sig-param">op</em>, <em class="sig-param">output_transform=&lt;function VariableAccumulation.&lt;lambda&gt;&gt;</em>, <em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/metrics/accumulation.html#VariableAccumulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.metrics.VariableAccumulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Single variable accumulator helper to compute (arithmetic, geometric, harmonic) average of a single variable.</p>
 <ul class="simple">
-<li><cite>update</cite> must receive output of the form <cite>x</cite>.</li>
-<li><cite>x</cite> can be a number or <cite>torch.Tensor</cite>.</li>
+<li><p><cite>update</cite> must receive output of the form <cite>x</cite>.</p></li>
+<li><p><cite>x</cite> can be a number or <cite>torch.Tensor</cite>.</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The class stores input into two public variables: <cite>accumulator</cite> and <cite>num_examples</cite>.
 Number of samples is updated following the rule:</p>
-<ul class="last simple">
-<li><cite>+1</cite> if input is a number</li>
-<li><cite>+1</cite> if input is a 1D <cite>torch.Tensor</cite></li>
-<li><cite>+batch_size</cite> if input is a ND <cite>torch.Tensor</cite>. Batch size is the first dimension (<cite>shape[0]</cite>).</li>
+<ul class="simple">
+<li><p><cite>+1</cite> if input is a number</p></li>
+<li><p><cite>+1</cite> if input is a 1D <cite>torch.Tensor</cite></p></li>
+<li><p><cite>+batch_size</cite> if input is a ND <cite>torch.Tensor</cite>. Batch size is the first dimension (<cite>shape[0]</cite>).</p></li>
 </ul>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>op</strong> (<em>callable</em>) – a callable to update accumulator. Method’s signature is <cite>(accumulator, output)</cite>.
-For example, to compute arithmetic mean value, <cite>op = lambda a, x: a + x</cite>.</li>
-<li><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>op</strong> (<em>callable</em>) – a callable to update accumulator. Method’s signature is <cite>(accumulator, output)</cite>.
+For example, to compute arithmetic mean value, <cite>op = lambda a, x: a + x</cite>.</p></li>
+<li><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to transform the
 <a class="reference internal" href="engine.html#ignite.engine.Engine" title="ignite.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s <cite>process_function</cite>’s output into the
 form expected by the metric. This can be useful if, for example, you have a multi-output model and
-you want to compute the metric with respect to one of the outputs.</li>
-<li><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
+you want to compute the metric with respect to one of the outputs.</p></li>
+<li><p><strong>device</strong> (<em>str of torch.device</em><em>, </em><em>optional</em>) – device specification in case of distributed computation usage.
 In most of the cases, it can be defined as “cuda:local_rank” or “cuda”
 if already set <cite>torch.cuda.set_device(local_rank)</cite>. By default, if a distributed process group is
-initialized and available, device is set to <cite>cuda</cite>.</li>
+initialized and available, device is set to <cite>cuda</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -1182,7 +1123,7 @@ initialized and available, device is set to <cite>cuda</cite>.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Torch Contributors.
+        &copy; Copyright 2020, PyTorch-Ignite Contributors.
 
     </p>
   </div>
@@ -1222,11 +1163,11 @@ initialized and available, device is set to <cite>cuda</cite>.</li>
 
      
        <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-         <script type="text/javascript" src="_static/jquery.js"></script>
-         <script type="text/javascript" src="_static/underscore.js"></script>
-         <script type="text/javascript" src="_static/doctools.js"></script>
-         <script type="text/javascript" src="_static/language_data.js"></script>
-         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script src="_static/jquery.js"></script>
+         <script src="_static/underscore.js"></script>
+         <script src="_static/doctools.js"></script>
+         <script src="_static/language_data.js"></script>
+         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
@@ -1273,14 +1214,14 @@ initialized and available, device is set to <cite>cuda</cite>.</li>
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-logo-wrapper">
-        <a href="https://pytorch.org/ignite/" class="footer-logo"></a>
+        <a href="https://pytorch.org/ignite" class="footer-logo"></a>
       </div>
 
       <div class="footer-links-wrapper">
         <div class="footer-links-col">
           <ul>
-            <li class="list-title"><a href="https://pytorch.org/ignite/">PyTorch</a></li>
-            <li><a href="https://pytorch.org/ignite/get-started">Get Started</a></li>
+            <li class="list-title"><a href="https://pytorch.org/ignite">PyTorch</a></li>
+            <li><a href="">Get Started</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">Ecosystem</a></li>
             <li><a href="">Blog</a></li>
@@ -1363,7 +1304,7 @@ initialized and available, device is set to <cite>cuda</cite>.</li>
     <div class="container-fluid">
       <div class="container">
         <div class="mobile-main-menu-header-container">
-          <a class="header-logo" href="https://pytorch.org/ignite/" aria-label="PyTorch"></a>
+          <a class="header-logo" href="https://pytorch.org/ignite" aria-label="PyTorch"></a>
           <a class="main-menu-close-button" href="#" data-behavior="close-mobile-menu"></a>
         </div>
       </div>
