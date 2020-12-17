@@ -82,7 +82,13 @@ def training(config, local_rank=None, with_mlflow_logging=False, with_plx_loggin
 
         return output
 
-    output_names = getattr(config, "output_names", ["supervised batch loss",])
+    output_names = getattr(
+        config,
+        "output_names",
+        [
+            "supervised batch loss",
+        ],
+    )
 
     trainer = Engine(train_update_function)
     common.setup_common_distrib_training_handlers(
@@ -119,7 +125,10 @@ def training(config, local_rank=None, with_mlflow_logging=False, with_plx_loggin
         device=device,
         non_blocking=non_blocking,
         prepare_batch=prepare_batch,
-        output_transform=lambda x, y, y_pred: (model_output_transform(y_pred), y,),
+        output_transform=lambda x, y, y_pred: (
+            model_output_transform(y_pred),
+            y,
+        ),
     )
     train_evaluator = create_supervised_evaluator(**evaluator_args)
     evaluator = create_supervised_evaluator(**evaluator_args)

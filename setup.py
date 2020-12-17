@@ -38,7 +38,12 @@ setup(
     long_description=readme,
     license="BSD",
     # Package info
-    packages=find_packages(exclude=("tests", "tests.*",)),
+    packages=find_packages(
+        exclude=(
+            "tests",
+            "tests.*",
+        )
+    ),
     zip_safe=True,
     install_requires=requirements,
 )

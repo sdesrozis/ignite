@@ -79,8 +79,8 @@ def _test_distrib_config(local_rank, backend, ws, true_device, rank=None):
 
     assert idist.model_name() in ("native-dist", "xla-dist")
 
-    from ignite.distributed.utils import _model
     from ignite.distributed.comp_models import _NativeDistModel, _XlaDistModel
+    from ignite.distributed.utils import _model
 
     _sanity_check()
     assert isinstance(_model, (_NativeDistModel, _XlaDistModel))
@@ -174,7 +174,7 @@ def test_xla_distrib_single_node_spawn_n_procs():
 
 
 def _test_sync(cls):
-    from ignite.distributed.utils import _set_model, _SerialModel
+    from ignite.distributed.utils import _SerialModel, _set_model
 
     _set_model(_SerialModel())
 
@@ -240,7 +240,7 @@ def test_sync_as_xla_in_child_proc(xmp_executor):
 def test_idist_methods_in_xla_context():
     # We explicitly set _model as _SerialModel
     # then call idist.* methods and check that they give correct values
-    from ignite.distributed.utils import _set_model, _SerialModel
+    from ignite.distributed.utils import _SerialModel, _set_model
 
     _set_model(_SerialModel())
 
@@ -250,7 +250,7 @@ def test_idist_methods_in_xla_context():
 def _test_idist_methods_in_xla_context_in_child_proc(index):
     # We explicitly set _model as _SerialModel
     # then call idist.* methods and check that they give correct values
-    from ignite.distributed.utils import _set_model, _SerialModel
+    from ignite.distributed.utils import _SerialModel, _set_model
 
     _set_model(_SerialModel())
 
@@ -272,7 +272,7 @@ def test_idist_methods_in_xla_context_in_child_proc(xmp_executor):
 def _test_idist_methods_in_native_context(backend, device, local_rank):
     # We explicitly set _model as _SerialModel
     # then call idist.* methods and check that they give correct values
-    from ignite.distributed.utils import _set_model, _SerialModel
+    from ignite.distributed.utils import _SerialModel, _set_model
 
     _set_model(_SerialModel())
 
@@ -297,7 +297,7 @@ def test_idist_methods_in_native_nccl_context(distributed_context_single_node_nc
 def _test_idist_methods_in_native_context_set_local_rank(backend, device, local_rank):
     # We explicitly set _model as _SerialModel
     # then call idist.* methods and check that they give correct values
-    from ignite.distributed.utils import _set_model, _SerialModel
+    from ignite.distributed.utils import _SerialModel, _set_model
 
     _set_model(_SerialModel())
 
@@ -395,7 +395,13 @@ def test_idist_all_reduce_xla_in_child_proc(xmp_executor):
 def _test_distrib_all_gather(device):
 
     res = idist.all_gather(10)
-    true_res = torch.tensor([10,] * idist.get_world_size(), device=device)
+    true_res = torch.tensor(
+        [
+            10,
+        ]
+        * idist.get_world_size(),
+        device=device,
+    )
     assert (res == true_res).all()
 
     t = torch.tensor(idist.get_rank(), device=device)
@@ -407,7 +413,9 @@ def _test_distrib_all_gather(device):
     if idist.get_rank() == 0:
         x = "abc"
     res = idist.all_gather(x)
-    true_res = ["abc",] + ["test-test"] * (idist.get_world_size() - 1)
+    true_res = ["abc",] + [
+        "test-test"
+    ] * (idist.get_world_size() - 1)
     assert res == true_res
 
     base_x = "x" * 1026
@@ -420,7 +428,9 @@ def _test_distrib_all_gather(device):
             res = idist.all_gather(x)
     else:
         res = idist.all_gather(x)
-    true_res = ["abc",] + [base_x[:1024]] * (idist.get_world_size() - 1)
+    true_res = ["abc",] + [
+        base_x[:1024]
+    ] * (idist.get_world_size() - 1)
     assert res == true_res
 
     t = torch.arange(100, device=device).reshape(4, 25) * (idist.get_rank() + 1)

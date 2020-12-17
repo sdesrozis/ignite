@@ -78,7 +78,10 @@ class FastResnet(nn.Module):
             IdentityResidualBlock(512, 512, conv_kwargs, bn_kwargs, conv_bn_fn=conv_bn_fn),
         )
 
-        self.head = nn.Sequential(nn.AdaptiveMaxPool2d(1), Flatten(),)
+        self.head = nn.Sequential(
+            nn.AdaptiveMaxPool2d(1),
+            Flatten(),
+        )
 
         self.final_weight = final_weight
 

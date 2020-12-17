@@ -418,7 +418,10 @@ def test_checkpoint_save_handler_callable():
 
     to_save = {"model": DummyModel()}
 
-    checkpointer = Checkpoint(to_save, save_handler=save_handler,)
+    checkpointer = Checkpoint(
+        to_save,
+        save_handler=save_handler,
+    )
 
     trainer = Engine(lambda e, b: None)
 
@@ -916,7 +919,11 @@ def _test_checkpoint_with_ddp(device):
 
     model = DummyModel().to(device)
     device_ids = (
-        None if "cpu" in device.type else [device,]
+        None
+        if "cpu" in device.type
+        else [
+            device,
+        ]
     )
     ddp_model = nn.parallel.DistributedDataParallel(model, device_ids=device_ids)
     to_save = {"model": ddp_model}

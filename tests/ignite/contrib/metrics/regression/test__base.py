@@ -27,10 +27,24 @@ def test_base_regression_shapes():
         m.update((torch.rand(4, 1), torch.rand(4, 1, 2)))
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4, 1, 2), torch.rand(4,)))
+        m.update(
+            (
+                torch.rand(4, 1, 2),
+                torch.rand(
+                    4,
+                ),
+            )
+        )
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4,), torch.rand(4, 1, 2)))
+        m.update(
+            (
+                torch.rand(
+                    4,
+                ),
+                torch.rand(4, 1, 2),
+            )
+        )
 
     with pytest.raises(ValueError):
         m.update((torch.rand(4, 3), torch.rand(4, 1)))
@@ -39,10 +53,24 @@ def test_base_regression_shapes():
         m.update((torch.rand(4, 1), torch.rand(4, 3)))
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4, 7), torch.rand(4,)))
+        m.update(
+            (
+                torch.rand(4, 7),
+                torch.rand(
+                    4,
+                ),
+            )
+        )
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4,), torch.rand(4, 7)))
+        m.update(
+            (
+                torch.rand(
+                    4,
+                ),
+                torch.rand(4, 7),
+            )
+        )
 
 
 def test_base_regression_epoch_shapes():
@@ -62,10 +90,24 @@ def test_base_regression_epoch_shapes():
         m.update((torch.rand(4, 1), torch.rand(4, 1, 2)))
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4, 1, 2), torch.rand(4,)))
+        m.update(
+            (
+                torch.rand(4, 1, 2),
+                torch.rand(
+                    4,
+                ),
+            )
+        )
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4,), torch.rand(4, 1, 2)))
+        m.update(
+            (
+                torch.rand(
+                    4,
+                ),
+                torch.rand(4, 1, 2),
+            )
+        )
 
     with pytest.raises(ValueError):
         m.update((torch.rand(4, 3), torch.rand(4, 1)))
@@ -74,10 +116,24 @@ def test_base_regression_epoch_shapes():
         m.update((torch.rand(4, 1), torch.rand(4, 3)))
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4, 7), torch.rand(4,)))
+        m.update(
+            (
+                torch.rand(4, 7),
+                torch.rand(
+                    4,
+                ),
+            )
+        )
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4,), torch.rand(4, 7)))
+        m.update(
+            (
+                torch.rand(
+                    4,
+                ),
+                torch.rand(4, 7),
+            )
+        )
 
 
 def test_base_regression_compute_fn():

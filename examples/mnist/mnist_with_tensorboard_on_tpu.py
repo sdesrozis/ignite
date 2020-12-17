@@ -84,7 +84,13 @@ def run(train_batch_size, val_batch_size, epochs, lr, momentum, log_interval, lo
 
     # Create trainer and evaluator
     trainer = create_supervised_trainer(
-        model, optimizer, F.nll_loss, device=device, output_transform=lambda x, y, y_pred, loss: [loss.item(),]
+        model,
+        optimizer,
+        F.nll_loss,
+        device=device,
+        output_transform=lambda x, y, y_pred, loss: [
+            loss.item(),
+        ],
     )
 
     evaluator = create_supervised_evaluator(

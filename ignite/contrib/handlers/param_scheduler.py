@@ -386,8 +386,7 @@ class CosineAnnealingScheduler(CyclicalScheduler):
     """
 
     def get_param(self):
-        """Method to get current optimizer's parameter value
-        """
+        """Method to get current optimizer's parameter value"""
         cycle_progress = self.event_index / self.cycle_size
         return self.start_value + ((self.end_value - self.start_value) / 2) * (1 - math.cos(math.pi * cycle_progress))
 
@@ -640,8 +639,7 @@ class LRScheduler(ParamScheduler):
         super(LRScheduler, self).__call__(engine, name)
 
     def get_param(self) -> Union[float, List[float]]:
-        """Method to get current optimizer's parameter value
-        """
+        """Method to get current optimizer's parameter value"""
         # Emulate context manager for pytorch>=1.4
         self.lr_scheduler._get_lr_called_within_step = True
         lr_list = self.lr_scheduler.get_lr()

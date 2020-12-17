@@ -42,7 +42,10 @@ def run(config, logger=None, local_rank=0, **kwargs):
 
     if dist.get_rank() == 0:
         mlflow.log_params(
-            {"pytorch version": torch.__version__, "ignite version": ignite.__version__,}
+            {
+                "pytorch version": torch.__version__,
+                "ignite version": ignite.__version__,
+            }
         )
         mlflow.log_params(get_params(config, TRAINVAL_CONFIG))
 

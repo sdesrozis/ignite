@@ -600,7 +600,9 @@ def test_altered_random_state():
     epoch_length = 6
     trainer = Engine(train_fn)
     trainer.run(
-        random_train_data_generator(size), max_epochs=4, epoch_length=epoch_length,
+        random_train_data_generator(size),
+        max_epochs=4,
+        epoch_length=epoch_length,
     )
 
     def val_fn(_1, _2):
@@ -621,7 +623,9 @@ def test_altered_random_state():
 
     torch.manual_seed(1)
     trainer.run(
-        random_train_data_generator(size), max_epochs=4, epoch_length=epoch_length,
+        random_train_data_generator(size),
+        max_epochs=4,
+        epoch_length=epoch_length,
     )
 
     for i in range(epoch_length):
@@ -631,7 +635,7 @@ def test_altered_random_state():
 
 def test_engine_with_dataloader_no_auto_batching():
     # tests https://github.com/pytorch/ignite/issues/941
-    from torch.utils.data import DataLoader, BatchSampler, RandomSampler
+    from torch.utils.data import BatchSampler, DataLoader, RandomSampler
 
     data = torch.rand(64, 4, 10)
     data_loader = DataLoader(

@@ -32,7 +32,14 @@ def test_binary_wrong_inputs():
 
     with pytest.raises(ValueError):
         # y_pred values are not thresholded to 0, 1 values
-        pr.update((torch.rand(10,), torch.randint(0, 2, size=(10,)).long()))
+        pr.update(
+            (
+                torch.rand(
+                    10,
+                ),
+                torch.randint(0, 2, size=(10,)).long(),
+            )
+        )
 
     with pytest.raises(ValueError):
         # incompatible shapes

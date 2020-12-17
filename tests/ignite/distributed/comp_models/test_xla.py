@@ -35,7 +35,10 @@ def _test_xla_spawn_fn(local_rank, world_size, device):
 def test__xla_dist_model_spawn_one_proc():
     try:
         _XlaDistModel.spawn(
-            _test_xla_spawn_fn, args=(1, "xla"), kwargs_dict={}, num_procs_per_node=1,
+            _test_xla_spawn_fn,
+            args=(1, "xla"),
+            kwargs_dict={},
+            num_procs_per_node=1,
         )
     except SystemExit:
         pass
@@ -48,7 +51,10 @@ def test__xla_dist_model_spawn_n_procs():
     n = int(os.environ["NUM_TPU_WORKERS"])
     try:
         _XlaDistModel.spawn(
-            _test_xla_spawn_fn, args=(n, "xla"), kwargs_dict={}, num_procs_per_node=n,
+            _test_xla_spawn_fn,
+            args=(n, "xla"),
+            kwargs_dict={},
+            num_procs_per_node=n,
         )
     except SystemExit:
         pass
@@ -147,9 +153,11 @@ def test__xla_dist_model_create_from_context_in_child_proc(xmp_executor):
 
 def main_fold(fold):
     import time
+
     import torch.nn as nn
     import torch.optim as optim
     import torch_xla.core.xla_model as xm
+
     from ignite.engine import Engine, Events
 
     device = xm.xla_device(fold)
@@ -177,7 +185,12 @@ def main_fold(fold):
 
     # THIS CAN BE A CAUSE OF CRASH if DEVICE is OTHER THAN device
     tensor = torch.tensor([fold + 1.0], dtype=torch.float).to(comp_model.device())
-    xm.all_reduce("max", [tensor,])
+    xm.all_reduce(
+        "max",
+        [
+            tensor,
+        ],
+    )
 
     time.sleep(0.01 * fold)
 
@@ -193,9 +206,8 @@ def main_fold(fold):
 @pytest.mark.skipif(not has_xla_support, reason="Skip if no PyTorch XLA package")
 def test__xla_dist_model_run_parallel_n_threads_without_sync():
     # tests issue : https://github.com/pytorch/ignite/issues/1096
-    from joblib import Parallel, delayed
-
     import torch_xla.core.xla_model as xm
+    from joblib import Parallel, delayed
 
     devices = xm.get_xla_supported_devices()
     folds = 1

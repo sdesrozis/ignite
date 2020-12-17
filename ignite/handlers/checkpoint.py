@@ -403,7 +403,11 @@ class DiskSaver(BaseSaveHandler):
     """
 
     def __init__(
-        self, dirname: str, atomic: bool = True, create_dir: bool = True, require_empty: bool = True,
+        self,
+        dirname: str,
+        atomic: bool = True,
+        create_dir: bool = True,
+        require_empty: bool = True,
     ):
         self.dirname = os.path.expanduser(dirname)
         self._atomic = atomic
@@ -575,7 +579,12 @@ class ModelCheckpoint(Checkpoint):
                 # No choice
                 raise ValueError(msg)
 
-        disk_saver = DiskSaver(dirname, atomic=atomic, create_dir=create_dir, require_empty=require_empty,)
+        disk_saver = DiskSaver(
+            dirname,
+            atomic=atomic,
+            create_dir=create_dir,
+            require_empty=require_empty,
+        )
 
         super(ModelCheckpoint, self).__init__(
             to_save=None,

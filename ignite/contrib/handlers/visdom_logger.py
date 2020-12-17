@@ -50,8 +50,12 @@ class _BaseVisDrawer:
         update = None if self.windows[k]["win"] is None else "append"
 
         kwargs = {
-            "X": [global_step,],
-            "Y": [v,],
+            "X": [
+                global_step,
+            ],
+            "Y": [
+                v,
+            ],
             "env": logger.vis.env,
             "win": self.windows[k]["win"],
             "update": update,
@@ -152,7 +156,12 @@ class OutputHandler(BaseOutputHandler, _BaseVisDrawer):
     """
 
     def __init__(
-        self, tag, metric_names=None, output_transform=None, global_step_transform=None, show_legend=False,
+        self,
+        tag,
+        metric_names=None,
+        output_transform=None,
+        global_step_transform=None,
+        show_legend=False,
     ):
         super(OutputHandler, self).__init__(tag, metric_names, output_transform, global_step_transform)
         _BaseVisDrawer.__init__(self, show_legend=show_legend)

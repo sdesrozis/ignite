@@ -27,7 +27,11 @@ class _XlaDistModel(ComputationModel):
 
     name = "xla-dist"
 
-    available_backends = tuple(["xla-tpu",])
+    available_backends = tuple(
+        [
+            "xla-tpu",
+        ]
+    )
 
     @staticmethod
     def create_from_context() -> Optional["_XlaDistModel"]:
@@ -42,8 +46,7 @@ class _XlaDistModel(ComputationModel):
         return _XlaDistModel(backend=backend, **kwargs)
 
     def __init__(self, backend=None, **kwargs):
-        """This is a private method. Please, use `create_from_backend` or `create_from_context`
-        """
+        """This is a private method. Please, use `create_from_backend` or `create_from_context`"""
         super(_XlaDistModel, self).__init__()
         if backend is not None:
             self._create_from_backend(backend, **kwargs)
@@ -62,7 +65,12 @@ class _XlaDistModel(ComputationModel):
 
     def _compute_ntasks_per_node(self):
         tensor = torch.tensor([self.get_local_rank() + 1.0], dtype=torch.float).to(self.device())
-        xm.all_reduce("max", [tensor,])
+        xm.all_reduce(
+            "max",
+            [
+                tensor,
+            ],
+        )
         return int(tensor.item())
 
     def get_local_rank(self) -> int:
@@ -142,7 +150,12 @@ class _XlaDistModel(ComputationModel):
         if op not in self._reduce_op_map:
             raise ValueError("Unsupported reduction operation: '{}'".format(op))
         op = self._reduce_op_map[op]
-        xm.all_reduce(op, [tensor,])
+        xm.all_reduce(
+            op,
+            [
+                tensor,
+            ],
+        )
         return tensor
 
     def _do_all_gather(self, tensor: torch.Tensor) -> torch.Tensor:
@@ -150,7 +163,12 @@ class _XlaDistModel(ComputationModel):
         group_size = self.get_world_size()
         output = torch.zeros((group_size,) + tensor.shape, dtype=tensor.dtype, device=tensor.device)
         output[self.get_rank() % group_size] = tensor
-        xm.all_reduce("sum", [output,])
+        xm.all_reduce(
+            "sum",
+            [
+                output,
+            ],
+        )
         return output.reshape(-1, *output.shape[2:])
 
     def barrier(self):

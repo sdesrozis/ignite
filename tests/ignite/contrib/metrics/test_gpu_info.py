@@ -12,8 +12,9 @@ python_below_36 = (sys.version[0] == "3" and int(sys.version[2]) < 6) or int(sys
 
 @pytest.fixture
 def no_site_packages():
-    import pynvml
     import sys
+
+    import pynvml
 
     assert "pynvml" in sys.modules
     pynvml_module = sys.modules["pynvml"]
@@ -161,9 +162,21 @@ def test_gpu_info_mock(mock_pynvml_module, mock_gpu_is_available):
     _test_with_custom_query(resp={}, warn_msg=r"No GPU information available", check_compute=True)
 
     # No GPU memory info
-    _test_with_custom_query(resp={"gpu": [{"utilization": {}},]}, warn_msg=r"No GPU memory usage information available")
+    _test_with_custom_query(
+        resp={
+            "gpu": [
+                {"utilization": {}},
+            ]
+        },
+        warn_msg=r"No GPU memory usage information available",
+    )
 
     # No GPU utilization info
     _test_with_custom_query(
-        resp={"gpu": [{"fb_memory_usage": {}},]}, warn_msg=r"No GPU utilization information available"
+        resp={
+            "gpu": [
+                {"fb_memory_usage": {}},
+            ]
+        },
+        warn_msg=r"No GPU utilization information available",
     )

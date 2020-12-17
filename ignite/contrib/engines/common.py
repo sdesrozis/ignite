@@ -140,7 +140,9 @@ def _setup_common_training_handlers(
         if output_path is None:
             raise ValueError("If to_save argument is provided then output_path argument should be also defined")
         checkpoint_handler = Checkpoint(
-            to_save, DiskSaver(dirname=output_path, require_empty=False), filename_prefix="training",
+            to_save,
+            DiskSaver(dirname=output_path, require_empty=False),
+            filename_prefix="training",
         )
         trainer.add_event_handler(Events.ITERATION_COMPLETED(every=save_every_iters), checkpoint_handler)
 
@@ -472,7 +474,9 @@ def save_best_model_by_val_score(output_path, evaluator, model, metric_name, n_s
         global_step_transform = global_step_from_engine(trainer)
 
     best_model_handler = Checkpoint(
-        {"model": model,},
+        {
+            "model": model,
+        },
         DiskSaver(dirname=output_path, require_empty=False),
         filename_prefix="best",
         n_saved=n_saved,
@@ -481,7 +485,8 @@ def save_best_model_by_val_score(output_path, evaluator, model, metric_name, n_s
         score_function=get_default_score_fn(metric_name),
     )
     evaluator.add_event_handler(
-        Events.COMPLETED, best_model_handler,
+        Events.COMPLETED,
+        best_model_handler,
     )
 
     return best_model_handler

@@ -17,17 +17,35 @@ def test_wrong_input_shapes():
         m.update((torch.rand(4, 1), torch.rand(4, 1, 2)))
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4, 1, 2), torch.rand(4,)))
+        m.update(
+            (
+                torch.rand(4, 1, 2),
+                torch.rand(
+                    4,
+                ),
+            )
+        )
 
     with pytest.raises(ValueError):
-        m.update((torch.rand(4,), torch.rand(4, 1, 2)))
+        m.update(
+            (
+                torch.rand(
+                    4,
+                ),
+                torch.rand(4, 1, 2),
+            )
+        )
 
 
 def test_r2_score():
 
     size = 51
-    np_y_pred = np.random.rand(size,)
-    np_y = np.random.rand(size,)
+    np_y_pred = np.random.rand(
+        size,
+    )
+    np_y = np.random.rand(
+        size,
+    )
 
     m = R2Score()
     y_pred = torch.from_numpy(np_y_pred)

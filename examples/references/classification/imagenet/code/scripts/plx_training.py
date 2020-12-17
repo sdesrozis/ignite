@@ -38,7 +38,10 @@ def run(config, logger=None, local_rank=0, **kwargs):
     if dist.get_rank() == 0:
         plx_exp = Experiment()
         plx_exp.log_params(
-            **{"pytorch version": torch.__version__, "ignite version": ignite.__version__,}
+            **{
+                "pytorch version": torch.__version__,
+                "ignite version": ignite.__version__,
+            }
         )
         plx_exp.log_params(**get_params(config, TRAINVAL_CONFIG))
 

@@ -201,6 +201,7 @@ def _xla_template_worker_task(index, fn, args):
 
 def _xla_execute(fn, args, nprocs):
     import os
+
     import torch_xla.distributed.xla_multiprocessing as xmp
 
     spawn_kwargs = {}

@@ -86,7 +86,9 @@ def training(config, local_rank=None, with_mlflow_logging=False, with_plx_loggin
         output_path=config.output_path.as_posix(),
         lr_scheduler=lr_scheduler,
         with_gpu_stats=True,
-        output_names=["supervised batch loss",],
+        output_names=[
+            "supervised batch loss",
+        ],
         with_pbars=True,
         with_pbar_on_iters=with_mlflow_logging,
         log_every_iters=1,
@@ -115,7 +117,10 @@ def training(config, local_rank=None, with_mlflow_logging=False, with_plx_loggin
         device=device,
         non_blocking=non_blocking,
         prepare_batch=prepare_batch,
-        output_transform=lambda x, y, y_pred: (model_output_transform(y_pred), y,),
+        output_transform=lambda x, y, y_pred: (
+            model_output_transform(y_pred),
+            y,
+        ),
     )
     train_evaluator = create_supervised_evaluator(**evaluator_args)
     evaluator = create_supervised_evaluator(**evaluator_args)

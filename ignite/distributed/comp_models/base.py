@@ -166,8 +166,7 @@ class ComputationModel(metaclass=ABCMeta):
 
 
 class _SerialModel(ComputationModel):
-    """Private class defines non-distributed computation model for code compatibility with other distributed models.
-    """
+    """Private class defines non-distributed computation model for code compatibility with other distributed models."""
 
     name = "serial"
     available_backends = tuple()

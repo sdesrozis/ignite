@@ -7,7 +7,7 @@ __all__ = ["Timer"]
 
 
 class Timer:
-    """ Timer object can be used to measure (average) time between events.
+    """Timer object can be used to measure (average) time between events.
 
     Args:
         average (bool, optional): if True, then when ``.value()`` method is called, the returned value
@@ -92,7 +92,7 @@ class Timer:
         resume: Optional[Events] = None,
         step: Optional[Events] = None,
     ):
-        """ Register callbacks to control the timer.
+        """Register callbacks to control the timer.
 
         Args:
             engine (Engine):

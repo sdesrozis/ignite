@@ -24,8 +24,7 @@ def convert_tensor(
 def apply_to_tensor(
     input_: Union[torch.Tensor, collections.Sequence, collections.Mapping, str, bytes], func: Callable
 ) -> Union[torch.Tensor, collections.Sequence, collections.Mapping, str, bytes]:
-    """Apply a function on a tensor or mapping, or sequence of tensors.
-    """
+    """Apply a function on a tensor or mapping, or sequence of tensors."""
     return apply_to_type(input_, torch.Tensor, func)
 
 
@@ -34,8 +33,7 @@ def apply_to_type(
     input_type: Union[Type, Tuple[Type[Any], Any]],
     func: Callable,
 ) -> Union[Any, collections.Sequence, collections.Mapping, str, bytes]:
-    """Apply a function on a object of `input_type` or mapping, or sequence of objects of `input_type`.
-    """
+    """Apply a function on a object of `input_type` or mapping, or sequence of objects of `input_type`."""
     if isinstance(input_, input_type):
         return func(input_)
     elif isinstance(input_, (str, bytes)):

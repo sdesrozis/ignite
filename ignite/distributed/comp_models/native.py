@@ -47,8 +47,7 @@ class _NativeDistModel(ComputationModel):
         return _NativeDistModel(backend=backend, **kwargs)
 
     def __init__(self, backend=None, timeout=None, **kwargs):
-        """This is a private method. Please, use `create_from_backend` or `create_from_context`
-        """
+        """This is a private method. Please, use `create_from_backend` or `create_from_context`"""
         super(_NativeDistModel, self).__init__()
         if backend is not None:
             self._create_from_backend(backend, timeout=timeout, **kwargs)
@@ -111,7 +110,12 @@ class _NativeDistModel(ComputationModel):
         from collections import Counter
 
         c = Counter(hostnames)
-        sizes = torch.tensor([0,] + list(c.values()))
+        sizes = torch.tensor(
+            [
+                0,
+            ]
+            + list(c.values())
+        )
         cumsum_sizes = torch.cumsum(sizes, dim=0)
         node_rank = (rank // cumsum_sizes[1:]).clamp(0, 1).sum().item()
         local_rank = rank - cumsum_sizes[node_rank].item()

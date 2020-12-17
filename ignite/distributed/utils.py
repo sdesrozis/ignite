@@ -96,8 +96,7 @@ def backend() -> Optional[str]:
 
 
 def available_backends() -> Tuple[str]:
-    """Returns available backends.
-    """
+    """Returns available backends."""
     out = ()
     for m in registered_computation_models:
         out += m.available_backends
@@ -118,22 +117,19 @@ def model_name() -> str:
 
 @_sync_model_wrapper
 def get_world_size() -> int:
-    """Returns world size of current distributed configuration. Returns 1 if no distributed configuration.
-    """
+    """Returns world size of current distributed configuration. Returns 1 if no distributed configuration."""
     return _model.get_world_size()
 
 
 @_sync_model_wrapper
 def get_rank() -> int:
-    """Returns process rank within current distributed configuration. Returns 0 if no distributed configuration.
-    """
+    """Returns process rank within current distributed configuration. Returns 0 if no distributed configuration."""
     return _model.get_rank()
 
 
 @_sync_model_wrapper
 def get_local_rank() -> int:
-    """Returns local process rank within current distributed configuration. Returns 0 if no distributed configuration.
-    """
+    """Returns local process rank within current distributed configuration. Returns 0 if no distributed configuration."""
     return _model.get_local_rank()
 
 
@@ -162,8 +158,7 @@ def get_node_rank() -> int:
 
 
 def hostname() -> str:
-    """Returns host name for current process within current distributed configuration.
-    """
+    """Returns host name for current process within current distributed configuration."""
     return socket.gethostname()
 
 
@@ -322,8 +317,7 @@ def all_gather(tensor: Union[torch.Tensor, Number, str]) -> Union[torch.Tensor, 
 
 @_sync_model_wrapper
 def barrier():
-    """Helper method to synchronize all processes.
-    """
+    """Helper method to synchronize all processes."""
     _model.barrier()
 
 
@@ -429,8 +423,7 @@ def finalize():
 
 
 def show_config():
-    """Helper method to display distributed configuration via ``logging``.
-    """
+    """Helper method to display distributed configuration via ``logging``."""
 
     # setup parallel logger
     logger = setup_logger(__name__)

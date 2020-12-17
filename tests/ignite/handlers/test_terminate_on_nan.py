@@ -24,7 +24,11 @@ def test_terminate_on_nan_and_inf():
     h(trainer)
     assert not trainer.should_terminate
 
-    trainer.state.output = torch.asin(torch.randn(10,))
+    trainer.state.output = torch.asin(
+        torch.randn(
+            10,
+        )
+    )
     h(trainer)
     assert trainer.should_terminate
     trainer.should_terminate = False

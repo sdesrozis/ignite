@@ -279,7 +279,9 @@ def _test_resume_random_dataloader_from_epoch(device, _setup_sampler, sampler_ty
 
                 torch.manual_seed(87)
                 engine.run(
-                    orig_dataloader, max_epochs=max_epochs, epoch_length=epoch_length,
+                    orig_dataloader,
+                    max_epochs=max_epochs,
+                    epoch_length=epoch_length,
                 )
 
                 batch_checker = BatchChecker(seen_batchs, init_counter=resume_epoch * epoch_length)
@@ -385,7 +387,9 @@ def _test_resume_random_dataloader_from_iter(device, _setup_sampler, sampler_typ
 
                 torch.manual_seed(12)
                 engine.run(
-                    orig_dataloader, max_epochs=max_epochs, epoch_length=epoch_length,
+                    orig_dataloader,
+                    max_epochs=max_epochs,
+                    epoch_length=epoch_length,
                 )
 
                 batch_checker = BatchChecker(seen_batchs, init_counter=resume_iteration)
@@ -464,7 +468,9 @@ def _test_resume_random_data_iterator_from_epoch(device):
             engine = DeterministicEngine(update_fn)
             torch.manual_seed(121)
             engine.run(
-                infinite_data_iterator(), max_epochs=max_epochs, epoch_length=epoch_length,
+                infinite_data_iterator(),
+                max_epochs=max_epochs,
+                epoch_length=epoch_length,
             )
 
             batch_checker = BatchChecker(seen_batchs, init_counter=resume_epoch * epoch_length)
@@ -520,7 +526,9 @@ def _test_resume_random_data_iterator_from_iter(device):
 
             torch.manual_seed(24)
             engine.run(
-                infinite_data_iterator(), max_epochs=max_epochs, epoch_length=epoch_length,
+                infinite_data_iterator(),
+                max_epochs=max_epochs,
+                epoch_length=epoch_length,
             )
 
             batch_checker = BatchChecker(seen_batchs, init_counter=resume_iteration)
@@ -587,6 +595,7 @@ def test_concepts_snippet_resume():
 
     import torch
     from torch.utils.data import DataLoader
+
     from ignite.engine import DeterministicEngine, Events
     from ignite.utils import manual_seed
 
@@ -650,8 +659,8 @@ def _test_gradients_on_resume(
 
     debug = True
 
-    from torch.utils.data import DataLoader
     from torch.optim import SGD
+    from torch.utils.data import DataLoader
 
     def random_train_data_loader(size):
         d = AugmentedData(torch.rand(size, 3, 32, 32), enabled=with_dataaugs)
@@ -683,7 +692,7 @@ def _test_gradients_on_resume(
         opt = SGD(model.parameters(), lr=0.001)
 
         def proc_fn(e, b):
-            from ignite.engine.deterministic import _repr_rng_state, _get_rng_states
+            from ignite.engine.deterministic import _get_rng_states, _repr_rng_state
 
             s = _repr_rng_state(_get_rng_states())
             model.train()
@@ -805,7 +814,7 @@ def test_gradients_on_resume_on_cuda(dirname):
 
 def test_engine_with_dataloader_no_auto_batching():
     # tests https://github.com/pytorch/ignite/issues/941
-    from torch.utils.data import DataLoader, BatchSampler, RandomSampler
+    from torch.utils.data import BatchSampler, DataLoader, RandomSampler
 
     data = torch.rand(64, 4, 10)
     data_loader = DataLoader(

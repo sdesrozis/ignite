@@ -683,7 +683,9 @@ def test_incorrect_type():
         y = torch.ones(4).long()
         re.update((y_pred, y))
 
-        y_pred = torch.zeros(4,)
+        y_pred = torch.zeros(
+            4,
+        )
         y = torch.ones(4).long()
 
         with pytest.raises(RuntimeError):

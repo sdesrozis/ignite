@@ -29,7 +29,12 @@ def get_train_test_loaders(path, batch_size, num_workers, distributed=False, pin
         ]
     )
 
-    test_transform = Compose([ToTensor(), Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),])
+    test_transform = Compose(
+        [
+            ToTensor(),
+            Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+        ]
+    )
 
     if not os.path.exists(path):
         os.makedirs(path)
@@ -90,7 +95,12 @@ def get_model_optimizer(config, distributed=False):
     )
 
     if distributed:
-        model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank,])
+        model = torch.nn.parallel.DistributedDataParallel(
+            model,
+            device_ids=[
+                local_rank,
+            ],
+        )
     elif torch.cuda.device_count() > 0:
         model = nn.parallel.DataParallel(model)
 
