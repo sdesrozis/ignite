@@ -467,10 +467,24 @@ saving the checkpoint.</p>
 <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="o">...</span>
 
 <span class="n">to_save</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="p">,</span> <span class="s1">&#39;lr_scheduler&#39;</span><span class="p">:</span> <span class="n">lr_scheduler</span><span class="p">,</span> <span class="s1">&#39;trainer&#39;</span><span class="p">:</span> <span class="n">trainer</span><span class="p">}</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="n">to_save</span><span class="p">,</span> <span class="n">DiskSaver</span><span class="p">(</span><span class="s1">&#39;/tmp/models&#39;</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">checkpoint_iters</span><span class="p">):</span>
+    <span class="c1"># A: Output is &quot;checkpoint_&lt;iteration&gt;.pt&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span>
+        <span class="n">to_save</span><span class="p">,</span> <span class="n">DiskSaver</span><span class="p">(</span><span class="s1">&#39;/tmp/models&#39;</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># B:Output is &quot;checkpoint_&lt;epoch&gt;.pt&quot;</span>
+    <span class="n">gst</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span>
+        <span class="n">to_save</span><span class="p">,</span> <span class="n">DiskSaver</span><span class="p">(</span><span class="s1">&#39;/tmp/models&#39;</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">global_step_transform</span><span class="o">=</span><span class="n">gst</span>
+    <span class="p">)</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+
 <span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data_loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="p">[</span><span class="s2">&quot;checkpoint_7000.pt&quot;</span><span class="p">,</span> <span class="s2">&quot;checkpoint_8000.pt&quot;</span><span class="p">,</span> <span class="p">]</span>
+<span class="o">&gt;</span> <span class="n">A</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;checkpoint_7000.pt&quot;</span><span class="p">,</span> <span class="s2">&quot;checkpoint_8000.pt&quot;</span><span class="p">,</span> <span class="p">]</span>
+<span class="o">&gt;</span> <span class="n">B</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;checkpoint_5.pt&quot;</span><span class="p">,</span> <span class="s2">&quot;checkpoint_6.pt&quot;</span><span class="p">,</span> <span class="p">]</span>
 </pre></div>
 </div>
 <p>Attach the handler to an evaluator to save best model during the training
@@ -674,11 +688,11 @@ there must not be another object in <code class="docutils literal notranslate"><
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="s1">&#39;/tmp/models&#39;</span><span class="p">,</span> <span class="s1">&#39;myprefix&#39;</span><span class="p">,</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">handler</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;mymodel&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;/tmp/models&#39;</span><span class="p">)</span>
-<span class="go">[&#39;myprefix_mymodel_4.pt&#39;, &#39;myprefix_mymodel_6.pt&#39;]</span>
+<span class="go">[&#39;myprefix_mymodel_20.pt&#39;, &#39;myprefix_mymodel_30.pt&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span><span class="o">.</span><span class="n">last_checkpoint</span>
-<span class="go">[&#39;/tmp/models/myprefix_mymodel_6.pt&#39;]</span>
+<span class="go">[&#39;/tmp/models/myprefix_mymodel_30.pt&#39;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -905,7 +919,7 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

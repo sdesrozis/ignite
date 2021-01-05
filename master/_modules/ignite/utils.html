@@ -323,7 +323,7 @@
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">input_</span><span class="p">))(</span><span class="o">*</span><span class="p">(</span><span class="n">apply_to_type</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">input_type</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">input_</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">input_</span><span class="p">))([</span><span class="n">apply_to_type</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">input_type</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">input_</span><span class="p">])</span>
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">((</span><span class="s2">&quot;input must contain </span><span class="si">{}</span><span class="s2">, dicts or lists; found </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">input_</span><span class="p">))))</span></div>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">((</span><span class="sa">f</span><span class="s2">&quot;input must contain </span><span class="si">{</span><span class="n">input_type</span><span class="si">}</span><span class="s2">, dicts or lists; found </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="to_onehot"><a class="viewcode-back" href="../../utils.html#ignite.utils.to_onehot">[docs]</a><span class="k">def</span> <span class="nf">to_onehot</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
@@ -451,7 +451,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

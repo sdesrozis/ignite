@@ -282,6 +282,7 @@
 <ul class="simple">
 <li><p>backends from native torch distributed configuration: “nccl”, “gloo”, “mpi”</p></li>
 <li><p>XLA on TPUs via <a class="reference external" href="https://github.com/pytorch/xla">pytorch/xla</a></p></li>
+<li><p>using <a class="reference external" href="https://horovod.readthedocs.io/en/stable/">Horovod framework</a> as a backend</p></li>
 </ul>
 <div class="section" id="distributed-launcher-and-auto-helpers">
 <h2>Distributed launcher and <cite>auto</cite> helpers<a class="headerlink" href="#distributed-launcher-and-auto-helpers" title="Permalink to this headline">¶</a></h2>
@@ -944,7 +945,7 @@ Returns 1 if no distributed configuration.</p>
     <span class="k">assert</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
 
     <span class="n">device</span> <span class="o">=</span> <span class="n">idist</span><span class="o">.</span><span class="n">device</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_rank</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">local_rank</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <span class="n">idist</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
@@ -1060,7 +1061,7 @@ distributed configuration defined by <code class="docutils literal notranslate">
     <span class="k">assert</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
 
     <span class="n">device</span> <span class="o">=</span> <span class="n">idist</span><span class="o">.</span><span class="n">device</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_rank</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">local_rank</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <span class="n">idist</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;nccl&quot;</span><span class="p">,</span> <span class="n">train_fn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">kwargs_dict</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">},</span> <span class="n">nproc_per_node</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -1085,7 +1086,7 @@ distributed configuration defined by <code class="docutils literal notranslate">
     <span class="k">assert</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span> <span class="o">==</span> <span class="n">nnodes</span> <span class="o">*</span> <span class="n">nproc_per_node</span>
 
     <span class="n">device</span> <span class="o">=</span> <span class="n">idist</span><span class="o">.</span><span class="n">device</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_rank</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">local_rank</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">idist</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span>
     <span class="s2">&quot;nccl&quot;</span><span class="p">,</span>
@@ -1194,7 +1195,7 @@ This may have a negative performance impact.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

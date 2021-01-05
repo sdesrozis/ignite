@@ -403,7 +403,7 @@ on every <a class="reference internal" href="#ignite.engine.engine.Engine.run" t
     <span class="n">e</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">iteration</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - batch loss: </span><span class="si">{}</span><span class="s2">, lr: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch_loss</span><span class="p">,</span> <span class="n">lr</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> - batch loss: </span><span class="si">{</span><span class="n">batch_loss</span><span class="si">}</span><span class="s2">, lr: </span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data_loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
@@ -492,7 +492,7 @@ passed here, for example during <code class="xref py py-attr docutils literal no
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">process_function</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">print_epoch</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch: </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">engine</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span> <span class="n">print_epoch</span><span class="p">)</span>
 
@@ -593,7 +593,7 @@ or any <code class="docutils literal notranslate"><span class="pre">event_name</
 
 <span class="nd">@engine</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">print_epoch</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch: </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="nd">@engine</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span> <span class="o">|</span> <span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">execute_something</span><span class="p">():</span>
@@ -696,16 +696,10 @@ or an object derived from <a class="reference internal" href="#ignite.engine.eve
 <dd><p>Runs the <cite>process_function</cite> over the passed data.</p>
 <p>Engine has a state and the following logic is applied in this function:</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt>At the first call, new state is defined by <cite>max_epochs</cite>, <cite>max_iters</cite>, <cite>epoch_length</cite>, if provided.</dt><dd><p>A timer for total and per-epoch time is initialized when Events.STARTED is handled.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>If state is already defined such that there are iterations to run until <cite>max_epochs</cite> and no input arguments</dt><dd><p>provided, state is kept and used in the function.</p>
-</dd>
-</dl>
-</li>
+<li><p>At the first call, new state is defined by <cite>max_epochs</cite>, <cite>max_iters</cite>, <cite>epoch_length</cite>, if provided.
+A timer for total and per-epoch time is initialized when Events.STARTED is handled.</p></li>
+<li><p>If state is already defined such that there are iterations to run until <cite>max_epochs</cite> and no input arguments
+provided, state is kept and used in the function.</p></li>
 <li><p>If state is defined and engine is “done” (no iterations to run until <cite>max_epochs</cite>), a new state is defined.</p></li>
 <li><p>If state is defined, engine is NOT “done”, then input arguments if provided override defined state.</p></li>
 </ul>
@@ -1191,7 +1185,7 @@ remove method, with-statement, or context manager protocol. Returned from
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">print_epoch</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch: </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span> <span class="n">print_epoch</span><span class="p">):</span>
     <span class="c1"># print_epoch handler registered for a single run</span>
@@ -1214,12 +1208,12 @@ remove method, with-statement, or context manager protocol. Returned from
 <div class="section" id="deterministic-training">
 <h3>Deterministic training<a class="headerlink" href="#deterministic-training" title="Permalink to this headline">¶</a></h3>
 <p>In general, it is rather difficult task to achieve deterministic and reproducible trainings as it relies on multiple
-aspects, e.g. data version, code version, software environment, hardware etc. According to <a class="reference external" href="https://pytorch.org/docs/stable/notes/randomness.html">PyTorch documentation</a>:
+aspects, e.g. data version, code version, software environment, hardware etc. According to <a class="reference external" href="https://pytorch.org/docs/stable/notes/randomness.html">PyTorch note on randomness</a>:
 there are some steps to take in order to make computations deterministic on your specific problem on one specific
 platform and PyTorch release:</p>
 <ul class="simple">
 <li><p>setup random state seed</p></li>
-<li><p>set <a class="reference external" href="https://pytorch.org/docs/stable/notes/randomness.html#cudnn">cudnn to deterministic</a> if applicable</p></li>
+<li><p>set <a class="reference external" href="https://pytorch.org/docs/stable/notes/randomness.html#cuda-convolution-benchmarking">cudnn to deterministic</a> if applicable</p></li>
 </ul>
 <p>By default, these two options can be enough to run and rerun experiments in a deterministic way. Ignite’s engine does not impact this behaviour.</p>
 <p>In this module we provide helper methods and classes to make additional “<a class="reference internal" href="#dataflow-synchronization"><span class="std std-ref">Dataflow synchronization</span></a>”
@@ -1510,7 +1504,7 @@ random batches based on altered random state.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

@@ -376,8 +376,8 @@
             <span class="n">max_iter</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch_length</span> <span class="o">*</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span>  <span class="c1"># type: ignore[operator]</span>
             <span class="k">if</span> <span class="n">num_iter</span> <span class="o">&gt;</span> <span class="n">max_iter</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="s2">&quot;Desired num_iter </span><span class="si">{}</span><span class="s2"> is unreachable with the current run setup of </span><span class="si">{}</span><span class="s2"> iteration &quot;</span>
-                    <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2"> epochs)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_iter</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;Desired num_iter </span><span class="si">{</span><span class="n">num_iter</span><span class="si">}</span><span class="s2"> is unreachable with the current run setup of </span><span class="si">{</span><span class="n">max_iter</span><span class="si">}</span><span class="s2"> iteration &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> epochs)&quot;</span><span class="p">,</span>
                     <span class="ne">UserWarning</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -390,7 +390,7 @@
                 <span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_lr_and_loss</span><span class="p">,</span> <span class="n">output_transform</span><span class="p">,</span> <span class="n">smooth_f</span><span class="p">,</span> <span class="n">diverge_th</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running LR finder for </span><span class="si">{}</span><span class="s2"> iterations&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_iter</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running LR finder for </span><span class="si">{</span><span class="n">num_iter</span><span class="si">}</span><span class="s2"> iterations&quot;</span><span class="p">)</span>
         <span class="c1"># Initialize the proper learning rate policy</span>
         <span class="k">if</span> <span class="n">step_mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;exp&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_lr_schedule</span> <span class="o">=</span> <span class="n">LRScheduler</span><span class="p">(</span><span class="n">_ExponentialLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">end_lr</span><span class="p">,</span> <span class="n">num_iter</span><span class="p">))</span>
@@ -571,7 +571,7 @@
 <span class="sd">            trainer_with_lr_finder: trainer used for finding the lr</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">to_save</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Argument to_save should be a mapping, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">to_save</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Argument to_save should be a mapping, but given </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">to_save</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">Checkpoint</span><span class="o">.</span><span class="n">_check_objects</span><span class="p">(</span><span class="n">to_save</span><span class="p">,</span> <span class="s2">&quot;state_dict&quot;</span><span class="p">)</span>
         <span class="n">Checkpoint</span><span class="o">.</span><span class="n">_check_objects</span><span class="p">(</span><span class="n">to_save</span><span class="p">,</span> <span class="s2">&quot;load_state_dict&quot;</span><span class="p">)</span>
@@ -581,7 +581,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">to_save</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;Object to_save[&#39;optimizer&#39;] should be torch optimizer, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">to_save</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">]))</span>
+                <span class="sa">f</span><span class="s2">&quot;Object to_save[&#39;optimizer&#39;] should be torch optimizer, but given </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">to_save</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">smooth_f</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">smooth_f</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
@@ -589,12 +589,12 @@
         <span class="k">if</span> <span class="n">diverge_th</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;diverge_th should be larger than 1&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">step_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;exp&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;step_mode should be &#39;exp&#39; or &#39;linear&#39;, but given </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">step_mode</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;step_mode should be &#39;exp&#39; or &#39;linear&#39;, but given </span><span class="si">{</span><span class="n">step_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">num_iter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">num_iter</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;if provided, num_iter should be an integer, but give </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_iter</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;if provided, num_iter should be an integer, but give </span><span class="si">{</span><span class="n">num_iter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">num_iter</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;if provided, num_iter should be positive, but give </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_iter</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;if provided, num_iter should be positive, but give </span><span class="si">{</span><span class="n">num_iter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># store to_save</span>
         <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdirname</span><span class="p">:</span>
@@ -637,7 +637,7 @@
     <span class="sd">&quot;&quot;&quot;Exponentially increases the learning rate between two boundaries over a number of</span>
 <span class="sd">    iterations.</span>
 
-<span class="sd">    Arguments:</span>
+<span class="sd">    Args:</span>
 <span class="sd">        optimizer (torch.optim.Optimizer): wrapped optimizer.</span>
 <span class="sd">        end_lr (float, optional): the initial learning rate which is the lower</span>
 <span class="sd">            boundary of the test. Default: 10.</span>
@@ -672,7 +672,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

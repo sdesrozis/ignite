@@ -332,7 +332,7 @@ use the <code class="docutils literal notranslate"><span class="pre">output_tran
 <p>Most of implemented metrics are adapted to distributed computations and reduce their internal states across supported
 devices before computing metric value. This can be helpful to run the evaluation on multiple nodes/GPU instances/TPUs
 with a distributed data sampler. Following code snippet shows in detail how to use metrics:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">local_rank</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">local_rank</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                                   <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">local_rank</span><span class="p">,</span> <span class="p">],</span>
                                                   <span class="n">output_device</span><span class="o">=</span><span class="n">local_rank</span><span class="p">)</span>
@@ -662,12 +662,9 @@ default, CPU.</p></li>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> must receive output of the form <code class="docutils literal notranslate"><span class="pre">(y_pred,</span> <span class="pre">y)</span></code> or <code class="docutils literal notranslate"><span class="pre">{'y_pred':</span> <span class="pre">y_pred,</span> <span class="pre">'y':</span> <span class="pre">y}</span></code>.</p></li>
 <li><p><cite>y_pred</cite> must contain logits and has the following shape (batch_size, num_categories, …)</p></li>
-<li><dl class="simple">
-<dt><cite>y</cite> should have the following shape (batch_size, …) and contains ground-truth class indices</dt><dd><p>with or without the background class. During the computation, argmax of <cite>y_pred</cite> is taken to determine
-predicted classes.</p>
-</dd>
-</dl>
-</li>
+<li><p><cite>y</cite> should have the following shape (batch_size, …) and contains ground-truth class indices
+with or without the background class. During the computation, argmax of <cite>y_pred</cite> is taken to determine
+predicted classes.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1602,7 +1599,7 @@ across all participating processes.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

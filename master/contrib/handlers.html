@@ -1607,7 +1607,7 @@ For example, <cite>log_dir</cite> to setup path to the directory where to log.</
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2100,7 +2100,7 @@ log less frequently or set <cite>num_workers=1</cite>.</p>
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.visdom_logger.VisdomLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2447,7 +2447,7 @@ You can save model checkpoints to a Neptune server:</p>
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2535,12 +2535,11 @@ NeptuneLogger class.</p>
 <span class="p">)</span>
 
 <span class="n">evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+
+<span class="c1"># We need to close the logger when we are done</span>
+<span class="n">npt_logger</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<dl class="simple">
-<dt># We need to close the logger when we are done</dt><dd><p>npt_logger.close()</p>
-</dd>
-</dl>
 <p>For example, you can access model checkpoints and download them from here:
 <a class="reference external" href="https://ui.neptune.ai/o/shared/org/pytorch-ignite-integration/e/PYTOR1-18/charts">https://ui.neptune.ai/o/shared/org/pytorch-ignite-integration/e/PYTOR1-18/charts</a></p>
 <dl class="py method">
@@ -2875,7 +2874,7 @@ and validation.</p>
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3180,7 +3179,7 @@ or a single scalar, which will be displayed with the default name <cite>output</
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.tqdm_logger.ProgressBar.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/ignite/contrib/handlers/tqdm_logger.html#ProgressBar.attach_opt_params_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.tqdm_logger.ProgressBar.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="reference internal" href="../_modules/ignite/contrib/handlers/tqdm_logger.html#ProgressBar.attach_opt_params_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.tqdm_logger.ProgressBar.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Intentionally empty</p>
 </dd></dl>
 
@@ -3441,7 +3440,7 @@ and validation.</p>
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3802,7 +3801,7 @@ files saved there at the end of the run. You can just use the <cite>wandb_logger
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.wandb_logger.WandBLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.wandb_logger.WandBLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.wandb_logger.WandBLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4208,7 +4207,7 @@ script’s file name is used. (Optional)</p></li>
 
 <dl class="py method">
 <dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4745,7 +4744,7 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>

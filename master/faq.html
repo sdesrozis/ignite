@@ -395,7 +395,7 @@ basic examples of how to setup trainer or evaluator.</p>
     <span class="c1"># ...</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">batch</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
@@ -437,7 +437,7 @@ In this case, there will be only a single epoch defined.</p>
     <span class="c1"># ...</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">batch</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
@@ -487,7 +487,7 @@ In the code, we do not specify <cite>epoch_length</cite> which will be automatic
     <span class="c1"># ...</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">batch</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
@@ -514,7 +514,7 @@ In the code, we do not specify <cite>epoch_length</cite> which will be automatic
     <span class="c1"># ...</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">batch</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">val_step</span><span class="p">)</span>
@@ -545,7 +545,7 @@ but here we will do this explicitly on iteration:</p>
     <span class="c1"># ...</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">batch</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_step</span><span class="p">)</span>
@@ -574,7 +574,7 @@ but here we will do this explicitly on iteration:</p>
     <span class="c1"># ...</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> : </span><span class="si">{}</span><span class="s2"> - </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max_epochs</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">batch</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 
 <span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">val_step</span><span class="p">)</span>
@@ -601,11 +601,11 @@ See an example in the documentation of the method.</p>
 
 <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">log_epoch_time</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s2">&quot;EPOCH_COMPLETED&quot;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;EPOCH_COMPLETED&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">log_total_time</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s2">&quot;COMPLETED&quot;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total: </span><span class="si">{</span><span class="n">trainer</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;COMPLETED&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For details, see <a class="reference internal" href="engine.html#ignite.engine.events.State" title="ignite.engine.events.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>.</p>
@@ -742,7 +742,7 @@ Dataflow took total 16.24365s [min/index: 0.00533s/1874, max/index: 0.01129s/937
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, PyTorch-Ignite Contributors.
+        &copy; Copyright 2021, PyTorch-Ignite Contributors.
 
     </p>
   </div>
