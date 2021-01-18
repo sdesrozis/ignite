@@ -310,31 +310,34 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.save_best_model_by_val_score" title="ignite.contrib.engines.common.save_best_model_by_val_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_best_model_by_val_score</span></code></a></p></td>
 <td><p>Method adds a handler to <code class="docutils literal notranslate"><span class="pre">evaluator</span></code> to save on a disk <code class="docutils literal notranslate"><span class="pre">n_saved</span></code> of best models based on the metric (named by <code class="docutils literal notranslate"><span class="pre">metric_name</span></code>) provided by <code class="docutils literal notranslate"><span class="pre">evaluator</span></code> (i.e.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_common_distrib_training_handlers" title="ignite.contrib.engines.common.setup_common_distrib_training_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_common_distrib_training_handlers</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_clearml_logging" title="ignite.contrib.engines.common.setup_clearml_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_clearml_logging</span></code></a></p></td>
+<td><p>Method to setup ClearML logging on trainer and a list of evaluators.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_common_distrib_training_handlers" title="ignite.contrib.engines.common.setup_common_distrib_training_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_common_distrib_training_handlers</span></code></a></p></td>
 <td><p>Helper method to setup trainer with common handlers (it also supports distributed configuration):</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_common_training_handlers" title="ignite.contrib.engines.common.setup_common_training_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_common_training_handlers</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_common_training_handlers" title="ignite.contrib.engines.common.setup_common_training_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_common_training_handlers</span></code></a></p></td>
 <td><p>Helper method to setup trainer with common handlers (it also supports distributed configuration):</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_mlflow_logging" title="ignite.contrib.engines.common.setup_mlflow_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_mlflow_logging</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_mlflow_logging" title="ignite.contrib.engines.common.setup_mlflow_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_mlflow_logging</span></code></a></p></td>
 <td><p>Method to setup MLflow logging on trainer and a list of evaluators.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_neptune_logging" title="ignite.contrib.engines.common.setup_neptune_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_neptune_logging</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_neptune_logging" title="ignite.contrib.engines.common.setup_neptune_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_neptune_logging</span></code></a></p></td>
 <td><p>Method to setup Neptune logging on trainer and a list of evaluators.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_plx_logging" title="ignite.contrib.engines.common.setup_plx_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_plx_logging</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_plx_logging" title="ignite.contrib.engines.common.setup_plx_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_plx_logging</span></code></a></p></td>
 <td><p>Method to setup Polyaxon logging on trainer and a list of evaluators.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_tb_logging" title="ignite.contrib.engines.common.setup_tb_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_tb_logging</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_tb_logging" title="ignite.contrib.engines.common.setup_tb_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_tb_logging</span></code></a></p></td>
 <td><p>Method to setup TensorBoard logging on trainer and a list of evaluators.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_trains_logging" title="ignite.contrib.engines.common.setup_trains_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_trains_logging</span></code></a></p></td>
-<td><p>Method to setup Trains logging on trainer and a list of evaluators.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_trains_logging" title="ignite.contrib.engines.common.setup_trains_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_trains_logging</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">setup_trains_logging</span></code> was renamed to <a class="reference internal" href="#ignite.contrib.engines.common.setup_clearml_logging" title="ignite.contrib.engines.common.setup_clearml_logging"><code class="xref py py-func docutils literal notranslate"><span class="pre">setup_clearml_logging()</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_visdom_logging" title="ignite.contrib.engines.common.setup_visdom_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_visdom_logging</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_visdom_logging" title="ignite.contrib.engines.common.setup_visdom_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_visdom_logging</span></code></a></p></td>
 <td><p>Method to setup Visdom logging on trainer and a list of evaluators.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_wandb_logging" title="ignite.contrib.engines.common.setup_wandb_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_wandb_logging</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.engines.common.setup_wandb_logging" title="ignite.contrib.engines.common.setup_wandb_logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_wandb_logging</span></code></a></p></td>
 <td><p>Method to setup WandB logging on trainer and a list of evaluators.</p></td>
 </tr>
 </tbody>
@@ -481,6 +484,36 @@ Models with highest metric value will be retained.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <a class="reference internal" href="../handlers.html#ignite.handlers.Checkpoint" title="ignite.handlers.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a> handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ignite.contrib.engines.common.setup_clearml_logging">
+<code class="sig-prename descclassname">ignite.contrib.engines.common.</code><code class="sig-name descname">setup_clearml_logging</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">optimizers</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>torch.optim.optimizer.Optimizer<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>torch.optim.optimizer.Optimizer<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">evaluators</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>ignite.engine.engine.Engine<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>ignite.engine.engine.Engine<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log_every_iters</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">100</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.contrib.handlers.clearml_logger.ClearMLLogger<a class="reference internal" href="../_modules/ignite/contrib/engines/common.html#setup_clearml_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.engines.common.setup_clearml_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup ClearML logging on trainer and a list of evaluators. Logged metrics are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Training metrics, e.g. running average loss values</p></li>
+<li><p>Learning rate(s)</p></li>
+<li><p>Evaluation metrics</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trainer</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – trainer engine</p></li>
+<li><p><strong>optimizers</strong> (<em>torch.optim.Optimizer</em><em> or </em><em>dict of torch.optim.Optimizer</em><em>, </em><em>optional</em>) – single or dictionary of
+torch optimizers. If a dictionary, keys are used as tags arguments for logging.</p></li>
+<li><p><strong>evaluators</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a><em> or </em><em>dict of Engine</em><em>, </em><em>optional</em>) – single or dictionary of evaluators. If a dictionary,
+keys are used as tags arguments for logging.</p></li>
+<li><p><strong>log_every_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – interval for loggers attached to iteration events. To log every iteration,
+value can be set to 1 or None.</p></li>
+<li><p><strong>**kwargs</strong> – optional keyword args to be passed to construct the logger.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLLogger" title="ignite.contrib.handlers.clearml_logger.ClearMLLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClearMLLogger</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -708,32 +741,8 @@ value can be set to 1 or None.</p></li>
 
 <dl class="py function">
 <dt id="ignite.contrib.engines.common.setup_trains_logging">
-<code class="sig-prename descclassname">ignite.contrib.engines.common.</code><code class="sig-name descname">setup_trains_logging</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">optimizers</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>torch.optim.optimizer.Optimizer<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>torch.optim.optimizer.Optimizer<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">evaluators</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>ignite.engine.engine.Engine<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>ignite.engine.engine.Engine<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log_every_iters</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">100</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.contrib.handlers.trains_logger.TrainsLogger<a class="reference internal" href="../_modules/ignite/contrib/engines/common.html#setup_trains_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.engines.common.setup_trains_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to setup Trains logging on trainer and a list of evaluators. Logged metrics are:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Training metrics, e.g. running average loss values</p></li>
-<li><p>Learning rate(s)</p></li>
-<li><p>Evaluation metrics</p></li>
-</ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>trainer</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – trainer engine</p></li>
-<li><p><strong>optimizers</strong> (<em>torch.optim.Optimizer</em><em> or </em><em>dict of torch.optim.Optimizer</em><em>, </em><em>optional</em>) – single or dictionary of
-torch optimizers. If a dictionary, keys are used as tags arguments for logging.</p></li>
-<li><p><strong>evaluators</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a><em> or </em><em>dict of Engine</em><em>, </em><em>optional</em>) – single or dictionary of evaluators. If a dictionary,
-keys are used as tags arguments for logging.</p></li>
-<li><p><strong>log_every_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – interval for loggers attached to iteration events. To log every iteration,
-value can be set to 1 or None.</p></li>
-<li><p><strong>**kwargs</strong> – optional keyword args to be passed to construct the logger.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger" title="ignite.contrib.handlers.trains_logger.TrainsLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainsLogger</span></code></a></p>
-</dd>
-</dl>
+<code class="sig-prename descclassname">ignite.contrib.engines.common.</code><code class="sig-name descname">setup_trains_logging</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">optimizers</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>torch.optim.optimizer.Optimizer<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>torch.optim.optimizer.Optimizer<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">evaluators</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>ignite.engine.engine.Engine<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>ignite.engine.engine.Engine<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log_every_iters</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">100</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.contrib.handlers.clearml_logger.ClearMLLogger<a class="reference internal" href="../_modules/ignite/contrib/engines/common.html#setup_trains_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.engines.common.setup_trains_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">setup_trains_logging</span></code> was renamed to <a class="reference internal" href="#ignite.contrib.engines.common.setup_clearml_logging" title="ignite.contrib.engines.common.setup_clearml_logging"><code class="xref py py-func docutils literal notranslate"><span class="pre">setup_clearml_logging()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">

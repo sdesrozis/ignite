@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ignite.contrib.handlers.trains_logger &mdash; ignite master documentation</title>
+  <title>ignite.contrib.handlers.clearml_logger &mdash; ignite master documentation</title>
   
 
   
@@ -18,7 +18,7 @@
   
   
   
-    <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/contrib/handlers/trains_logger.html"/>
+    <link rel="canonical" href="https://pytorch.org/ignite/index.html_modules/ignite/contrib/handlers/clearml_logger.html"/>
   
 
   
@@ -203,7 +203,7 @@
         </dl>
         <dl>
             <dt>Branches</dt>
-            <dd><a href="trains_logger.html">master</a></dd>
+            <dd><a href="clearml_logger.html">master</a></dd>
         </dl>
     </div>
 </div>
@@ -244,7 +244,7 @@
         
           <li><a href="../../../index.html">Module code</a> &gt;</li>
         
-      <li>ignite.contrib.handlers.trains_logger</li>
+      <li>ignite.contrib.handlers.clearml_logger</li>
     
     
       <li class="pytorch-breadcrumbs-aside">
@@ -272,7 +272,7 @@
             <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
              <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
               
-  <h1>Source code for ignite.contrib.handlers.trains_logger</h1><div class="highlight"><pre>
+  <h1>Source code for ignite.contrib.handlers.clearml_logger</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numbers</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
@@ -299,8 +299,8 @@
 <span class="kn">from</span> <span class="nn">ignite.handlers.checkpoint</span> <span class="kn">import</span> <span class="n">DiskSaver</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;TrainsLogger&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;TrainsSaver&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ClearMLLogger&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ClearMLSaver&quot;</span><span class="p">,</span>
     <span class="s2">&quot;OptimizerParamsHandler&quot;</span><span class="p">,</span>
     <span class="s2">&quot;OutputHandler&quot;</span><span class="p">,</span>
     <span class="s2">&quot;WeightsScalarHandler&quot;</span><span class="p">,</span>
@@ -311,17 +311,17 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="TrainsLogger"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger">[docs]</a><span class="k">class</span> <span class="nc">TrainsLogger</span><span class="p">(</span><span class="n">BaseLogger</span><span class="p">):</span>
+<div class="viewcode-block" id="ClearMLLogger"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLLogger">[docs]</a><span class="k">class</span> <span class="nc">ClearMLLogger</span><span class="p">(</span><span class="n">BaseLogger</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    `Trains &lt;https://github.com/allegroai/trains&gt;`_ handler to log metrics, text, model/optimizer parameters,</span>
+<span class="sd">    `ClearML &lt;https://github.com/allegroai/clearml&gt;`_ handler to log metrics, text, model/optimizer parameters,</span>
 <span class="sd">    plots during training and validation.</span>
-<span class="sd">    Also supports model checkpoints logging and upload to the storage solution of your choice (i.e. Trains File server,</span>
+<span class="sd">    Also supports model checkpoints logging and upload to the storage solution of your choice (i.e. ClearML File server,</span>
 <span class="sd">    S3 bucket etc.)</span>
 
 <span class="sd">    .. code-block:: bash</span>
 
-<span class="sd">        pip install trains</span>
-<span class="sd">        trains-init</span>
+<span class="sd">        pip install clearml</span>
+<span class="sd">        clearml-init</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        project_name (str): The name of the project in which the experiment will be created. If the project</span>
@@ -338,17 +338,17 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log training loss at each iteration</span>
-<span class="sd">            trains_logger.attach_output_handler(</span>
+<span class="sd">            clearml_logger.attach_output_handler(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_COMPLETED,</span>
 <span class="sd">                tag=&quot;training&quot;,</span>
@@ -358,7 +358,7 @@
 <span class="sd">            # Attach the logger to the evaluator on the training dataset and log NLL, Accuracy metrics after each epoch</span>
 <span class="sd">            # We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch</span>
 <span class="sd">            # of the `trainer` instead of `train_evaluator`.</span>
-<span class="sd">            trains_logger.attach_output_handler(</span>
+<span class="sd">            clearml_logger.attach_output_handler(</span>
 <span class="sd">                train_evaluator,</span>
 <span class="sd">                event_name=Events.EPOCH_COMPLETED,</span>
 <span class="sd">                tag=&quot;training&quot;,</span>
@@ -369,7 +369,7 @@
 <span class="sd">            # Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
 <span class="sd">            # each epoch. We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch of the</span>
 <span class="sd">            # `trainer` instead of `evaluator`.</span>
-<span class="sd">            trains_logger.attach_output_handler(</span>
+<span class="sd">            clearml_logger.attach_output_handler(</span>
 <span class="sd">                evaluator,</span>
 <span class="sd">                event_name=Events.EPOCH_COMPLETED,</span>
 <span class="sd">                tag=&quot;validation&quot;,</span>
@@ -378,7 +378,7 @@
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log optimizer&#39;s parameters, e.g. learning rate at each iteration</span>
-<span class="sd">            trains_logger.attach_opt_params_handler(</span>
+<span class="sd">            clearml_logger.attach_opt_params_handler(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_STARTED,</span>
 <span class="sd">                optimizer=optimizer,</span>
@@ -386,7 +386,7 @@
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_COMPLETED,</span>
 <span class="sd">                log_handler=WeightsScalarHandler(model)</span>
@@ -396,18 +396,18 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">trains</span> <span class="kn">import</span> <span class="n">Task</span>
-            <span class="kn">from</span> <span class="nn">trains.binding.frameworks.tensorflow_bind</span> <span class="kn">import</span> <span class="n">WeightsGradientHistHelper</span>
+            <span class="kn">from</span> <span class="nn">clearml</span> <span class="kn">import</span> <span class="n">Task</span>
+            <span class="kn">from</span> <span class="nn">clearml.binding.frameworks.tensorflow_bind</span> <span class="kn">import</span> <span class="n">WeightsGradientHistHelper</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;This contrib module requires trains to be installed. &quot;</span>
-                <span class="s2">&quot;You may install trains using: </span><span class="se">\n</span><span class="s2"> pip install trains </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
+                <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="n">experiment_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;project_name&quot;</span><span class="p">,</span> <span class="s2">&quot;task_name&quot;</span><span class="p">,</span> <span class="s2">&quot;task_type&quot;</span><span class="p">)}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bypass_mode</span><span class="p">():</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;TrainsSaver: running in bypass mode&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;ClearMLSaver: running in bypass mode&quot;</span><span class="p">)</span>
 
             <span class="k">class</span> <span class="nc">_Stub</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
                 <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">__</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Stub&quot;</span><span class="p">:</span>
@@ -430,28 +430,29 @@
                 <span class="o">**</span><span class="n">experiment_kwargs</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">trains_logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearml_logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">grad_helper</span> <span class="o">=</span> <span class="n">WeightsGradientHistHelper</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trains_logger</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_helper</span> <span class="o">=</span> <span class="n">WeightsGradientHistHelper</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clearml_logger</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TrainsLogger.set_bypass_mode"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.set_bypass_mode">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ClearMLLogger.set_bypass_mode"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLLogger.set_bypass_mode">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_bypass_mode</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bypass</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Will bypass all outside communication, and will drop all logs.</span>
-<span class="sd">        Should only be used in &quot;standalone mode&quot;, when there is no access to the *trains-server*.</span>
+<span class="sd">        Should only be used in &quot;standalone mode&quot;, when there is no access to the *clearml-server*.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            bypass: If ``True``, all outside communication is skipped.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_bypass&quot;</span><span class="p">,</span> <span class="n">bypass</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TrainsLogger.bypass_mode"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsLogger.bypass_mode">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ClearMLLogger.bypass_mode"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLLogger.bypass_mode">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">bypass_mode</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the bypass mode state.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            `GITHUB_ACTIONS` env will automatically set bypass_mode to ``True``</span>
-<span class="sd">            unless overridden specifically with ``TrainsLogger.set_bypass_mode(False)``.</span>
+<span class="sd">            unless overridden specifically with ``ClearMLLogger.set_bypass_mode(False)``.</span>
 
 <span class="sd">        Return:</span>
 <span class="sd">            If True, all outside communication is skipped.</span>
@@ -459,7 +460,7 @@
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_bypass&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">)))</span></div>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">trains_logger</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearml_logger</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_create_output_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OutputHandler&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">OutputHandler</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -468,18 +469,18 @@
         <span class="k">return</span> <span class="n">OptimizerParamsHandler</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="OutputHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.OutputHandler">[docs]</a><span class="k">class</span> <span class="nc">OutputHandler</span><span class="p">(</span><span class="n">BaseOutputHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="OutputHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.OutputHandler">[docs]</a><span class="k">class</span> <span class="nc">OutputHandler</span><span class="p">(</span><span class="n">BaseOutputHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper handler to log engine&#39;s output and/or metrics</span>
 
 <span class="sd">    Examples:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
@@ -487,7 +488,7 @@
 <span class="sd">            # Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
 <span class="sd">            # each epoch. We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch</span>
 <span class="sd">            # of the `trainer`:</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                evaluator,</span>
 <span class="sd">                log_handler=OutputHandler(</span>
 <span class="sd">                    tag=&quot;validation&quot;,</span>
@@ -497,7 +498,7 @@
 <span class="sd">                event_name=Events.EPOCH_COMPLETED</span>
 <span class="sd">            )</span>
 <span class="sd">            # or equivalently</span>
-<span class="sd">            trains_logger.attach_output_handler(</span>
+<span class="sd">            clearml_logger.attach_output_handler(</span>
 <span class="sd">                evaluator,</span>
 <span class="sd">                event_name=Events.EPOCH_COMPLETED,</span>
 <span class="sd">                tag=&quot;validation&quot;,</span>
@@ -509,7 +510,7 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            @trainer.on(Events.ITERATION_COMPLETED(every=500))</span>
 <span class="sd">            def evaluate(engine):</span>
@@ -517,7 +518,7 @@
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
@@ -528,9 +529,9 @@
 <span class="sd">            # Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
 <span class="sd">            # every 500 iterations. Since evaluator engine does not have access to the training iteration, we</span>
 <span class="sd">            # provide a global_step_transform to return the trainer.state.iteration for the global_step, each time</span>
-<span class="sd">            # evaluator metrics are plotted on Trains.</span>
+<span class="sd">            # evaluator metrics are plotted on ClearML.</span>
 
-<span class="sd">            trains_logger.attach_output_handler(</span>
+<span class="sd">            clearml_logger.attach_output_handler(</span>
 <span class="sd">                evaluator,</span>
 <span class="sd">                event_name=Events.EPOCH_COMPLETED,</span>
 <span class="sd">                tag=&quot;validation&quot;,</span>
@@ -550,7 +551,7 @@
 <span class="sd">            Input of the function is `(engine, event_name)`. Output of function should be an integer.</span>
 <span class="sd">            Default is None, global_step based on attached engine. If provided,</span>
 <span class="sd">            uses function output as global_step. To setup global step from another engine, please use</span>
-<span class="sd">            :meth:`~ignite.contrib.handlers.trains_logger.global_step_from_engine`.</span>
+<span class="sd">            :meth:`~ignite.contrib.handlers.clearml_logger.global_step_from_engine`.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        Example of `global_step_transform`:</span>
@@ -571,10 +572,10 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OutputHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">metric_names</span><span class="p">,</span> <span class="n">output_transform</span><span class="p">,</span> <span class="n">global_step_transform</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler OutputHandler works only with TrainsLogger&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler OutputHandler works only with ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="n">metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_output_metrics</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 
@@ -588,40 +589,40 @@
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">ndimension</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">trains_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">global_step</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">clearml_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">global_step</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">ndimension</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">trains_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">clearml_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
                         <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">iteration</span><span class="o">=</span><span class="n">global_step</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TrainsLogger output_handler can not log metrics value type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ClearMLLogger output_handler can not log metrics value type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="OptimizerParamsHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.OptimizerParamsHandler">[docs]</a><span class="k">class</span> <span class="nc">OptimizerParamsHandler</span><span class="p">(</span><span class="n">BaseOptimizerParamsHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="OptimizerParamsHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.OptimizerParamsHandler">[docs]</a><span class="k">class</span> <span class="nc">OptimizerParamsHandler</span><span class="p">(</span><span class="n">BaseOptimizerParamsHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper handler to log optimizer parameters</span>
 
 <span class="sd">    Examples:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log optimizer&#39;s parameters, e.g. learning rate at each iteration</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                log_handler=OptimizerParamsHandler(optimizer),</span>
 <span class="sd">                event_name=Events.ITERATION_STARTED</span>
 <span class="sd">            )</span>
 <span class="sd">            # or equivalently</span>
-<span class="sd">            trains_logger.attach_opt_params_handler(</span>
+<span class="sd">            clearml_logger.attach_opt_params_handler(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_STARTED,</span>
 <span class="sd">                optimizer=optimizer</span>
@@ -637,9 +638,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lr&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OptimizerParamsHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler OptimizerParamsHandler works only with TrainsLogger&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler OptimizerParamsHandler works only with ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="n">global_step</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
         <span class="n">tag_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -648,12 +649,12 @@
         <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">trains_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">clearml_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tag_prefix</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">param_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">global_step</span>
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="WeightsScalarHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.WeightsScalarHandler">[docs]</a><span class="k">class</span> <span class="nc">WeightsScalarHandler</span><span class="p">(</span><span class="n">BaseWeightsScalarHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="WeightsScalarHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.WeightsScalarHandler">[docs]</a><span class="k">class</span> <span class="nc">WeightsScalarHandler</span><span class="p">(</span><span class="n">BaseWeightsScalarHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper handler to log model&#39;s weights as scalars.</span>
 <span class="sd">    Handler iterates over named parameters of the model, applies reduction function to each parameter</span>
 <span class="sd">    produce a scalar and then logs the scalar.</span>
@@ -662,17 +663,17 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_COMPLETED,</span>
 <span class="sd">                log_handler=WeightsScalarHandler(model, reduction=torch.norm)</span>
@@ -688,10 +689,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">reduction</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightsScalarHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">reduction</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler WeightsScalarHandler works only with TrainsLogger&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler WeightsScalarHandler works only with ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="n">global_step</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
         <span class="n">tag_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -700,7 +701,7 @@
                 <span class="k">continue</span>
 
             <span class="n">title_name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">series_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">trains_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">clearml_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tag_prefix</span><span class="si">}</span><span class="s2">weights_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">title_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">series</span><span class="o">=</span><span class="n">series_name</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
@@ -708,24 +709,24 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="WeightsHistHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.WeightsHistHandler">[docs]</a><span class="k">class</span> <span class="nc">WeightsHistHandler</span><span class="p">(</span><span class="n">BaseWeightsHistHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="WeightsHistHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.WeightsHistHandler">[docs]</a><span class="k">class</span> <span class="nc">WeightsHistHandler</span><span class="p">(</span><span class="n">BaseWeightsHistHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper handler to log model&#39;s weights as histograms.</span>
 
 <span class="sd">    Examples:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_COMPLETED,</span>
 <span class="sd">                log_handler=WeightsHistHandler(model)</span>
@@ -740,9 +741,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightsHistHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler &#39;WeightsHistHandler&#39; works only with TrainsLogger&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler &#39;WeightsHistHandler&#39; works only with ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="n">global_step</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
         <span class="n">tag_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -760,7 +761,7 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GradsScalarHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.GradsScalarHandler">[docs]</a><span class="k">class</span> <span class="nc">GradsScalarHandler</span><span class="p">(</span><span class="n">BaseWeightsScalarHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="GradsScalarHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.GradsScalarHandler">[docs]</a><span class="k">class</span> <span class="nc">GradsScalarHandler</span><span class="p">(</span><span class="n">BaseWeightsScalarHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper handler to log model&#39;s gradients as scalars.</span>
 <span class="sd">    Handler iterates over the gradients of named parameters of the model, applies reduction function to each parameter</span>
 <span class="sd">    produce a scalar and then logs the scalar.</span>
@@ -769,17 +770,17 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_COMPLETED,</span>
 <span class="sd">                log_handler=GradsScalarHandler(model, reduction=torch.norm)</span>
@@ -795,9 +796,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">reduction</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GradsScalarHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">reduction</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler GradsScalarHandler works only with TrainsLogger&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler GradsScalarHandler works only with ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="n">global_step</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
         <span class="n">tag_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -806,7 +807,7 @@
                 <span class="k">continue</span>
 
             <span class="n">title_name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">series_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">trains_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">clearml_logger</span><span class="o">.</span><span class="n">report_scalar</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tag_prefix</span><span class="si">}</span><span class="s2">grads_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">title_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">series</span><span class="o">=</span><span class="n">series_name</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
@@ -814,24 +815,24 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GradsHistHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.GradsHistHandler">[docs]</a><span class="k">class</span> <span class="nc">GradsHistHandler</span><span class="p">(</span><span class="n">BaseWeightsHistHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="GradsHistHandler"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.GradsHistHandler">[docs]</a><span class="k">class</span> <span class="nc">GradsHistHandler</span><span class="p">(</span><span class="n">BaseWeightsHistHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper handler to log model&#39;s gradients as histograms.</span>
 
 <span class="sd">    Examples:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 
 <span class="sd">            # Create a logger</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
 
 <span class="sd">            # Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="sd">            trains_logger.attach(</span>
+<span class="sd">            clearml_logger.attach(</span>
 <span class="sd">                trainer,</span>
 <span class="sd">                event_name=Events.ITERATION_COMPLETED,</span>
 <span class="sd">                log_handler=GradsHistHandler(model)</span>
@@ -846,9 +847,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GradsHistHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler &#39;GradsHistHandler&#39; works only with TrainsLogger&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Events</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Handler &#39;GradsHistHandler&#39; works only with ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="n">global_step</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_event_attrib_value</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
         <span class="n">tag_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -866,16 +867,16 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TrainsSaver"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsSaver">[docs]</a><span class="k">class</span> <span class="nc">TrainsSaver</span><span class="p">(</span><span class="n">DiskSaver</span><span class="p">):</span>
+<div class="viewcode-block" id="ClearMLSaver"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLSaver">[docs]</a><span class="k">class</span> <span class="nc">ClearMLSaver</span><span class="p">(</span><span class="n">DiskSaver</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Handler that saves input checkpoint as Trains artifacts</span>
+<span class="sd">    Handler that saves input checkpoint as ClearML artifacts</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        logger (TrainsLogger, optional): An instance of :class:`~ignite.contrib.handlers.TrainsLogger`, ensuring a valid</span>
-<span class="sd">            Trains ``Task`` has been initialized. If not provided, and a Trains Task has not been manually initialized,</span>
-<span class="sd">            a runtime error will be raised.</span>
-<span class="sd">        output_uri (str, optional): The default location for output models and other artifacts uploaded by Trains. For</span>
-<span class="sd">            more information, see ``trains.Task.init``.</span>
+<span class="sd">        logger (ClearMLLogger, optional): An instance of :class:`~ignite.contrib.handlers.clearml_logger.ClearMLLogger`,</span>
+<span class="sd">            ensuring a valid ClearML ``Task`` has been initialized. If not provided, and a ClearML Task</span>
+<span class="sd">            has not been manually initialized, a runtime error will be raised.</span>
+<span class="sd">        output_uri (str, optional): The default location for output models and other artifacts uploaded by ClearML. For</span>
+<span class="sd">            more information, see ``clearml.Task.init``.</span>
 <span class="sd">        dirname (str, optional): Directory path where the checkpoint will be saved. If not provided, a temporary</span>
 <span class="sd">            directory will be created.</span>
 
@@ -883,10 +884,10 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from ignite.contrib.handlers.trains_logger import *</span>
+<span class="sd">            from ignite.contrib.handlers.clearml_logger import *</span>
 <span class="sd">            from ignite.handlers import Checkpoint</span>
 
-<span class="sd">            trains_logger = TrainsLogger(</span>
+<span class="sd">            clearml_logger = ClearMLLogger(</span>
 <span class="sd">                project_name=&quot;pytorch-ignite-integration&quot;,</span>
 <span class="sd">                task_name=&quot;cnn-mnist&quot;</span>
 <span class="sd">            )</span>
@@ -895,7 +896,7 @@
 
 <span class="sd">            handler = Checkpoint(</span>
 <span class="sd">                to_save,</span>
-<span class="sd">                TrainsSaver(),</span>
+<span class="sd">                ClearMLSaver(),</span>
 <span class="sd">                n_saved=1,</span>
 <span class="sd">                score_function=lambda e: 123,</span>
 <span class="sd">                score_name=&quot;acc&quot;,</span>
@@ -909,14 +910,14 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TrainsLogger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClearMLLogger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">output_uri</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dirname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_check_trains</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">output_uri</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_check_clearml</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">output_uri</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dirname</span><span class="p">:</span>
             <span class="n">dirname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -925,7 +926,7 @@
             <span class="k">if</span> <span class="n">idist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">dirname</span> <span class="o">=</span> <span class="n">idist</span><span class="o">.</span><span class="n">all_gather</span><span class="p">(</span><span class="n">dirname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore[index, assignment]</span>
 
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TrainsSaver created a temporary checkpoints directory: </span><span class="si">{</span><span class="n">dirname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ClearMLSaver created a temporary checkpoints directory: </span><span class="si">{</span><span class="n">dirname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">idist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
 
         <span class="c1"># Let&#39;s set non-atomic tmp dir saving behaviour</span>
@@ -934,26 +935,26 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_checkpoint_slots</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># type: DefaultDict[Union[str, Tuple[str, str]], List[Any]]</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">TrainsSaver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ClearMLSaver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
 
     <span class="nd">@idist</span><span class="o">.</span><span class="n">one_rank_only</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">_setup_check_trains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">TrainsLogger</span><span class="p">,</span> <span class="n">output_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_setup_check_clearml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">ClearMLLogger</span><span class="p">,</span> <span class="n">output_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">trains</span> <span class="kn">import</span> <span class="n">Task</span>
+            <span class="kn">from</span> <span class="nn">clearml</span> <span class="kn">import</span> <span class="n">Task</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;This contrib module requires trains to be installed. &quot;</span>
-                <span class="s2">&quot;You may install trains using: </span><span class="se">\n</span><span class="s2"> pip install trains </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
+                <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">logger</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">TrainsLogger</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;logger must be an instance of TrainsLogger&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;logger must be an instance of ClearMLLogger&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_task</span> <span class="o">=</span> <span class="n">Task</span><span class="o">.</span><span class="n">current_task</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;TrainsSaver requires a Trains Task to be initialized.&quot;</span>
-                <span class="s2">&quot;Please use the `logger` argument or call `trains.Task.init()`.&quot;</span>
+                <span class="s2">&quot;ClearMLSaver requires a ClearML Task to be initialized. &quot;</span>
+                <span class="s2">&quot;Please use the `logger` argument or call `clearml.Task.init()`.&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">output_uri</span><span class="p">:</span>
@@ -1010,12 +1011,12 @@
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">trains</span> <span class="kn">import</span> <span class="n">Model</span>
-            <span class="kn">from</span> <span class="nn">trains.binding.frameworks</span> <span class="kn">import</span> <span class="n">WeightsFileHandler</span>
+            <span class="kn">from</span> <span class="nn">clearml</span> <span class="kn">import</span> <span class="n">Model</span>
+            <span class="kn">from</span> <span class="nn">clearml.binding.frameworks</span> <span class="kn">import</span> <span class="n">WeightsFileHandler</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;This contrib module requires trains to be installed. &quot;</span>
-                <span class="s2">&quot;You may install trains using: </span><span class="se">\n</span><span class="s2"> pip install trains </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
+                <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -1039,12 +1040,12 @@
         <span class="n">post_cb_id</span> <span class="o">=</span> <span class="n">WeightsFileHandler</span><span class="o">.</span><span class="n">add_post_callback</span><span class="p">(</span><span class="n">cb_context</span><span class="o">.</span><span class="n">post_callback</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">TrainsSaver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">ClearMLSaver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">WeightsFileHandler</span><span class="o">.</span><span class="n">remove_pre_callback</span><span class="p">(</span><span class="n">pre_cb_id</span><span class="p">)</span>
             <span class="n">WeightsFileHandler</span><span class="o">.</span><span class="n">remove_post_callback</span><span class="p">(</span><span class="n">post_cb_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TrainsSaver.get_local_copy"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsSaver.get_local_copy">[docs]</a>    <span class="nd">@idist</span><span class="o">.</span><span class="n">one_rank_only</span><span class="p">()</span>
+<div class="viewcode-block" id="ClearMLSaver.get_local_copy"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLSaver.get_local_copy">[docs]</a>    <span class="nd">@idist</span><span class="o">.</span><span class="n">one_rank_only</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">get_local_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Get artifact local copy.</span>
 
@@ -1065,9 +1066,9 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="TrainsSaver.remove"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.trains_logger.TrainsSaver.remove">[docs]</a>    <span class="nd">@idist</span><span class="o">.</span><span class="n">one_rank_only</span><span class="p">()</span>
+<div class="viewcode-block" id="ClearMLSaver.remove"><a class="viewcode-back" href="../../../../contrib/handlers.html#ignite.contrib.handlers.clearml_logger.ClearMLSaver.remove">[docs]</a>    <span class="nd">@idist</span><span class="o">.</span><span class="n">one_rank_only</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TrainsSaver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ClearMLSaver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">slots</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkpoint_slots</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">slots</span><span class="p">[</span><span class="n">slots</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">filename</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>

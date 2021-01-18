@@ -3862,9 +3862,9 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
 </dd></dl>
 
 </div>
-<div class="section" id="trains-logger">
-<h2>trains_logger<a class="headerlink" href="#trains-logger" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="https://github.com/pytorch/ignite/blob/master/examples/contrib/mnist/mnist_with_trains_logger.py">trains mnist example</a>
+<div class="section" id="clearml-logger">
+<h2>clearml_logger<a class="headerlink" href="#clearml-logger" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference external" href="https://github.com/pytorch/ignite/blob/master/examples/contrib/mnist/mnist_with_clearml_logger.py">clearml mnist example</a>
 for detailed usage.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -3872,51 +3872,297 @@ for detailed usage.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.TrainsLogger" title="ignite.contrib.handlers.trains_logger.TrainsLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainsLogger</span></code></a></p></td>
-<td><p><a class="reference external" href="https://github.com/allegroai/trains">Trains</a> handler to log metrics, text, model/optimizer parameters, plots during training and validation.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger" title="ignite.contrib.handlers.clearml_logger.ClearMLLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClearMLLogger</span></code></a></p></td>
+<td><p><a class="reference external" href="https://github.com/allegroai/clearml">ClearML</a> handler to log metrics, text, model/optimizer parameters, plots during training and validation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.TrainsSaver" title="ignite.contrib.handlers.trains_logger.TrainsSaver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainsSaver</span></code></a></p></td>
-<td><p>Handler that saves input checkpoint as Trains artifacts</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.ClearMLSaver" title="ignite.contrib.handlers.clearml_logger.ClearMLSaver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClearMLSaver</span></code></a></p></td>
+<td><p>Handler that saves input checkpoint as ClearML artifacts</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.OptimizerParamsHandler" title="ignite.contrib.handlers.trains_logger.OptimizerParamsHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizerParamsHandler</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.OptimizerParamsHandler" title="ignite.contrib.handlers.clearml_logger.OptimizerParamsHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizerParamsHandler</span></code></a></p></td>
 <td><p>Helper handler to log optimizer parameters</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.OutputHandler" title="ignite.contrib.handlers.trains_logger.OutputHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputHandler</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.OutputHandler" title="ignite.contrib.handlers.clearml_logger.OutputHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputHandler</span></code></a></p></td>
 <td><p>Helper handler to log engine’s output and/or metrics</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.WeightsScalarHandler" title="ignite.contrib.handlers.trains_logger.WeightsScalarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeightsScalarHandler</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.WeightsScalarHandler" title="ignite.contrib.handlers.clearml_logger.WeightsScalarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeightsScalarHandler</span></code></a></p></td>
 <td><p>Helper handler to log model’s weights as scalars.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.WeightsHistHandler" title="ignite.contrib.handlers.trains_logger.WeightsHistHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeightsHistHandler</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.WeightsHistHandler" title="ignite.contrib.handlers.clearml_logger.WeightsHistHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeightsHistHandler</span></code></a></p></td>
 <td><p>Helper handler to log model’s weights as histograms.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.GradsScalarHandler" title="ignite.contrib.handlers.trains_logger.GradsScalarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GradsScalarHandler</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.GradsScalarHandler" title="ignite.contrib.handlers.clearml_logger.GradsScalarHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GradsScalarHandler</span></code></a></p></td>
 <td><p>Helper handler to log model’s gradients as scalars.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.GradsHistHandler" title="ignite.contrib.handlers.trains_logger.GradsHistHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GradsHistHandler</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.GradsHistHandler" title="ignite.contrib.handlers.clearml_logger.GradsHistHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GradsHistHandler</span></code></a></p></td>
 <td><p>Helper handler to log model’s gradients as histograms.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.trains_logger.global_step_from_engine" title="ignite.contrib.handlers.trains_logger.global_step_from_engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">global_step_from_engine</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.global_step_from_engine" title="ignite.contrib.handlers.clearml_logger.global_step_from_engine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">global_step_from_engine</span></code></a></p></td>
 <td><p>Helper method to setup <cite>global_step_transform</cite> function using another engine.</p></td>
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-ignite.contrib.handlers.trains_logger"></span><dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.GradsHistHandler">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">GradsHistHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#GradsHistHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.GradsHistHandler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper handler to log model’s gradients as histograms.</p>
+<span class="target" id="module-ignite.contrib.handlers.clearml_logger"></span><dl class="py class">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLLogger">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">ClearMLLogger</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#ClearMLLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://github.com/allegroai/clearml">ClearML</a> handler to log metrics, text, model/optimizer parameters,
+plots during training and validation.
+Also supports model checkpoints logging and upload to the storage solution of your choice (i.e. ClearML File server,
+S3 bucket etc.)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install clearml
+clearml-init
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the project in which the experiment will be created. If the project
+does not exist, it is created. If <code class="docutils literal notranslate"><span class="pre">project_name</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the repository name is used. (Optional)</p></li>
+<li><p><strong>task_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of Task (experiment). If <code class="docutils literal notranslate"><span class="pre">task_name</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the Python experiment
+script’s file name is used. (Optional)</p></li>
+<li><p><strong>task_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Optional. The task type. Valid values are:
+- <code class="docutils literal notranslate"><span class="pre">TaskTypes.training</span></code> (Default)
+- <code class="docutils literal notranslate"><span class="pre">TaskTypes.train</span></code>
+- <code class="docutils literal notranslate"><span class="pre">TaskTypes.testing</span></code>
+- <code class="docutils literal notranslate"><span class="pre">TaskTypes.inference</span></code></p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
+    <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
+    <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Attach the logger to the trainer to log training loss at each iteration</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
+    <span class="n">trainer</span><span class="p">,</span>
+    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
+    <span class="n">output_transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">loss</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Attach the logger to the evaluator on the training dataset and log NLL, Accuracy metrics after each epoch</span>
+<span class="c1"># We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch</span>
+<span class="c1"># of the `trainer` instead of `train_evaluator`.</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
+    <span class="n">train_evaluator</span><span class="p">,</span>
+    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
+    <span class="n">metric_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nll&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">],</span>
+    <span class="n">global_step_transform</span><span class="o">=</span><span class="n">global_step_from_engine</span><span class="p">(</span><span class="n">trainer</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
+<span class="c1"># each epoch. We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch of the</span>
+<span class="c1"># `trainer` instead of `evaluator`.</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
+    <span class="n">evaluator</span><span class="p">,</span>
+    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
+    <span class="n">metric_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nll&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">],</span>
+    <span class="n">global_step_transform</span><span class="o">=</span><span class="n">global_step_from_engine</span><span class="p">(</span><span class="n">trainer</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="c1"># Attach the logger to the trainer to log optimizer&#39;s parameters, e.g. learning rate at each iteration</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_opt_params_handler</span><span class="p">(</span>
+    <span class="n">trainer</span><span class="p">,</span>
+    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span>  <span class="c1"># optional</span>
+<span class="p">)</span>
+
+<span class="c1"># Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+    <span class="n">trainer</span><span class="p">,</span>
+    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
+    <span class="n">log_handler</span><span class="o">=</span><span class="n">WeightsScalarHandler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLLogger.attach">
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger.attach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
+<li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
+<li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">RemovableEventHandle</span></code>, which can be used to remove the handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLLogger.attach_opt_params_handler">
+<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
+<li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
+<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<li><p><strong>*args</strong> – args to initialize <cite>OptimizerParamsHandler</cite></p></li>
+<li><p><strong>**kwargs</strong> – kwargs to initialize <cite>OptimizerParamsHandler</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">RemovableEventHandle</span></code>, which can be used to remove the handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLLogger.attach_output_handler">
+<code class="sig-name descname">attach_output_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger.attach_output_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method to attach <cite>OutputHandler</cite> to the logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
+<li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
+<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<li><p><strong>*args</strong> – args to initialize <cite>OutputHandler</cite></p></li>
+<li><p><strong>**kwargs</strong> – kwargs to initialize <cite>OutputHandler</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">RemovableEventHandle</span></code>, which can be used to remove the handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLLogger.bypass_mode">
+<em class="property">classmethod </em><code class="sig-name descname">bypass_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#ClearMLLogger.bypass_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger.bypass_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bypass mode state.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>GITHUB_ACTIONS</cite> env will automatically set bypass_mode to <code class="docutils literal notranslate"><span class="pre">True</span></code>
+unless overridden specifically with <code class="docutils literal notranslate"><span class="pre">ClearMLLogger.set_bypass_mode(False)</span></code>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>If True, all outside communication is skipped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLLogger.set_bypass_mode">
+<em class="property">classmethod </em><code class="sig-name descname">set_bypass_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bypass</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#ClearMLLogger.set_bypass_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger.set_bypass_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will bypass all outside communication, and will drop all logs.
+Should only be used in “standalone mode”, when there is no access to the <em>clearml-server</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bypass</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, all outside communication is skipped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLSaver">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">ClearMLSaver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logger</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ignite.contrib.handlers.clearml_logger.ClearMLLogger<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_uri</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dirname</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#ClearMLSaver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLSaver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler that saves input checkpoint as ClearML artifacts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logger</strong> (<a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger" title="ignite.contrib.handlers.clearml_logger.ClearMLLogger"><em>ClearMLLogger</em></a><em>, </em><em>optional</em>) – An instance of <a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.ClearMLLogger" title="ignite.contrib.handlers.clearml_logger.ClearMLLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClearMLLogger</span></code></a>,
+ensuring a valid ClearML <code class="docutils literal notranslate"><span class="pre">Task</span></code> has been initialized. If not provided, and a ClearML Task
+has not been manually initialized, a runtime error will be raised.</p></li>
+<li><p><strong>output_uri</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – The default location for output models and other artifacts uploaded by ClearML. For
+more information, see <code class="docutils literal notranslate"><span class="pre">clearml.Task.init</span></code>.</p></li>
+<li><p><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Directory path where the checkpoint will be saved. If not provided, a temporary
+directory will be created.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ignite.handlers</span> <span class="kn">import</span> <span class="n">Checkpoint</span>
+
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
+    <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
+    <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
+<span class="p">)</span>
+
+<span class="n">to_save</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">}</span>
+
+<span class="n">handler</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span>
+    <span class="n">to_save</span><span class="p">,</span>
+    <span class="n">ClearMLSaver</span><span class="p">(),</span>
+    <span class="n">n_saved</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">score_function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+    <span class="n">score_name</span><span class="o">=</span><span class="s2">&quot;acc&quot;</span><span class="p">,</span>
+    <span class="n">filename_prefix</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span>
+    <span class="n">global_step_transform</span><span class="o">=</span><span class="n">global_step_from_engine</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">validation_evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EVENT_COMPLETED</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLSaver.get_local_copy">
+<code class="sig-name descname">get_local_copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#ClearMLSaver.get_local_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLSaver.get_local_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get artifact local copy.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In distributed configuration this method should be called on rank 0 process.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – artifact name.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a local path to a downloaded copy of the artifact</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ignite.contrib.handlers.clearml_logger.ClearMLSaver.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#ClearMLSaver.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.ClearMLSaver.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to remove saved checkpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – filename associated with checkpoint.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="ignite.contrib.handlers.clearml_logger.GradsHistHandler">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">GradsHistHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#GradsHistHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.GradsHistHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper handler to log model’s gradients as histograms.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Create a logger</span>
+
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="n">GradsHistHandler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -3934,23 +4180,23 @@ for detailed usage.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.GradsScalarHandler">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">GradsScalarHandler</code><span class="sig-paren">(</span><em class="sig-param">model: torch.nn.modules.module.Module</em>, <em class="sig-param">reduction: Callable = &lt;function norm&gt;</em>, <em class="sig-param">tag: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#GradsScalarHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.GradsScalarHandler" title="Permalink to this definition">¶</a></dt>
+<dt id="ignite.contrib.handlers.clearml_logger.GradsScalarHandler">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">GradsScalarHandler</code><span class="sig-paren">(</span><em class="sig-param">model: torch.nn.modules.module.Module</em>, <em class="sig-param">reduction: Callable = &lt;function norm&gt;</em>, <em class="sig-param">tag: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#GradsScalarHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.GradsScalarHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper handler to log model’s gradients as scalars.
 Handler iterates over the gradients of named parameters of the model, applies reduction function to each parameter
 produce a scalar and then logs the scalar.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="n">GradsScalarHandler</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">)</span>
@@ -3969,27 +4215,27 @@ produce a scalar and then logs the scalar.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.OptimizerParamsHandler">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">OptimizerParamsHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">optimizer</span><span class="p">:</span> <span class="n">torch.optim.optimizer.Optimizer</span></em>, <em class="sig-param"><span class="n">param_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'lr'</span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#OptimizerParamsHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.OptimizerParamsHandler" title="Permalink to this definition">¶</a></dt>
+<dt id="ignite.contrib.handlers.clearml_logger.OptimizerParamsHandler">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">OptimizerParamsHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">optimizer</span><span class="p">:</span> <span class="n">torch.optim.optimizer.Optimizer</span></em>, <em class="sig-param"><span class="n">param_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'lr'</span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#OptimizerParamsHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.OptimizerParamsHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper handler to log optimizer parameters</p>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Attach the logger to the trainer to log optimizer&#39;s parameters, e.g. learning rate at each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="n">OptimizerParamsHandler</span><span class="p">(</span><span class="n">optimizer</span><span class="p">),</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span>
 <span class="p">)</span>
 <span class="c1"># or equivalently</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_opt_params_handler</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_opt_params_handler</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span>
@@ -4009,15 +4255,15 @@ as a sequence.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.OutputHandler">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">OutputHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">metric_names</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_step_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#OutputHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.OutputHandler" title="Permalink to this definition">¶</a></dt>
+<dt id="ignite.contrib.handlers.clearml_logger.OutputHandler">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">OutputHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">metric_names</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_step_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#OutputHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.OutputHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper handler to log engine’s output and/or metrics</p>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
@@ -4025,7 +4271,7 @@ as a sequence.</p></li>
 <span class="c1"># Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
 <span class="c1"># each epoch. We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch</span>
 <span class="c1"># of the `trainer`:</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
     <span class="n">evaluator</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="n">OutputHandler</span><span class="p">(</span>
         <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
@@ -4035,7 +4281,7 @@ as a sequence.</p></li>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span>
 <span class="p">)</span>
 <span class="c1"># or equivalently</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
     <span class="n">evaluator</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span>
     <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
@@ -4045,7 +4291,7 @@ as a sequence.</p></li>
 </pre></div>
 </div>
 <p>Another example, where model is evaluated every 500 iterations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">500</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
@@ -4053,7 +4299,7 @@ as a sequence.</p></li>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
@@ -4064,9 +4310,9 @@ as a sequence.</p></li>
 <span class="c1"># Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
 <span class="c1"># every 500 iterations. Since evaluator engine does not have access to the training iteration, we</span>
 <span class="c1"># provide a global_step_transform to return the trainer.state.iteration for the global_step, each time</span>
-<span class="c1"># evaluator metrics are plotted on Trains.</span>
+<span class="c1"># evaluator metrics are plotted on ClearML.</span>
 
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
     <span class="n">evaluator</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span>
     <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
@@ -4089,7 +4335,7 @@ with corresponding keys.</p></li>
 Input of the function is <cite>(engine, event_name)</cite>. Output of function should be an integer.
 Default is None, global_step based on attached engine. If provided,
 uses function output as global_step. To setup global step from another engine, please use
-<a class="reference internal" href="#ignite.contrib.handlers.trains_logger.global_step_from_engine" title="ignite.contrib.handlers.trains_logger.global_step_from_engine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">global_step_from_engine()</span></code></a>.</p></li>
+<a class="reference internal" href="#ignite.contrib.handlers.clearml_logger.global_step_from_engine" title="ignite.contrib.handlers.clearml_logger.global_step_from_engine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">global_step_from_engine()</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -4104,263 +4350,21 @@ uses function output as global_step. To setup global step from another engine, p
 </dd></dl>
 
 <dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsLogger">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">TrainsLogger</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#TrainsLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://github.com/allegroai/trains">Trains</a> handler to log metrics, text, model/optimizer parameters,
-plots during training and validation.
-Also supports model checkpoints logging and upload to the storage solution of your choice (i.e. Trains File server,
-S3 bucket etc.)</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install trains
-trains-init
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>project_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the project in which the experiment will be created. If the project
-does not exist, it is created. If <code class="docutils literal notranslate"><span class="pre">project_name</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the repository name is used. (Optional)</p></li>
-<li><p><strong>task_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of Task (experiment). If <code class="docutils literal notranslate"><span class="pre">task_name</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the Python experiment
-script’s file name is used. (Optional)</p></li>
-<li><p><strong>task_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Optional. The task type. Valid values are:
-- <code class="docutils literal notranslate"><span class="pre">TaskTypes.training</span></code> (Default)
-- <code class="docutils literal notranslate"><span class="pre">TaskTypes.train</span></code>
-- <code class="docutils literal notranslate"><span class="pre">TaskTypes.testing</span></code>
-- <code class="docutils literal notranslate"><span class="pre">TaskTypes.inference</span></code></p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="c1"># Create a logger</span>
-
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
-    <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
-    <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
-<span class="p">)</span>
-
-<span class="c1"># Attach the logger to the trainer to log training loss at each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
-    <span class="n">trainer</span><span class="p">,</span>
-    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
-    <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
-    <span class="n">output_transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">loss</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="c1"># Attach the logger to the evaluator on the training dataset and log NLL, Accuracy metrics after each epoch</span>
-<span class="c1"># We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch</span>
-<span class="c1"># of the `trainer` instead of `train_evaluator`.</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
-    <span class="n">train_evaluator</span><span class="p">,</span>
-    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span>
-    <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
-    <span class="n">metric_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nll&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">],</span>
-    <span class="n">global_step_transform</span><span class="o">=</span><span class="n">global_step_from_engine</span><span class="p">(</span><span class="n">trainer</span><span class="p">),</span>
-<span class="p">)</span>
-
-<span class="c1"># Attach the logger to the evaluator on the validation dataset and log NLL, Accuracy metrics after</span>
-<span class="c1"># each epoch. We setup `global_step_transform=global_step_from_engine(trainer)` to take the epoch of the</span>
-<span class="c1"># `trainer` instead of `evaluator`.</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_output_handler</span><span class="p">(</span>
-    <span class="n">evaluator</span><span class="p">,</span>
-    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">,</span>
-    <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
-    <span class="n">metric_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nll&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">],</span>
-    <span class="n">global_step_transform</span><span class="o">=</span><span class="n">global_step_from_engine</span><span class="p">(</span><span class="n">trainer</span><span class="p">)),</span>
-<span class="p">)</span>
-
-<span class="c1"># Attach the logger to the trainer to log optimizer&#39;s parameters, e.g. learning rate at each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach_opt_params_handler</span><span class="p">(</span>
-    <span class="n">trainer</span><span class="p">,</span>
-    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_STARTED</span><span class="p">,</span>
-    <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
-    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span>  <span class="c1"># optional</span>
-<span class="p">)</span>
-
-<span class="c1"># Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
-    <span class="n">trainer</span><span class="p">,</span>
-    <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
-    <span class="n">log_handler</span><span class="o">=</span><span class="n">WeightsScalarHandler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
-<li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
-<li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
-added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">RemovableEventHandle</span></code>, which can be used to remove the handler.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.attach_opt_params_handler">
-<code class="sig-name descname">attach_opt_params_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach_opt_params_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shortcut method to attach <cite>OptimizerParamsHandler</cite> to the logger.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
-<li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
-<li><p><strong>*args</strong> – args to initialize <cite>OptimizerParamsHandler</cite></p></li>
-<li><p><strong>**kwargs</strong> – kwargs to initialize <cite>OptimizerParamsHandler</cite></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">RemovableEventHandle</span></code>, which can be used to remove the handler.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.attach_output_handler">
-<code class="sig-name descname">attach_output_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach_output_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shortcut method to attach <cite>OutputHandler</cite> to the logger.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
-<li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
-<li><p><strong>*args</strong> – args to initialize <cite>OutputHandler</cite></p></li>
-<li><p><strong>**kwargs</strong> – kwargs to initialize <cite>OutputHandler</cite></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">RemovableEventHandle</span></code>, which can be used to remove the handler.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.bypass_mode">
-<em class="property">classmethod </em><code class="sig-name descname">bypass_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#TrainsLogger.bypass_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.bypass_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the bypass mode state.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><cite>GITHUB_ACTIONS</cite> env will automatically set bypass_mode to <code class="docutils literal notranslate"><span class="pre">True</span></code>
-unless overridden specifically with <code class="docutils literal notranslate"><span class="pre">TrainsLogger.set_bypass_mode(False)</span></code>.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>If True, all outside communication is skipped.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.set_bypass_mode">
-<em class="property">classmethod </em><code class="sig-name descname">set_bypass_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bypass</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#TrainsLogger.set_bypass_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.set_bypass_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will bypass all outside communication, and will drop all logs.
-Should only be used in “standalone mode”, when there is no access to the <em>trains-server</em>.
-:param bypass: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, all outside communication is skipped.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsSaver">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">TrainsSaver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logger</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ignite.contrib.handlers.trains_logger.TrainsLogger<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_uri</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dirname</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#TrainsSaver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsSaver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handler that saves input checkpoint as Trains artifacts</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>logger</strong> (<a class="reference internal" href="#ignite.contrib.handlers.trains_logger.TrainsLogger" title="ignite.contrib.handlers.trains_logger.TrainsLogger"><em>TrainsLogger</em></a><em>, </em><em>optional</em>) – An instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">TrainsLogger</span></code>, ensuring a valid
-Trains <code class="docutils literal notranslate"><span class="pre">Task</span></code> has been initialized. If not provided, and a Trains Task has not been manually initialized,
-a runtime error will be raised.</p></li>
-<li><p><strong>output_uri</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – The default location for output models and other artifacts uploaded by Trains. For
-more information, see <code class="docutils literal notranslate"><span class="pre">trains.Task.init</span></code>.</p></li>
-<li><p><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Directory path where the checkpoint will be saved. If not provided, a temporary
-directory will be created.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">ignite.handlers</span> <span class="kn">import</span> <span class="n">Checkpoint</span>
-
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
-    <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
-    <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
-<span class="p">)</span>
-
-<span class="n">to_save</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">}</span>
-
-<span class="n">handler</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span>
-    <span class="n">to_save</span><span class="p">,</span>
-    <span class="n">TrainsSaver</span><span class="p">(),</span>
-    <span class="n">n_saved</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">score_function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
-    <span class="n">score_name</span><span class="o">=</span><span class="s2">&quot;acc&quot;</span><span class="p">,</span>
-    <span class="n">filename_prefix</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span>
-    <span class="n">global_step_transform</span><span class="o">=</span><span class="n">global_step_from_engine</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="n">validation_evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EVENT_COMPLETED</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsSaver.get_local_copy">
-<code class="sig-name descname">get_local_copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#TrainsSaver.get_local_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsSaver.get_local_copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get artifact local copy.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>In distributed configuration this method should be called on rank 0 process.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – artifact name.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a local path to a downloaded copy of the artifact</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ignite.contrib.handlers.trains_logger.TrainsSaver.remove">
-<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#TrainsSaver.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsSaver.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to remove saved checkpoint.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – filename associated with checkpoint.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.WeightsHistHandler">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">WeightsHistHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#WeightsHistHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.WeightsHistHandler" title="Permalink to this definition">¶</a></dt>
+<dt id="ignite.contrib.handlers.clearml_logger.WeightsHistHandler">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">WeightsHistHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#WeightsHistHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.WeightsHistHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper handler to log model’s weights as histograms.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="n">WeightsHistHandler</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -4378,23 +4382,23 @@ directory will be created.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt id="ignite.contrib.handlers.trains_logger.WeightsScalarHandler">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">WeightsScalarHandler</code><span class="sig-paren">(</span><em class="sig-param">model: torch.nn.modules.module.Module</em>, <em class="sig-param">reduction: Callable = &lt;function norm&gt;</em>, <em class="sig-param">tag: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/trains_logger.html#WeightsScalarHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.WeightsScalarHandler" title="Permalink to this definition">¶</a></dt>
+<dt id="ignite.contrib.handlers.clearml_logger.WeightsScalarHandler">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">WeightsScalarHandler</code><span class="sig-paren">(</span><em class="sig-param">model: torch.nn.modules.module.Module</em>, <em class="sig-param">reduction: Callable = &lt;function norm&gt;</em>, <em class="sig-param">tag: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/clearml_logger.html#WeightsScalarHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.WeightsScalarHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper handler to log model’s weights as scalars.
 Handler iterates over named parameters of the model, applies reduction function to each parameter
 produce a scalar and then logs the scalar.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.trains_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.contrib.handlers.clearml_logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Create a logger</span>
 
-<span class="n">trains_logger</span> <span class="o">=</span> <span class="n">TrainsLogger</span><span class="p">(</span>
+<span class="n">clearml_logger</span> <span class="o">=</span> <span class="n">ClearMLLogger</span><span class="p">(</span>
     <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;pytorch-ignite-integration&quot;</span><span class="p">,</span>
     <span class="n">task_name</span><span class="o">=</span><span class="s2">&quot;cnn-mnist&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Attach the logger to the trainer to log model&#39;s weights norm after each iteration</span>
-<span class="n">trains_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
+<span class="n">clearml_logger</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">,</span>
     <span class="n">event_name</span><span class="o">=</span><span class="n">Events</span><span class="o">.</span><span class="n">ITERATION_COMPLETED</span><span class="p">,</span>
     <span class="n">log_handler</span><span class="o">=</span><span class="n">WeightsScalarHandler</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">)</span>
@@ -4413,8 +4417,8 @@ produce a scalar and then logs the scalar.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="ignite.contrib.handlers.trains_logger.global_step_from_engine">
-<code class="sig-prename descclassname">ignite.contrib.handlers.trains_logger.</code><code class="sig-name descname">global_step_from_engine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">custom_event_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ignite.engine.events.Events<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Callable<a class="reference internal" href="../_modules/ignite/handlers.html#global_step_from_engine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.trains_logger.global_step_from_engine" title="Permalink to this definition">¶</a></dt>
+<dt id="ignite.contrib.handlers.clearml_logger.global_step_from_engine">
+<code class="sig-prename descclassname">ignite.contrib.handlers.clearml_logger.</code><code class="sig-name descname">global_step_from_engine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">custom_event_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ignite.engine.events.Events<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Callable<a class="reference internal" href="../_modules/ignite/handlers.html#global_step_from_engine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.clearml_logger.global_step_from_engine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method to setup <cite>global_step_transform</cite> function using another engine.
 This can be helpful for logging trainer epoch/iteration while output handler is attached to an evaluator.</p>
 <dl class="field-list simple">
@@ -4430,6 +4434,13 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
 </dl>
 </dd></dl>
 
+</div>
+<div class="section" id="trains-logger">
+<h2>trains_logger<a class="headerlink" href="#trains-logger" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">trains_logger</span></code> was renamed to <code class="docutils literal notranslate"><span class="pre">clearml_logger</span></code>. Please refer to <a class="reference internal" href="#clearml-logger"><span class="std std-ref">clearml_logger</span></a>.</p>
+</div>
 </div>
 <div class="section" id="more-on-parameter-scheduling">
 <h2>More on parameter scheduling<a class="headerlink" href="#more-on-parameter-scheduling" title="Permalink to this headline">¶</a></h2>
@@ -4774,6 +4785,7 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
 <li><a class="reference internal" href="#tqdm-logger">tqdm_logger</a></li>
 <li><a class="reference internal" href="#polyaxon-logger">polyaxon_logger</a></li>
 <li><a class="reference internal" href="#wandb-logger">wandb_logger</a></li>
+<li><a class="reference internal" href="#clearml-logger">clearml_logger</a></li>
 <li><a class="reference internal" href="#trains-logger">trains_logger</a></li>
 <li><a class="reference internal" href="#more-on-parameter-scheduling">More on parameter scheduling</a><ul>
 <li><a class="reference internal" href="#example-with-ignite-contrib-handlers-cosineannealingscheduler">Example with <code class="xref py py-class docutils literal notranslate"><span class="pre">ignite.contrib.handlers.CosineAnnealingScheduler</span></code></a></li>
