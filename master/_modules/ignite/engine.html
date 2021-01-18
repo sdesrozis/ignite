@@ -281,7 +281,7 @@
 <span class="kn">import</span> <span class="nn">ignite.distributed</span> <span class="k">as</span> <span class="nn">idist</span>
 <span class="kn">from</span> <span class="nn">ignite.engine.deterministic</span> <span class="kn">import</span> <span class="n">DeterministicEngine</span>
 <span class="kn">from</span> <span class="nn">ignite.engine.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
-<span class="kn">from</span> <span class="nn">ignite.engine.events</span> <span class="kn">import</span> <span class="n">CallableEventWithFilter</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">,</span> <span class="n">Events</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">ignite.engine.events</span> <span class="kn">import</span> <span class="n">CallableEventWithFilter</span><span class="p">,</span> <span class="n">EventEnum</span><span class="p">,</span> <span class="n">Events</span><span class="p">,</span> <span class="n">EventsList</span><span class="p">,</span> <span class="n">RemovableEventHandle</span><span class="p">,</span> <span class="n">State</span>
 <span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Metric</span>
 <span class="kn">from</span> <span class="nn">ignite.utils</span> <span class="kn">import</span> <span class="n">convert_tensor</span>
 
@@ -296,8 +296,10 @@
     <span class="s2">&quot;Engine&quot;</span><span class="p">,</span>
     <span class="s2">&quot;DeterministicEngine&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Events&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EventsList&quot;</span><span class="p">,</span>
     <span class="s2">&quot;EventEnum&quot;</span><span class="p">,</span>
     <span class="s2">&quot;CallableEventWithFilter&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RemovableEventHandle&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 

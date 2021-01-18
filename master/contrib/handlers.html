@@ -1587,7 +1587,7 @@ For example, <cite>log_dir</cite> to setup path to the directory where to log.</
 </div>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.tensorboard_logger.TensorboardLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1595,8 +1595,8 @@ For example, <cite>log_dir</cite> to setup path to the directory where to log.</
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2080,7 +2080,7 @@ log less frequently or set <cite>num_workers=1</cite>.</p>
 </div>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.visdom_logger.VisdomLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.visdom_logger.VisdomLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2088,8 +2088,8 @@ log less frequently or set <cite>num_workers=1</cite>.</p>
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2427,7 +2427,7 @@ You can save model checkpoints to a Neptune server:</p>
 </div>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.neptune_logger.NeptuneLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2435,8 +2435,8 @@ You can save model checkpoints to a Neptune server:</p>
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2854,7 +2854,7 @@ and validation.</p>
 </div>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.mlflow_logger.MLflowLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2862,8 +2862,8 @@ and validation.</p>
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -3420,7 +3420,7 @@ and validation.</p>
 </dl>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.polyaxon_logger.PolyaxonLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3428,8 +3428,8 @@ and validation.</p>
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -3781,7 +3781,7 @@ files saved there at the end of the run. You can just use the <cite>wandb_logger
 </div>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.wandb_logger.WandBLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.wandb_logger.WandBLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.wandb_logger.WandBLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3789,8 +3789,8 @@ files saved there at the end of the run. You can just use the <cite>wandb_logger
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -4187,7 +4187,7 @@ script’s file name is used. (Optional)</p></li>
 </div>
 <dl class="py method">
 <dt id="ignite.contrib.handlers.trains_logger.TrainsLogger.attach">
-<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">engine</span><span class="p">:</span> <span class="n">ignite.engine.engine.Engine</span></em>, <em class="sig-param"><span class="n">log_handler</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">event_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ignite.engine.events.Events<span class="p">, </span>ignite.engine.events.CallableEventWithFilter<span class="p">, </span>ignite.engine.events.EventsList<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ignite.engine.events.RemovableEventHandle<a class="headerlink" href="#ignite.contrib.handlers.trains_logger.TrainsLogger.attach" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach the logger to the engine and execute <cite>log_handler</cite> function at <cite>event_name</cite> events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4195,8 +4195,8 @@ script’s file name is used. (Optional)</p></li>
 <li><p><strong>engine</strong> (<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><em>Engine</em></a>) – engine object.</p></li>
 <li><p><strong>log_handler</strong> (<em>callable</em>) – a logging handler to execute</p></li>
 <li><p><strong>event_name</strong> – event to attach the logging handler to. Valid events are from
-<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or any <cite>event_name</cite> added by
-<a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
+<a class="reference internal" href="../engine.html#ignite.engine.events.Events" title="ignite.engine.events.Events"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> or class:<cite>~ignite.engine.events.EventsList</cite> or any <cite>event_name</cite>
+added by <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine.register_events" title="ignite.engine.engine.Engine.register_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_events()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

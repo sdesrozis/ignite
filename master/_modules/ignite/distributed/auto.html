@@ -400,7 +400,7 @@
     <span class="k">return</span> <span class="n">dataloader</span></div>
 
 
-<div class="viewcode-block" id="auto_model"><a class="viewcode-back" href="../../../distributed.html#ignite.distributed.auto.auto_model">[docs]</a><span class="k">def</span> <span class="nf">auto_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">sync_bn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">:</span>
+<div class="viewcode-block" id="auto_model"><a class="viewcode-back" href="../../../distributed.html#ignite.distributed.auto.auto_model">[docs]</a><span class="k">def</span> <span class="nf">auto_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">sync_bn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Helper method to adapt provided model for non-distributed and distributed configurations (supporting</span>
 <span class="sd">    all available backends from :meth:`~ignite.distributed.utils.available_backends()`).</span>
 
@@ -433,6 +433,8 @@
 <span class="sd">        sync_bn (bool): if True, applies `torch convert_sync_batchnorm`_ to the model for native torch</span>
 <span class="sd">            distributed only. Default, False. Note, if using Nvidia/Apex, batchnorm conversion should be</span>
 <span class="sd">            applied before calling ``amp.initialize``.</span>
+<span class="sd">        **kwargs: kwargs to model&#39;s wrapping class: `torch DistributedDataParallel`_ or `torch DataParallel`_</span>
+<span class="sd">            if applicable. Please, make sure to use acceptable kwargs for given backend.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.nn.Module</span>
@@ -459,16 +461,19 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Convert batch norm to sync batch norm&quot;</span><span class="p">)</span>
                 <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">SyncBatchNorm</span><span class="o">.</span><span class="n">convert_sync_batchnorm</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
+            <span class="k">if</span> <span class="s2">&quot;device_ids&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Argument kwargs should not contain &#39;device_ids&#39;, but got </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
             <span class="n">lrank</span> <span class="o">=</span> <span class="n">idist</span><span class="o">.</span><span class="n">get_local_rank</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Apply torch DistributedDataParallel on model, device id: </span><span class="si">{</span><span class="n">lrank</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">lrank</span><span class="p">,])</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">lrank</span><span class="p">,],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">idist</span><span class="o">.</span><span class="n">has_native_dist_support</span> <span class="ow">and</span> <span class="n">bnd</span> <span class="o">==</span> <span class="n">idist_native</span><span class="o">.</span><span class="n">GLOO</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">sync_bn</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Convert batch norm to sync batch norm&quot;</span><span class="p">)</span>
                 <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">SyncBatchNorm</span><span class="o">.</span><span class="n">convert_sync_batchnorm</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Apply torch DistributedDataParallel on model&quot;</span><span class="p">)</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">idist</span><span class="o">.</span><span class="n">has_hvd_support</span> <span class="ow">and</span> <span class="n">bnd</span> <span class="o">==</span> <span class="n">idist_hvd</span><span class="o">.</span><span class="n">HOROVOD</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">horovod.torch</span> <span class="k">as</span> <span class="nn">hvd</span>
 
@@ -478,7 +483,7 @@
     <span class="c1"># not distributed but multiple GPUs reachable so data parallel model</span>
     <span class="k">elif</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s2">&quot;cuda&quot;</span> <span class="ow">in</span> <span class="n">idist</span><span class="o">.</span><span class="n">device</span><span class="p">()</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Apply torch DataParallel on model&quot;</span><span class="p">)</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">model</span></div>
 

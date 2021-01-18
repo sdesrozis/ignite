@@ -282,7 +282,10 @@
 fashion without having to store the entire output history of a model.</p>
 <p>In practice a user needs to attach the metric instance to an engine. The metric
 value is then computed using the output of the engine’s <code class="docutils literal notranslate"><span class="pre">process_function</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_function</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
+<span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Accuracy</span>
+
+<span class="k">def</span> <span class="nf">process_function</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
     <span class="c1"># ...</span>
     <span class="k">return</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span>
 
@@ -293,7 +296,10 @@ value is then computed using the output of the engine’s <code class="docutils 
 </div>
 <p>If the engine’s output is not in the format <code class="docutils literal notranslate"><span class="pre">(y_pred,</span> <span class="pre">y)</span></code> or <code class="docutils literal notranslate"><span class="pre">{'y_pred':</span> <span class="pre">y_pred,</span> <span class="pre">'y':</span> <span class="pre">y,</span> <span class="pre">...}</span></code>, the user can
 use the <code class="docutils literal notranslate"><span class="pre">output_transform</span></code> argument to transform it:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_function</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
+<span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Accuracy</span>
+
+<span class="k">def</span> <span class="nf">process_function</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
     <span class="c1"># ...</span>
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;y_pred&#39;</span><span class="p">:</span> <span class="n">y_pred</span><span class="p">,</span> <span class="s1">&#39;y_true&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span>
 
@@ -354,13 +360,50 @@ with a distributed data sampler. Following code snippet shows in detail how to u
 <p>Metrics cannot be serialized using <cite>pickle</cite> module because the implementation is based on lambda functions.
 Therefore, use the third party library <cite>dill</cite> to overcome the limitation of <cite>pickle</cite>.</p>
 </div>
+<div class="section" id="reset-update-compute-api">
+<h2>Reset, Update, Compute API<a class="headerlink" href="#reset-update-compute-api" title="Permalink to this headline">¶</a></h2>
+<p>User can also call directly the following methods on the metric:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ignite.metrics.Metric.reset" title="ignite.metrics.Metric.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> : resets internal variables and accumulators</p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Metric.update" title="ignite.metrics.Metric.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> : updates internal variables and accumulators with provided batch output <code class="docutils literal notranslate"><span class="pre">(y_pred,</span> <span class="pre">y)</span></code></p></li>
+<li><p><a class="reference internal" href="#ignite.metrics.Metric.compute" title="ignite.metrics.Metric.compute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute()</span></code></a> : computes custom metric and return the result</p></li>
+</ul>
+<p>This API gives a more fine-grained/custom usage on how to compute a metric. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Precision</span>
+
+<span class="c1"># Define the metric</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">Precision</span><span class="p">()</span>
+
+<span class="c1"># Start accumulation:</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">precision</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+<span class="c1"># Compute the result</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Precision: &quot;</span><span class="p">,</span> <span class="n">precision</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+
+<span class="c1"># Reset metric</span>
+<span class="n">precision</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="c1"># Start new accumulation:</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">precision</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+<span class="c1"># Compute new result</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Precision: &quot;</span><span class="p">,</span> <span class="n">precision</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="metric-arithmetics">
 <h2>Metric arithmetics<a class="headerlink" href="#metric-arithmetics" title="Permalink to this headline">¶</a></h2>
 <p>Metrics could be combined together to form new metrics. This could be done through arithmetics, such
 as <code class="docutils literal notranslate"><span class="pre">metric1</span> <span class="pre">+</span> <span class="pre">metric2</span></code>, use PyTorch operators, such as <code class="docutils literal notranslate"><span class="pre">(metric1</span> <span class="pre">+</span> <span class="pre">metric2).pow(2).mean()</span></code>,
 or use a lambda function, such as <code class="docutils literal notranslate"><span class="pre">MetricsLambda(lambda</span> <span class="pre">a,</span> <span class="pre">b:</span> <span class="pre">torch.mean(a</span> <span class="pre">+</span> <span class="pre">b),</span> <span class="pre">metric1,</span> <span class="pre">metric2)</span></code>.</p>
 <p>For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">precision</span> <span class="o">=</span> <span class="n">Precision</span><span class="p">(</span><span class="n">average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Precision</span><span class="p">,</span> <span class="n">Recall</span>
+
+<span class="n">precision</span> <span class="o">=</span> <span class="n">Precision</span><span class="p">(</span><span class="n">average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">recall</span> <span class="o">=</span> <span class="n">Recall</span><span class="p">(</span><span class="n">average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">F1</span> <span class="o">=</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
@@ -373,7 +416,9 @@ that <code class="docutils literal notranslate"><span class="pre">average=False<
 otherwise we will not be computing F-beta metrics.</p>
 </div>
 <p>Metrics also support indexing operation (if metric’s result is a vector/matrix/tensor). For example, this can be useful to compute mean metric (e.g. precision, recall or IoU) ignoring the background:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cm</span> <span class="o">=</span> <span class="n">ConfusionMatrix</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrix</span>
+
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ConfusionMatrix</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">iou_metric</span> <span class="o">=</span> <span class="n">IoU</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
 <span class="n">iou_no_bg_metric</span> <span class="o">=</span> <span class="n">iou_metric</span><span class="p">[:</span><span class="mi">9</span><span class="p">]</span>  <span class="c1"># We assume that the background index is 9</span>
 <span class="n">mean_iou_no_bg_metric</span> <span class="o">=</span> <span class="n">iou_no_bg_metric</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1619,6 +1664,7 @@ across all participating processes.</p>
             <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
               <ul>
 <li><a class="reference internal" href="#">ignite.metrics</a><ul>
+<li><a class="reference internal" href="#reset-update-compute-api">Reset, Update, Compute API</a></li>
 <li><a class="reference internal" href="#metric-arithmetics">Metric arithmetics</a></li>
 <li><a class="reference internal" href="#how-to-create-a-custom-metric">How to create a custom metric</a></li>
 <li><a class="reference internal" href="#metrics-and-its-usages">Metrics and its usages</a><ul>
