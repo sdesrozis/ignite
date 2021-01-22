@@ -399,10 +399,15 @@
             <span class="kn">from</span> <span class="nn">clearml</span> <span class="kn">import</span> <span class="n">Task</span>
             <span class="kn">from</span> <span class="nn">clearml.binding.frameworks.tensorflow_bind</span> <span class="kn">import</span> <span class="n">WeightsGradientHistHelper</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
-                <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Backwards-compatibility for legacy Trains SDK</span>
+                <span class="kn">from</span> <span class="nn">trains</span> <span class="kn">import</span> <span class="n">Task</span>
+                <span class="kn">from</span> <span class="nn">trains.binding.frameworks.tensorflow_bind</span> <span class="kn">import</span> <span class="n">WeightsGradientHistHelper</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
+                    <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
 
         <span class="n">experiment_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;project_name&quot;</span><span class="p">,</span> <span class="s2">&quot;task_name&quot;</span><span class="p">,</span> <span class="s2">&quot;task_type&quot;</span><span class="p">)}</span>
 
@@ -942,10 +947,14 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">clearml</span> <span class="kn">import</span> <span class="n">Task</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
-                <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Backwards-compatibility for legacy Trains SDK</span>
+                <span class="kn">from</span> <span class="nn">trains</span> <span class="kn">import</span> <span class="n">Task</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
+                    <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">logger</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">ClearMLLogger</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;logger must be an instance of ClearMLLogger&quot;</span><span class="p">)</span>
@@ -1014,10 +1023,15 @@
             <span class="kn">from</span> <span class="nn">clearml</span> <span class="kn">import</span> <span class="n">Model</span>
             <span class="kn">from</span> <span class="nn">clearml.binding.frameworks</span> <span class="kn">import</span> <span class="n">WeightsFileHandler</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
-                <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Backwards-compatibility for legacy Trains SDK</span>
+                <span class="kn">from</span> <span class="nn">trains</span> <span class="kn">import</span> <span class="n">Model</span>
+                <span class="kn">from</span> <span class="nn">trains.binding.frameworks</span> <span class="kn">import</span> <span class="n">WeightsFileHandler</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;This contrib module requires clearml to be installed. &quot;</span>
+                    <span class="s2">&quot;You may install clearml using: </span><span class="se">\n</span><span class="s2"> pip install clearml </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">basename</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;basename&quot;</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>

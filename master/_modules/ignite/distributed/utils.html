@@ -771,7 +771,7 @@
     <span class="k">for</span> <span class="n">comp_model_cls</span> <span class="ow">in</span> <span class="n">registered_computation_models</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">backend</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">comp_model_cls</span><span class="o">.</span><span class="n">available_backends</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="n">_set_model</span><span class="p">(</span><span class="n">comp_model_cls</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>  <span class="c1"># type: ignore[arg-type]</span></div>
+        <span class="n">_set_model</span><span class="p">(</span><span class="n">comp_model_cls</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="finalize"><a class="viewcode-back" href="../../../distributed.html#ignite.distributed.utils.finalize">[docs]</a><span class="k">def</span> <span class="nf">finalize</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
