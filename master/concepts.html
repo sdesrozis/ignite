@@ -326,7 +326,7 @@ number of iterations to loop over. In this way, the input data can be an iterato
 <p>If data is a finite data iterator with unknown length (for user), argument <code class="docutils literal notranslate"><span class="pre">epoch_length</span></code> can be omitted and it
 will be automatically determined when data iterator is exhausted.</p>
 </div>
-<p><strong>Mostly any complexity training logic</strong> can be coded as <code class="docutils literal notranslate"><span class="pre">train_step</span></code> method and a trainer can be constructed using this method.
+<p><strong>Training logic of any complexity</strong> can be coded with <code class="docutils literal notranslate"><span class="pre">train_step</span></code> method and a trainer can be constructed using this method.
 Argument <code class="docutils literal notranslate"><span class="pre">batch</span></code> in <code class="docutils literal notranslate"><span class="pre">train_step</span></code> function is user-defined and can contain any data required for a single iteration.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_1</span> <span class="o">=</span> <span class="o">...</span>
 <span class="n">model_2</span> <span class="o">=</span> <span class="o">...</span>
