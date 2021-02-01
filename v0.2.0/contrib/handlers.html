@@ -39,6 +39,14 @@
   
   <script src="../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -777,7 +785,7 @@ by 100 simulated LR values.</p></li>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p>
+<dd class="field-odd"><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p>
 </dd>
 </dl>
 </dd></dl>
@@ -803,7 +811,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 </ul>
 </dd>
@@ -829,7 +837,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em>) – torch optimizer which parameters to log</p></li>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a>) – torch optimizer which parameters to log</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 </ul>
 </dd>
@@ -990,7 +998,7 @@ or any <cite>event_name</cite> added by <a class="reference internal" href="../e
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p>
+<dd class="field-odd"><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1016,7 +1024,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 </ul>
 </dd>
@@ -1047,7 +1055,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>show_legend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to show legend in the window</p></li>
 </ul>
@@ -1093,7 +1101,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em>) – torch optimizer which parameters to log</p></li>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a>) – torch optimizer which parameters to log</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>show_legend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to show legend in the window</p></li>
 </ul>
@@ -1303,7 +1311,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>show_legend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to show legend in the window</p></li>
 </ul>
@@ -1905,7 +1913,6 @@ or any <cite>event_name</cite> added by <a class="reference internal" href="../e
          <script src="../_static/underscore.js"></script>
          <script src="../_static/doctools.js"></script>
          <script src="../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

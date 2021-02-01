@@ -41,6 +41,14 @@
   
   <script src="../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -416,7 +424,7 @@ wave (as suggested in <a class="reference internal" href="#smith17" id="id1"><sp
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of optimizer’s parameter to update.</p></li>
 <li><p><strong>start_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – value at start of cycle.</p></li>
@@ -488,7 +496,7 @@ cycle of some size.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of optimizer’s parameter to update.</p></li>
 <li><p><strong>start_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – value at start of cycle.</p></li>
@@ -576,7 +584,7 @@ adjusts it back to ‘start_value’ for a half-cycle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of optimizer’s parameter to update.</p></li>
 <li><p><strong>start_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – value at start of cycle.</p></li>
@@ -707,7 +715,7 @@ training.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of optimizer’s parameter to update.</p></li>
 <li><p><strong>save_history</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to log the parameter values to
@@ -827,7 +835,7 @@ sets defined absolute values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of optimizer’s parameter to update.</p></li>
 <li><p><strong>milestones_values</strong> (<em>list of tuples</em><em> (</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>)</em>) – list of tuples (event index, parameter value)
@@ -1254,6 +1262,55 @@ Dataflow took total 16.24365s [min/index: 0.00533s/1874, max/index: 0.01129s/937
 </dd></dl>
 
 </div>
+<div class="section" id="stores">
+<h2>stores<a class="headerlink" href="#stores" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ignite.contrib.handlers.stores.EpochOutputStore" title="ignite.contrib.handlers.stores.EpochOutputStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EpochOutputStore</span></code></a></p></td>
+<td><p>EpochOutputStore handler to save output prediction and target history after every epoch, could be useful for e.g., visualization purposes.</p></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-ignite.contrib.handlers.stores"></span><dl class="py class">
+<dt id="ignite.contrib.handlers.stores.EpochOutputStore">
+<em class="property">class </em><code class="sig-prename descclassname">ignite.contrib.handlers.stores.</code><code class="sig-name descname">EpochOutputStore</code><span class="sig-paren">(</span><em class="sig-param">output_transform: Callable = &lt;function EpochOutputStore.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ignite/contrib/handlers/stores.html#EpochOutputStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.contrib.handlers.stores.EpochOutputStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>EpochOutputStore handler to save output prediction and target history
+after every epoch, could be useful for e.g., visualization purposes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This can potentially lead to a memory error if the output data is
+larger than available RAM.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_transform</strong> (<em>callable</em><em>, </em><em>optional</em>) – a callable that is used to
+transform the <a class="reference internal" href="../engine.html#ignite.engine.engine.Engine" title="ignite.engine.engine.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a>’s
+<code class="docutils literal notranslate"><span class="pre">process_function</span></code>’s output , e.g., lambda x: x[0]</p>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eos</span> <span class="o">=</span> <span class="n">EpochOutputStore</span><span class="p">()</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">create_supervised_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+<span class="n">train_evaluator</span> <span class="o">=</span> <span class="n">create_supervised_evaluator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
+<span class="n">eos</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">train_evaluator</span><span class="p">)</span>
+
+<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">log_training_results</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+    <span class="n">train_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">eos</span><span class="o">.</span><span class="n">data</span>
+    <span class="c1"># do something with output, e.g., plotting</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.4.2.</span></p>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="tensorboard-logger">
 <h2>tensorboard_logger<a class="headerlink" href="#tensorboard-logger" title="Permalink to this headline">¶</a></h2>
 <p>See <a class="reference external" href="https://github.com/pytorch/ignite/blob/master/examples/contrib/mnist/mnist_with_tensorboard_logger.py">tensorboardX mnist example</a>
@@ -1311,7 +1368,7 @@ and <a class="reference external" href="https://github.com/pytorch/ignite/tree/m
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
 </dd>
@@ -1341,7 +1398,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
@@ -1376,7 +1433,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
@@ -1670,7 +1727,7 @@ added by <a class="reference internal" href="../engine.html#ignite.engine.engine
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
 </dd>
@@ -1700,7 +1757,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
@@ -1780,7 +1837,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 <li><p><strong>show_legend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to show legend in the window</p></li>
@@ -1835,7 +1892,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
@@ -2165,7 +2222,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 <li><p><strong>show_legend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to show legend in the window</p></li>
@@ -2276,7 +2333,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
@@ -2590,7 +2647,7 @@ NeptuneLogger class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
@@ -2732,7 +2789,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
@@ -2945,7 +3002,7 @@ added by <a class="reference internal" href="../engine.html#ignite.engine.engine
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, ‘generator’</p></li>
@@ -3246,7 +3303,7 @@ or a single scalar, which will be displayed with the default name <cite>output</
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
@@ -3560,7 +3617,7 @@ for detailed usage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
@@ -4172,7 +4229,7 @@ directory will be created.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, ‘generator’</p></li>
 </ul>
 </dd>
@@ -4206,7 +4263,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
@@ -4245,7 +4302,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>optimizer</strong> (<em>torch.optim.Optimizer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.optim.Optimizer</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – torch optimizer or any object with attribute <code class="docutils literal notranslate"><span class="pre">param_groups</span></code>
 as a sequence.</p></li>
 <li><p><strong>param_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – parameter name</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
@@ -4374,7 +4431,7 @@ uses function output as global_step. To setup global step from another engine, p
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, ‘generator’</p></li>
 </ul>
 </dd>
@@ -4408,7 +4465,7 @@ produce a scalar and then logs the scalar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to log weights</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to log weights</p></li>
 <li><p><strong>reduction</strong> (<em>callable</em>) – function to reduce parameters into scalar</p></li>
 <li><p><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – common title for all produced plots. For example, “generator”</p></li>
 </ul>
@@ -4778,6 +4835,7 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
 <li><a class="reference internal" href="#param-scheduler">param_scheduler</a></li>
 <li><a class="reference internal" href="#lr-finder">lr_finder</a></li>
 <li><a class="reference internal" href="#time-profilers">time_profilers</a></li>
+<li><a class="reference internal" href="#stores">stores</a></li>
 <li><a class="reference internal" href="#tensorboard-logger">tensorboard_logger</a></li>
 <li><a class="reference internal" href="#visdom-logger">visdom_logger</a></li>
 <li><a class="reference internal" href="#neptune-logger">neptune_logger</a></li>
@@ -4818,7 +4876,6 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
          <script src="../_static/underscore.js"></script>
          <script src="../_static/doctools.js"></script>
          <script src="../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

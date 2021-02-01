@@ -39,6 +39,14 @@
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../../../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -352,6 +360,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.device</span>
+
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+<span class="sd">        Added Horovod distributed framework.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_need_to_sync</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_model</span><span class="p">,</span> <span class="n">_SerialModel</span><span class="p">):</span>
         <span class="n">sync</span><span class="p">(</span><span class="n">temporary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -369,6 +380,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str or None</span>
+
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+<span class="sd">        Added Horovod distributed framework.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_need_to_sync</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_model</span><span class="p">,</span> <span class="n">_SerialModel</span><span class="p">):</span>
         <span class="n">sync</span><span class="p">(</span><span class="n">temporary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -393,6 +407,8 @@
 <span class="sd">    - `xla-dist` for XLA distributed configuration</span>
 <span class="sd">    - `horovod-dist` for Horovod distributed framework</span>
 
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+<span class="sd">        `horovod-dist` will be returned for Horovod distributed framework.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_need_to_sync</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_model</span><span class="p">,</span> <span class="n">_SerialModel</span><span class="p">):</span>
         <span class="n">sync</span><span class="p">(</span><span class="n">temporary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -576,6 +592,8 @@
 <span class="sd">    .. _xmp.spawn: http://pytorch.org/xla/release/1.6/index.html#torch_xla.distributed.xla_multiprocessing.spawn</span>
 <span class="sd">    .. _hvd_run: https://horovod.readthedocs.io/en/latest/api.html#module-horovod.run</span>
 
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+<span class="sd">        ``backend`` now accepts `horovod` distributed framework.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_assert_backend</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
@@ -662,6 +680,7 @@
 <span class="sd">            x = idist.broadcast(x, src=0)</span>
 <span class="sd">            # &gt;&gt;&gt; x = 12.3456</span>
 
+<span class="sd">    .. versionadded:: 0.4.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_need_to_sync</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_model</span><span class="p">,</span> <span class="n">_SerialModel</span><span class="p">):</span>
         <span class="n">sync</span><span class="p">(</span><span class="n">temporary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -760,6 +779,8 @@
 
 <span class="sd">    .. _hvd_init: https://horovod.readthedocs.io/en/latest/api.html#horovod.torch.init</span>
 
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+<span class="sd">        ``backend`` now accepts `horovod` distributed framework.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">has_xla_support</span> <span class="ow">or</span> <span class="n">has_native_dist_support</span> <span class="ow">or</span> <span class="n">has_hvd_support</span><span class="p">):</span>
         <span class="c1"># nothing to do =&gt; serial model</span>
@@ -885,7 +906,6 @@
          <script src="../../../_static/underscore.js"></script>
          <script src="../../../_static/doctools.js"></script>
          <script src="../../../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

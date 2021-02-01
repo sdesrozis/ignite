@@ -42,6 +42,14 @@
   
   <script src="_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -338,6 +346,11 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="contrib/handlers.html#module-ignite.contrib.handlers.stores"><code class="xref">ignite.contrib.handlers.stores</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="contrib/handlers.html#module-ignite.contrib.handlers.tensorboard_logger"><code class="xref">ignite.contrib.handlers.tensorboard_logger</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -445,7 +458,6 @@
          <script src="_static/underscore.js"></script>
          <script src="_static/doctools.js"></script>
          <script src="_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

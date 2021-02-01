@@ -39,6 +39,14 @@
   
   <script src="_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -515,6 +523,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="contrib/handlers.html#ignite.contrib.handlers.stores.EpochOutputStore">EpochOutputStore (class in ignite.contrib.handlers.stores)</a>
+</li>
       <li><a href="metrics.html#ignite.metrics.EpochWise">EpochWise (class in ignite.metrics)</a>
 </li>
       <li><a href="engine.html#ignite.engine.events.EventEnum">EventEnum (class in ignite.engine.events)</a>
@@ -724,6 +734,13 @@
 </li>
       </ul></li>
       <li>
+    ignite.contrib.handlers.stores
+
+      <ul>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.stores">module</a>
+</li>
+      </ul></li>
+      <li>
     ignite.contrib.handlers.tensorboard_logger
 
       <ul>
@@ -925,6 +942,8 @@
 </li>
         <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.polyaxon_logger">ignite.contrib.handlers.polyaxon_logger</a>
 </li>
+        <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.stores">ignite.contrib.handlers.stores</a>
+</li>
         <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.tensorboard_logger">ignite.contrib.handlers.tensorboard_logger</a>
 </li>
         <li><a href="contrib/handlers.html#module-ignite.contrib.handlers.time_profilers">ignite.contrib.handlers.time_profilers</a>
@@ -1043,6 +1062,8 @@
 </li>
       </ul></li>
       <li><a href="contrib/handlers.html#ignite.contrib.handlers.tqdm_logger.ProgressBar">ProgressBar (class in ignite.contrib.handlers.tqdm_logger)</a>
+</li>
+      <li><a href="metrics.html#ignite.metrics.PSNR">PSNR (class in ignite.metrics)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1326,7 +1347,6 @@
          <script src="_static/underscore.js"></script>
          <script src="_static/doctools.js"></script>
          <script src="_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

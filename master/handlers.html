@@ -41,6 +41,14 @@
   
   <script src="_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -311,7 +319,7 @@
 </table>
 <dl class="py class">
 <dt id="ignite.handlers.Checkpoint">
-<em class="property">class </em><code class="sig-prename descclassname">ignite.handlers.</code><code class="sig-name descname">Checkpoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_save</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Mapping<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">save_handler</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Callable<span class="p">, </span>ignite.handlers.checkpoint.BaseSaveHandler<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">filename_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">score_function</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">score_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_saved</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">global_step_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filename_pattern</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_self</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/handlers/checkpoint.html#Checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.handlers.Checkpoint" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ignite.handlers.</code><code class="sig-name descname">Checkpoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_save</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Mapping<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">save_handler</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Callable<span class="p">, </span>ignite.handlers.checkpoint.BaseSaveHandler<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">filename_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">score_function</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">score_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_saved</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">global_step_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filename_pattern</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_self</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">greater_or_equal</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ignite/handlers/checkpoint.html#Checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.handlers.Checkpoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checkpoint handler can be used to periodically save and load objects which have attribute
 <code class="docutils literal notranslate"><span class="pre">state_dict/load_state_dict</span></code>. This class can use specific save handlers to store on the disk or a cloud
 storage, etc. The Checkpoint handler (if used with <a class="reference internal" href="#ignite.handlers.DiskSaver" title="ignite.handlers.DiskSaver"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiskSaver</span></code></a>) also handles automatically
@@ -346,6 +354,8 @@ checkpoint filenames. If the pattern is not defined, the default pattern would b
 details.</p></li>
 <li><p><strong>include_self</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Whether to include the <cite>state_dict</cite> of this object in the checkpoint. If <cite>True</cite>, then
 there must not be another object in <code class="docutils literal notranslate"><span class="pre">to_save</span></code> with key <code class="docutils literal notranslate"><span class="pre">checkpointer</span></code>.</p></li>
+<li><p><strong>greater_or_equal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – if <cite>True</cite>, the latest equally scored model is stored. Otherwise, the first model.
+Default, <cite>False</cite>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -515,6 +525,9 @@ according to computed validation metric:</p>
 <span class="o">&gt;</span> <span class="p">[</span><span class="s2">&quot;best_model_9_val_acc=0.77.pt&quot;</span><span class="p">,</span> <span class="s2">&quot;best_model_10_val_acc=0.78.pt&quot;</span><span class="p">,</span> <span class="p">]</span>
 </pre></div>
 </div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.3: </span>Added <code class="docutils literal notranslate"><span class="pre">greater_or_equal</span></code> parameter.</p>
+</div>
 <dl class="py method">
 <dt id="ignite.handlers.Checkpoint.load_objects">
 <em class="property">static </em><code class="sig-name descname">load_objects</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_load</span><span class="p">:</span> <span class="n">Mapping</span></em>, <em class="sig-param"><span class="n">checkpoint</span><span class="p">:</span> <span class="n">Mapping</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/ignite/handlers/checkpoint.html#Checkpoint.load_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.handlers.Checkpoint.load_objects" title="Permalink to this definition">¶</a></dt>
@@ -626,6 +639,9 @@ directory <code class="docutils literal notranslate"><span class="pre">dirname</
 </ul>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span>Accept <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> for <cite>torch.save</cite> or <cite>xm.save</cite>.</p>
+</div>
 </dd></dl>
 
 <dl class="py class">
@@ -679,6 +695,9 @@ there must not be another object in <code class="docutils literal notranslate"><
 </ul>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span>Accept <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> for <cite>torch.save</cite> or <cite>xm.save</cite></p>
+</div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
@@ -958,7 +977,6 @@ This can be helpful for logging trainer epoch/iteration while output handler is 
          <script src="_static/underscore.js"></script>
          <script src="_static/doctools.js"></script>
          <script src="_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

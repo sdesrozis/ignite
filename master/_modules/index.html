@@ -39,6 +39,14 @@
   
   <script src="../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -280,6 +288,7 @@
 <li><a href="ignite/contrib/handlers/neptune_logger.html">ignite.contrib.handlers.neptune_logger</a></li>
 <li><a href="ignite/contrib/handlers/param_scheduler.html">ignite.contrib.handlers.param_scheduler</a></li>
 <li><a href="ignite/contrib/handlers/polyaxon_logger.html">ignite.contrib.handlers.polyaxon_logger</a></li>
+<li><a href="ignite/contrib/handlers/stores.html">ignite.contrib.handlers.stores</a></li>
 <li><a href="ignite/contrib/handlers/tensorboard_logger.html">ignite.contrib.handlers.tensorboard_logger</a></li>
 <li><a href="ignite/contrib/handlers/time_profilers.html">ignite.contrib.handlers.time_profilers</a></li>
 <li><a href="ignite/contrib/handlers/tqdm_logger.html">ignite.contrib.handlers.tqdm_logger</a></li>
@@ -329,6 +338,7 @@
 <li><a href="ignite/metrics/metric.html">ignite.metrics.metric</a></li>
 <li><a href="ignite/metrics/metrics_lambda.html">ignite.metrics.metrics_lambda</a></li>
 <li><a href="ignite/metrics/precision.html">ignite.metrics.precision</a></li>
+<li><a href="ignite/metrics/psnr.html">ignite.metrics.psnr</a></li>
 <li><a href="ignite/metrics/recall.html">ignite.metrics.recall</a></li>
 <li><a href="ignite/metrics/root_mean_squared_error.html">ignite.metrics.root_mean_squared_error</a></li>
 <li><a href="ignite/metrics/running_average.html">ignite.metrics.running_average</a></li>
@@ -384,7 +394,6 @@
          <script src="../_static/underscore.js"></script>
          <script src="../_static/doctools.js"></script>
          <script src="../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

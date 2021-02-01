@@ -39,6 +39,14 @@
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../../../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -284,8 +292,11 @@
 
 
 <div class="viewcode-block" id="RootMeanSquaredError"><a class="viewcode-back" href="../../../metrics.html#ignite.metrics.RootMeanSquaredError">[docs]</a><span class="k">class</span> <span class="nc">RootMeanSquaredError</span><span class="p">(</span><span class="n">MeanSquaredError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the root mean squared error.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the `root mean squared error &lt;https://en.wikipedia.org/wiki/Root-mean-square_deviation&gt;`_.</span>
+
+<span class="sd">    .. math:: \text{RMSE} = \sqrt{ \frac{1}{N} \sum_{i=1}^N \left(y_{i} - x_{i} \right)^2 }</span>
+
+<span class="sd">    where :math:`y_{i}` is the prediction tensor and :math:`x_{i}` is ground true tensor.</span>
 
 <span class="sd">    - ``update`` must receive output of the form (y_pred, y) or `{&#39;y_pred&#39;: y_pred, &#39;y&#39;: y}`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -342,7 +353,6 @@
          <script src="../../../_static/underscore.js"></script>
          <script src="../../../_static/doctools.js"></script>
          <script src="../../../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

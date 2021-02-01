@@ -40,6 +40,14 @@
   
   <script src="_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -441,6 +449,7 @@ metrics module containing many regression metrics.</p></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#param-scheduler">param_scheduler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#lr-finder">lr_finder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#time-profilers">time_profilers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#stores">stores</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#tensorboard-logger">tensorboard_logger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#visdom-logger">visdom_logger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib/handlers.html#neptune-logger">neptune_logger</a></li>
@@ -537,7 +546,6 @@ metrics module containing many regression metrics.</p></li>
          <script src="_static/underscore.js"></script>
          <script src="_static/doctools.js"></script>
          <script src="_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

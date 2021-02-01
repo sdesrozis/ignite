@@ -41,6 +41,14 @@
   
   <script src="_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -439,7 +447,7 @@ all available backends from <a class="reference internal" href="#ignite.distribu
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – model to adapt.</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.nn.Module</em></a>) – model to adapt.</p></li>
 <li><p><strong>sync_bn</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – if True, applies <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.SyncBatchNorm.html#torch.nn.SyncBatchNorm.convert_sync_batchnorm">torch convert_sync_batchnorm</a> to the model for native torch
 distributed only. Default, False. Note, if using Nvidia/Apex, batchnorm conversion should be
 applied before calling <code class="docutils literal notranslate"><span class="pre">amp.initialize</span></code>.</p></li>
@@ -451,6 +459,12 @@ if applicable. Please, make sure to use acceptable kwargs for given backend.</p>
 <dd class="field-even"><p>torch.nn.Module</p>
 </dd>
 </dl>
+<div class="versionchanged">
+<ul>
+<span class="versionmodified changed">Changed in version 0.4.2: </span><li><p>Added Horovod distributed framework.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">sync_bn</span></code> argument.</p></li>
+</ul>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -477,6 +491,9 @@ its state is broadcasted from rank 0 to all other processes.</p>
 <dd class="field-even"><p>Optimizer</p>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span>Added Horovod distributed optimizer.</p>
+</div>
 </dd></dl>
 
 </div>
@@ -638,6 +655,9 @@ This option is only supported by native torch distributed module. For other modu
 </ul>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span><code class="docutils literal notranslate"><span class="pre">backend</span></code> now accepts <cite>horovod</cite> distributed framework.</p>
+</div>
 <dl class="py method">
 <dt id="ignite.distributed.launcher.Parallel.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/ignite/distributed/launcher.html#Parallel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ignite.distributed.launcher.Parallel.run" title="Permalink to this definition">¶</a></dt>
@@ -763,7 +783,7 @@ group or spawn multiple processes.</p>
 <dd><p>Helper method to perform all gather operation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor</strong> (<em>torch.Tensor</em><em> or </em><em>number</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – tensor or number or str to collect across participating processes.</p>
+<dd class="field-odd"><p><strong>tensor</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.Tensor</em></a><em> or </em><em>number</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – tensor or number or str to collect across participating processes.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>torch.Tensor of shape <code class="docutils literal notranslate"><span class="pre">(world_size</span> <span class="pre">*</span> <span class="pre">tensor.shape[0],</span> <span class="pre">tensor.shape[1],</span> <span class="pre">...)</span></code> if input is a tensor or
@@ -780,7 +800,7 @@ List of strings if input is a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tensor</strong> (<em>torch.Tensor</em><em> or </em><em>number</em>) – tensor or number to collect across participating processes.</p></li>
+<li><p><strong>tensor</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.Tensor</em></a><em> or </em><em>number</em>) – tensor or number to collect across participating processes.</p></li>
 <li><p><strong>op</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – reduction operation, “SUM” by default. Possible values: “SUM”, “PRODUCT”, “MIN”, “MAX”, “AND”, “OR”.
 Please, several values are not supported for the backend like “horovod”.</p></li>
 </ul>
@@ -812,6 +832,9 @@ Please, several values are not supported for the backend like “horovod”.</p>
 <dd class="field-odd"><p>str or None</p>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span>Added Horovod distributed framework.</p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -827,7 +850,7 @@ Please, several values are not supported for the backend like “horovod”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tensor</strong> (<em>torch.Tensor</em><em> or </em><em>number</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – tensor or number or str to broadcast to participating processes.
+<li><p><strong>tensor</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.7.0a0+57bffc3 ))"><em>torch.Tensor</em></a><em> or </em><em>number</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – tensor or number or str to broadcast to participating processes.
 Make sure to respect dtype of torch tensor input for all processes, otherwise execution will crash.</p></li>
 <li><p><strong>src</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – source rank. Default, 0.</p></li>
 </ul>
@@ -859,6 +882,9 @@ Make sure to respect dtype of torch tensor input for all processes, otherwise ex
 <span class="c1"># &gt;&gt;&gt; x = 12.3456</span>
 </pre></div>
 </div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.4.2.</span></p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -875,6 +901,9 @@ Make sure to respect dtype of torch tensor input for all processes, otherwise ex
 <dd class="field-odd"><p>torch.device</p>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span>Added Horovod distributed framework.</p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -969,6 +998,9 @@ Returns 1 if no distributed configuration.</p>
 </ul>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span><code class="docutils literal notranslate"><span class="pre">backend</span></code> now accepts <cite>horovod</cite> distributed framework.</p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -981,6 +1013,9 @@ Returns 1 if no distributed configuration.</p>
 <li><p><cite>xla-dist</cite> for XLA distributed configuration</p></li>
 <li><p><cite>horovod-dist</cite> for Horovod distributed framework</p></li>
 </ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span><cite>horovod-dist</cite> will be returned for Horovod distributed framework.</p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -1155,6 +1190,9 @@ where <cite>i</cite> is the process index and args is the passed through tuple o
 </ul>
 </dd>
 </dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.4.2: </span><code class="docutils literal notranslate"><span class="pre">backend</span></code> now accepts <cite>horovod</cite> distributed framework.</p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -1239,7 +1277,6 @@ This may have a negative performance impact.</p>
          <script src="_static/underscore.js"></script>
          <script src="_static/doctools.js"></script>
          <script src="_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

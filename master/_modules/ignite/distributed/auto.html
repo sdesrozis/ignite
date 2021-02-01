@@ -39,6 +39,14 @@
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../../../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -445,6 +453,10 @@
 <span class="sd">    .. _torch convert_sync_batchnorm: https://pytorch.org/docs/stable/generated/torch.nn.SyncBatchNorm.html#</span>
 <span class="sd">        torch.nn.SyncBatchNorm.convert_sync_batchnorm</span>
 
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+
+<span class="sd">        - Added Horovod distributed framework.</span>
+<span class="sd">        - Added ``sync_bn`` argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.auto_model&quot;</span><span class="p">)</span>
 
@@ -508,7 +520,6 @@
 
 <span class="sd">        optimizer = idist.auto_optim(optimizer)</span>
 
-
 <span class="sd">    Args:</span>
 <span class="sd">        optimizer (Optimizer): input torch optimizer</span>
 
@@ -517,6 +528,8 @@
 
 <span class="sd">    .. _xm.optimizer_step: http://pytorch.org/xla/release/1.5/index.html#torch_xla.core.xla_model.optimizer_step</span>
 
+<span class="sd">    .. versionchanged:: 0.4.2</span>
+<span class="sd">        Added Horovod distributed optimizer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">bnd</span> <span class="o">=</span> <span class="n">idist</span><span class="o">.</span><span class="n">backend</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">idist</span><span class="o">.</span><span class="n">has_xla_support</span> <span class="ow">and</span> <span class="n">bnd</span> <span class="o">==</span> <span class="n">idist_xla</span><span class="o">.</span><span class="n">XLA_TPU</span><span class="p">:</span>
@@ -657,7 +670,6 @@
          <script src="../../../_static/underscore.js"></script>
          <script src="../../../_static/doctools.js"></script>
          <script src="../../../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   

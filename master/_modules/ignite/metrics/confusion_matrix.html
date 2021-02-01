@@ -39,6 +39,14 @@
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
+  <!-- katex links / this needs to be loaded before fonts.html -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" as="style"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <script async src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+
   <!-- Preload the theme fonts -->
 
 <link rel="preload" href="../../../_static/fonts/FreightSans/freight-sans-book.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -405,7 +413,9 @@
 
 
 <div class="viewcode-block" id="IoU"><a class="viewcode-back" href="../../../metrics.html#ignite.metrics.IoU">[docs]</a><span class="k">def</span> <span class="nf">IoU</span><span class="p">(</span><span class="n">cm</span><span class="p">:</span> <span class="n">ConfusionMatrix</span><span class="p">,</span> <span class="n">ignore_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricsLambda</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Calculates Intersection over Union using :class:`~ignite.metrics.ConfusionMatrix` metric.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates Intersection over Union using :class:`~ignite.metrics.ConfusionMatrix` metric.</span>
+
+<span class="sd">    .. math:: \text{J}(A, B) = \frac{ \lvert A \cap B \rvert }{ \lvert A \cup B \rvert }</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        cm (ConfusionMatrix): instance of confusion matrix metric</span>
@@ -619,7 +629,6 @@
          <script src="../../../_static/underscore.js"></script>
          <script src="../../../_static/doctools.js"></script>
          <script src="../../../_static/language_data.js"></script>
-         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
      
 
   
